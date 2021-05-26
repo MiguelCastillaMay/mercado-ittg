@@ -1,0 +1,245 @@
+/*index.php*/
+body {
+    background-color: aliceblue;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+    padding: 0px 0px 50px 0px;
+    margin: 0px;
+    color: aliceblue;
+}
+h1 {
+    color: aliceblue;
+    font-weight: 300;
+    font-size: 60px;
+    margin: 0px 0px 50px 0px;
+}
+#form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+#form > div > p {
+    text-align: right;
+    font-size: 30px;
+    margin: 16px 0px 16px 0px;
+}
+#form > div > input {
+    display: block;
+    margin: 24px 16px 24px 16px;
+    height: 23px;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: #1e212d;
+}
+#cuadro {
+    background-color: #1e212d;
+    text-align: center;
+    padding: 100px 50px 100px 50px;
+    width: fit-content;
+    border-radius: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 200px;
+}
+#boton {
+    background-color: #f0f8ff;
+    border-style: solid;
+    border-color: aliceblue;
+    font-size: 25px;
+    padding: 10px;
+    border-radius: 15px;
+    color: #1e212d;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    font-family: "Montserrat", sans-serif;
+}
+#boton:hover {
+    background-color: #1e212d;
+    color: aliceblue;
+    border-color: aliceblue;
+    border-style: solid;
+}
+input:focus {
+    outline: none;
+}
+#form > div > input:hover {
+    background-color: #1e212d;
+    color: aliceblue;
+    border-style: solid;
+    border-color: aliceblue;
+}
+#form > div > input:focus {
+    background-color: #1e212d;
+    color: aliceblue;
+    border-style: solid;
+    border-color: aliceblue;
+}
+
+/*cliente.php*/
+.menuBar {
+    background-color: #1e212d;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0px;
+    width: 100%;
+    padding: 20px 0px 20px 0px;
+    margin-bottom: 40px;
+}
+.menuBar > h1 {
+    font-size: 40px;
+    text-align: center;
+    margin: 0px 0px 20px 0px;
+    color: aliceblue;
+}
+.menuBar > ul {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0px;
+    margin: 0px;
+}
+.menuBar > ul > li {
+    list-style-type: none;
+    font-size: 20px;
+}
+.menuBar > a:link,
+:visited,
+:active,
+:-webkit-any-link {
+    color: aliceblue;
+    text-decoration: none;
+}
+
+/*cliente.php - catalogo*/
+.catalogo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 30px;
+    border: 5px solid #1e212d;
+    /*box-shadow: 5px 10px 30px #1e212d;*/
+    padding: 40px 40px 10px 40px;
+}
+.producto {
+    display: flex;
+    margin-bottom: 40px;
+}
+.producto > img {
+    max-width: 55%;
+    border-radius: 15px;
+}
+.datosProducto {
+    width: fit-content;
+    padding: 0px 30px 30px 45px;
+}
+.datosProducto > h1 {
+    color: #1e212d;
+    margin-bottom: 25px;
+}
+.datosProducto > p {
+    color: #1e212d;
+    font-size: 25px;
+}
+#botonInverso {
+    background-color: #1e212d;
+    border-style: solid;
+    border-color: #1e212d;
+    font-size: 25px;
+    padding: 10px;
+    border-radius: 15px;
+    color: #f0f8ff;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    font-family: "Montserrat", sans-serif;
+}
+#botonInverso:hover {
+    background-color: #f0f8ff;
+    color: #1e212d;
+}
+
+/*carrito.php*/
+table {
+    color: #1e212d;
+    border-style: solid;
+    border-color: #1e212d;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 25px;
+    width: 50%;
+    border-collapse: collapse;
+}
+th {
+    height: 50px;
+    background-color: #1e212d;
+    color: #f0f8ff;
+}
+td {
+    text-align: center;
+    height: 40px;
+}
+th,
+td {
+    border: 1px solid #1e212d;
+}
+tr:hover {
+    background-color: rgba(30, 33, 45, 0.05);
+}
+#botonInverso > a:hover {
+    color: #1e212d;
+}
+.pafuera {
+    display: block;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.carritoVacio {
+    color: #1e212d;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+#edit > a,
+#show > a {
+    color: black;
+}
+#opcionesSupervisor {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+#opcionesSupervisor > a > button {
+    padding: 40px;
+    margin: 10px;
+}
+#datosPersonales {
+    padding: 20px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    border: 5px solid #1e212d;
+    border-radius: 30px;
+    display: flex;
+}
+#datosPersonales > img {
+    border-radius: 30px;
+    width: 250px;
+}
+#datosPersonales > div {
+    margin-left: 20px;
+}
+#datosPersonales > div > p {
+    color: #1e212d;
+    font-size: 30px;
+}
+#datosPersonales > div > #nombre {
+    font-weight: 500;
+    font-size: 50px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
