@@ -100,8 +100,8 @@ class UsuarioController extends Controller
         if ($valores['password'] != $valores['password2']) {
             return redirect()->back()->with('error', 'La contraseñas no son iguales.');
         }
-        if (is_null($valores['password'])) {
-            return redirect()->back()->with('error', 'Llena todos los campos por favor.');
+        if (is_null($valores['password']) and is_null($valores['password2'])) {
+            $valores['password'] = $usuario->password;
         }
         if ($request->hasFile('imagen')) {
             $path = $request->file('imagen')->store('fotos', 'public');
@@ -110,7 +110,6 @@ class UsuarioController extends Controller
             $path = $usuario->imagen;
             $valores['imagen'] = $path;
         }
-        $valores['password'] = Hash::make($valores['password']);
         $valores['activo'] = 1;
         $usuario->fill($valores);
         $usuario->save();
