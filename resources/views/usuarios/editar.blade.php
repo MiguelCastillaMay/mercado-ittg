@@ -8,7 +8,7 @@
     
 @section('contenido')
     <div id="cuadro">
-        <form action="/usuario/edit/{{ $usuario->id }}" method="post" enctype="multipart/form-data">
+        <form action="/usuario/edit/{{ $usuario->usuarioID }}" method="post" enctype="multipart/form-data">
             @if (session('error'))
                 <p>{{ session('error') }}</p>
             @endif

@@ -4,7 +4,7 @@
     
 @section('contenido')
     <div id="cuadro">
-        <form action="/producto/edit/{{ $producto->id }}" method="post">
+        <form action="/producto/edit/{{ $producto->productoID }}" method="post">
             @csrf
             @method('PUT')
             <div id="form">

@@ -9,7 +9,7 @@
             <li><a href="#">Menú</a></li>
             <li><a href="#">Categorías</a></li>
             <li><a href="#">Ofertas</a></li>
-            <li><a href="/usuario/show/{{ $usuario->id }}">Mi perfil</a></li>
+            <li><a href="/usuario/show/{{ $usuario->usuarioID }}">Mi perfil</a></li>
             <li><a href="#">Mi carrito</a></li>
         </ul>
     </div>

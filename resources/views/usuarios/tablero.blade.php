@@ -26,9 +26,9 @@
             <tr>
                 <td>{{ $usuario->nombre }}</td>
                 <td>
-                    <button id="edit"><a href="/usuario/edit/{{ $usuario->id }}">Editar usuario</a></button>
-                    <button id="show"><a href="/usuario/show/{{ $usuario->id }}">Mostrar usuario</a></button>
-                    <form action="/usuario/delete/{{ $usuario->id }}" method="post">
+                    <button id="edit"><a href="/usuario/edit/{{ $usuario->usuarioID }}">Editar usuario</a></button>
+                    <button id="show"><a href="/usuario/show/{{ $usuario->usuarioID }}">Mostrar usuario</a></button>
+                    <form action="/usuario/delete/{{ $usuario->usuarioID }}" method="post">
                         @csrf
                         @method('DELETE')
                         <input type="submit" value="Eliminar usuario">
