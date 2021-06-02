@@ -13,10 +13,6 @@
     </div>
 @endsection
 
-@auth
-@php
-    $usuario = Auth::User()
-@endphp
     @section('contenido')
     <div id="opcionesSupervisor">
         <a href="/usuarios"><button id="botonInverso">Usuarios</button></a>
@@ -26,4 +22,3 @@
     </div>
     <a href="/salir"><button id="botonInverso" class="pafuera">Salir pa fuera</button></a>
     @endsection
-@endauth
