@@ -41,5 +41,5 @@
         @endforelse
     </table>
     <button id="botonInverso" class="pafuera"><a href="/producto/create">Agregar producto</a></button>
-    <button id="botonInverso" class="pafuera"><a href="/login">Salir pa fuera</a></button>
+    <button id="botonInverso" class="pafuera"><a href="/salir">Salir pa fuera</a></button>
 @endsection

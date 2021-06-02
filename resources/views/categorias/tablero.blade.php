@@ -15,7 +15,7 @@
 
 @section('contenido')
 @if (session('mensaje'))
-    <h1>{{ session('mensaje') }}</h1>
+    <p>{{ session('mensaje') }}</p>
 @endif
     <table>
         <tr>
@@ -44,5 +44,5 @@
         @endforelse
     </table>
     <button id="botonInverso" class="pafuera"><a href="/categoria/create">Agregar categoría</a></button>
-    <button id="botonInverso" class="pafuera"><a href="/login">Salir pa fuera</a></button>
+    <button id="botonInverso" class="pafuera"><a href="/salir">Salir pa fuera</a></button>
 @endsection

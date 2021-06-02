@@ -5,7 +5,7 @@
 @section('contenido')
 <div id="cuadro">
     <h1>Agregar un producto nuevo</h1>
-    <form action="/producto/store" method="post">
+    <form action="/producto/store" method="post" enctype="multipart/form-data">
         @csrf
         <div id="form">
             <div>
