@@ -50,6 +50,18 @@ Route::get('bitacora', function() {
     return view('bitacora', compact('registros'));
 });
 
+// rutas transacciones
+Route::get('transacciones', function() {
+    return view('transacciones');
+});
+// rutas transacciones
+
+// rutas propuestas
+Route::get('propuestas', function() {
+    return view('propuestas');
+});
+// rutas propuestas
+
 Route::get('categorias', 'CategoriaController@index');
 Route::get('categoria/create', 'CategoriaController@create');
 Route::post('categoria/store', 'CategoriaController@store');
@@ -76,3 +88,4 @@ Route::get('usuario/edit/{usuario_id}', 'UsuarioController@edit');
 Route::put('usuario/edit/{usuario_id}', 'UsuarioController@update');
 Route::get('usuario/show/{usuario_id}', 'UsuarioController@show');
 Route::delete('usuario/delete/{usuario_id}', 'UsuarioController@destroy');
+

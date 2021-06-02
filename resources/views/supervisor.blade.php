@@ -23,6 +23,8 @@
         <a href="/categorias"><button id="botonInverso">Categorías</button></a>
         <a href="/productos"><button id="botonInverso">Productos</button></a>
         <a href="/bitacora"><button id="botonInverso">Bitácora</button></a>
+        <a href="/transacciones"><button id="botonInverso">Compras y ventas</button></a>
+        <a href="/propuestas"><button id="botonInverso">Propuestas</button></a>
     </div>
     <a href="/salir"><button id="botonInverso" class="pafuera">Salir pa fuera</button></a>
     @endsection
