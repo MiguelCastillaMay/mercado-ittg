@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\Categoria;
+use App\Models\Producto;
 use App\Models\Bitacora;
 use App\Models\Usuario;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +19,7 @@ use App\Models\Usuario;
 */
 
 Route::get('/', function() {
-    return view('login');
+    return view('welcome');
 });
 
 Route::get('login', function() {
@@ -76,3 +78,11 @@ Route::get('usuario/edit/{usuario_id}', 'UsuarioController@edit');
 Route::put('usuario/edit/{usuario_id}', 'UsuarioController@update');
 Route::get('usuario/show/{usuario_id}', 'UsuarioController@show');
 Route::delete('usuario/delete/{usuario_id}', 'UsuarioController@destroy');
+
+Route::get('search', function(Request $request) {
+    $find = $request->input('find');
+    $productos = Producto::where('nombre', 'LIKE', '%'.$find.'%')->orWhere('descripcion', 'LIKE', '%'.$find.'%')->get();
+    if(count($productos) > 0)
+        return view('welcome', compact('productos'));
+    else return redirect()->back()->with('mensaje', 'No se encontraron resultados para tu búsqueda. Intenta con otro término.');
+});
