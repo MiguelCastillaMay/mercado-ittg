@@ -43,7 +43,7 @@ class ProductoController extends Controller
             $producto->descripcion = $datos['desc'];
             $path = $request->file('imagen')->store('productos', 'public');
             $producto->imagen = $path;
-            $producto->activo = 0;
+            $producto->activo = 1;
             $producto->save();
 
             return redirect('/productos')->with('mensaje', 'Producto registrado correctamente.');
@@ -81,13 +81,20 @@ class ProductoController extends Controller
      */
     public function update(Request $request, $id) {
         $producto = Producto::find($id);
-        $producto->nombre = $request->input('nombre');
-        $producto->descripcion = $request->input('desc');
-        $producto->imagen = "archivo.jpg";
+        $datos = $request->all();
+        if (is_null($datos['nombre']) or is_null($datos['desc']))
+            return redirect()->back()->with('error', 'Por favor llene todos los campos.');            
+
+        $producto->nombre = $datos['nombre'];
+        $producto->descripcion = $datos['desc'];
+        if ($request->hasFile('imagen')) {
+            $path = $request->file('imagen')->store('productos', 'public');
+            $producto->imagen = $path;
+        }
         $producto->activo = 1;
         $producto->save();
 
-        return redirect('/productos');
+        return redirect('/productos')->with('mensaje', 'Producto actualizado correctamente.');
     }
 
     /**
