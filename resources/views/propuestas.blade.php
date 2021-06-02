@@ -11,13 +11,7 @@
 @section('contenido')
     <table>
         <tr>
-            <th>Comprador</th>
-            <th>Vendedor</th>
-            <th>Articulo</th>
-            <th>Fecha</th>
-            <th>Precio unitario</th>
-            <th>Cantidad</th>
-            <th>Total</th>
+            
         </tr>
        {{--   @foreach ($transacciones as $transaccion)
             <tr>
