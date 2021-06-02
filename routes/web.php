@@ -19,7 +19,8 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/', function() {
-    return view('welcome');
+    $productos = Producto::Activos()->get();
+    return view('welcome', compact('productos'));
 });
 
 Route::get('login', function() {
@@ -31,7 +32,7 @@ Route::get('salir', 'AutenticarController@salir');
 
 Route::get('supervisor', function() {
     return view('supervisor');
-})/* ->middleware('auth') */;
+})->middleware('auth');
 
 Route::get('revisor' ,function() {
     return view('revisor');
@@ -81,8 +82,10 @@ Route::delete('usuario/delete/{usuario_id}', 'UsuarioController@destroy');
 
 Route::get('search', function(Request $request) {
     $find = $request->input('find');
-    $productos = Producto::where('nombre', 'LIKE', '%'.$find.'%')->where('activo', '=', '1')->orWhere('descripcion', 'LIKE', '%'.$find.'%')->where('activo', '=', '1')->get();
+    $productos = Producto::Buscar($find)->get();
     if(count($productos) > 0)
         return view('welcome', compact('productos'));
     else return redirect()->back()->with('mensaje', 'No se encontraron resultados para tu búsqueda. Intenta con otro término.');
 });
+
+Route::get('categoriasguest', 'InvitadoController@categorias');
