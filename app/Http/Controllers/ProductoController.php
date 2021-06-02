@@ -33,14 +33,21 @@ class ProductoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        $producto = new Producto();
-        $producto->nombre = $request->input('nombre');
-        $producto->descripcion = $request->input('desc');
-        $producto->imagen = "archivo.jpg";
-        $producto->activo = 1;
-        $producto->save();
+        $datos = $request->all();
 
-        return redirect('/productos');
+        if (is_null($datos['nombre']) or is_null($datos['desc']) or is_null($datos['imagen']))
+            return redirect()->back()->with('error', 'Por favor llene todos los campos.');            
+        else {
+            $producto = new Producto();
+            $producto->nombre = $datos['nombre'];
+            $producto->descripcion = $datos['desc'];
+            $path = $request->file('imagen')->store('productos', 'public');
+            $producto->imagen = $path;
+            $producto->activo = 0;
+            $producto->save();
+
+            return redirect('/productos')->with('mensaje', 'Producto registrado correctamente.');
+        }
     }
 
     /**
