@@ -42,7 +42,7 @@ class CategoriaController extends Controller
 
         /*$categoria = $request->input('nombre');
         CategoriasModel::agregar($categoria);*/
-        return redirect('/categorias')->with('mensaje', 'Categoría agregada');
+        return redirect('/categoria')->with('mensaje', 'Categoría agregada');
     }
 
     /**
@@ -84,7 +84,7 @@ class CategoriaController extends Controller
 
         /*$newCategoria = $request->input('nombre');
         CategoriasModel::editar($id, $newCategoria);*/
-        return redirect('/categorias')->with('mensaje', 'Categoría modificada');
+        return redirect('/categoria')->with('mensaje', 'Categoría modificada');
     }
 
     /**
@@ -95,6 +95,6 @@ class CategoriaController extends Controller
      */
     public function destroy($id) {
         Categoria::destroy($id);
-        return redirect('/categorias')->with('mensaje', 'Categoría eliminada');
+        return redirect('/categoria')->with('mensaje', 'Categoría eliminada');
     }
 }

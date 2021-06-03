@@ -29,7 +29,7 @@
                 <td>3</td>
                 <td>
                     <button id="edit"><a href="/categoria/{{ $categoria->categoriaID }}/edit">Editar categoría</a></button>
-                    <button id="show"><a href="/categoria/show/{{ $categoria->categoriaID }}">Mostrar categoría</a></button>
+                    <button id="show"><a href="/categoria/{{ $categoria->categoriaID }}">Mostrar categoría</a></button>
                     <form action="/categoria/{{ $categoria->categoriaID }}" method="post">
                         @csrf
                         @method('DELETE')

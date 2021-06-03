@@ -53,16 +53,7 @@ Route::get('bitacora', function() {
     return view('bitacora', compact('registros'));
 });
 
-/* Route::get('categorias', 'CategoriaController@index');
-Route::get('categoria/create', 'CategoriaController@create');
-Route::post('categoria/store', 'CategoriaController@store');
-Route::get('categoria/edit/{categoria_id}', 'CategoriaController@edit');
-Route::put('categoria/edit/{categoria_id}', 'CategoriaController@update');
-Route::get('categoria/show/{categoria_id}', 'CategoriaController@show');
-Route::delete('categoria/delete/{categoria_id}', 'CategoriaController@destroy'); */
 Route::resource('categoria', 'CategoriaController');
-
-
 
 Route::get('productos', 'ProductoController@index');
 Route::get('producto/create', 'ProductoController@create');
