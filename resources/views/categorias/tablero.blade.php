@@ -28,9 +28,9 @@
                 <td>{{ $categoria->nombre }}</td>
                 <td>3</td>
                 <td>
-                    <button id="edit"><a href="/categoria/edit/{{ $categoria->categoriaID }}">Editar categoría</a></button>
+                    <button id="edit"><a href="/categoria/{{ $categoria->categoriaID }}/edit">Editar categoría</a></button>
                     <button id="show"><a href="/categoria/show/{{ $categoria->categoriaID }}">Mostrar categoría</a></button>
-                    <form action="/categoria/delete/{{ $categoria->categoriaID }}" method="post">
+                    <form action="/categoria/{{ $categoria->categoriaID }}" method="post">
                         @csrf
                         @method('DELETE')
                         <input type="submit" value="Eliminar categoría" id="eliminar">
