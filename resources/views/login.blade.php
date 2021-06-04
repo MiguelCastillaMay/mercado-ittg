@@ -7,6 +7,8 @@
         <h1>Bienvenido</h1>
         @if (session('error'))
             {{ session('error') }}
+        @elseif (session('mensaje'))
+            {{ session('mensaje') }}
         @endif
         <form action="/validar" method="get">
             <div id="form">
