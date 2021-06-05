@@ -115,6 +115,6 @@ class ProductoController extends Controller
 
     public function productos_por_categoria($id) {
         $productos = Categoria::find($id)->productos;
-        var_dump($productos);
+        return view('welcome', compact('productos'));
     }
 }
