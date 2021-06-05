@@ -19,6 +19,9 @@ class ProductoController extends Controller
         if (is_null($usuario) or $usuario->rol == 'Cliente') {
             $productos = Producto::Activos()->get();
             return view('welcome', compact('productos'));
+        } elseif ($usuario->rol == 'Supervisor' or $usuario->rol == 'Revisor') {
+            $productos = Producto::all();
+            return view('productos.tablero', compact('productos'));
         }
     }
 
@@ -114,8 +117,15 @@ class ProductoController extends Controller
     }
 
     public function productos_por_categoria($id) {
-        $productos = Categoria::find($id)->productos;
-        return view('welcome', compact('productos'));
+        $usuario = Auth::User();
+
+        if (is_null($usuario) or $usuario->rol == 'Cliente') {
+            $productos = Categoria::find($id)->productos->where('activo', '=', '1');
+            return view('welcome', compact('productos'));
+        } elseif ($usuario->rol == 'Supervisor' or $usuario->rol == 'Revisor') {
+            $productos = Categoria::find($id)->productos;
+            return view('welcome', compact('productos'));
+        }
     }
 
     public function comprar($id) {
