@@ -11,4 +11,12 @@ class Categoria extends Model
     public $table = 'categorias';
     protected $primaryKey = 'categoriaID';
     use HasFactory;
+
+    public function productos() {
+        return $this->hasMany(Producto::class, 'categoriaID', 'productoID');
+    }
+
+    public function scopeActivas($query) {
+        return $query->where('activa','=','1');
+    }
 }
