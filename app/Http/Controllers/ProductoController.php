@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Producto;
+use App\Models\Categoria;
+use Illuminate\Support\Facades\Auth;
 
 class ProductoController extends Controller
 {
@@ -13,8 +15,11 @@ class ProductoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $productos = Producto::all();
-        return view('productos.tablero', compact('productos'));
+        $usuario = Auth::User();
+        if (is_null($usuario) or $usuario->rol == 'Cliente') {
+            $productos = Producto::Activos()->get();
+            return view('welcome', compact('productos'));
+        }
     }
 
     /**
@@ -106,5 +111,10 @@ class ProductoController extends Controller
     public function destroy($id) {
         Producto::destroy($id);
         return redirect('/productos')->with('alert','Producto eliminado');
+    }
+
+    public function productos_por_categoria($id) {
+        $productos = Categoria::find($id)->productos;
+        return view('welcome', compact('productos'));
     }
 }

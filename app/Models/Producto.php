@@ -20,4 +20,8 @@ class Producto extends Model
         return $query->where('activo', '=', '1')->where('nombre', 'LIKE', '%'.$find.'%')
         ->orWhere('activo', '=', '1')->where('descripcion', 'LIKE', '%'.$find.'%');
     }
+
+    public function categoria() {
+        return $this->belongsTo(Categoria::class, 'categoriaID', 'categoriaID');
+    }
 }

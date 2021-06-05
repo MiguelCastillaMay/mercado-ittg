@@ -7,6 +7,8 @@
         <h1>Bienvenido</h1>
         @if (session('error'))
             {{ session('error') }}
+        @elseif (session('mensaje'))
+            {{ session('mensaje') }}
         @endif
         <form action="/validar" method="get">
             <div id="form">
@@ -22,5 +24,6 @@
             <input type="submit" value="Ingresar" id="botonInverso">
             <button id="botonInverso"><a href="/registro">Registrarte</a></button>
         </form>
+        <button id="botonInverso"><a href="/">Olvidé mi contraseña</a></button>
     </div>
 @endsection

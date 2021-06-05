@@ -17,7 +17,9 @@ class UsuarioController extends Controller
      */
     public function index() {
         $usuario = Auth::User();
-        if ($usuario->rol == 'Supervisor') {
+        if (is_null($usuario)) {
+            return redirect('/login')->with('mensaje', 'Registro completado correctamente. Ya puedes iniciar sesión :)');
+        } elseif ($usuario->rol == 'Supervisor') {
             $usuarios = Usuario::all();
             return view('usuarios.tablero', compact('usuarios'));
         } elseif ($usuario->rol == 'Revisor') {

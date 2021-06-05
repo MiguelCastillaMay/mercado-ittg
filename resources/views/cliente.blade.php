@@ -1,13 +1,13 @@
 @extends('layout')
 
-@section('tittle', 'Cliente')
+@section('title', 'Cliente')
 
 @section('navBar')
     <div class="menuBar">
         <h1>TiendaFicticia.com</h1>
         <ul>
             <li><a href="#">Categorías</a></li>
-            <li><a href="#">Ofertas</a></li>
+            <li><a href="#">Productos</a></li>
             <li><form action="/search" method="get" role="search">
                 <input type="text" name="find" placeholder="Buscar productos">
                 <button type="submit">Buscar</button>
