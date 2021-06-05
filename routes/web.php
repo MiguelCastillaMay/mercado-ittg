@@ -56,6 +56,7 @@ Route::get('bitacora', function() {
 Route::resource('categoria', 'CategoriaController');
 
 Route::get('productos', 'ProductoController@index');
+Route::get('productos/categoria/{categoria_id}', 'ProductoController@productos_por_categoria');
 Route::get('producto/create', 'ProductoController@create');
 Route::post('producto/store', 'ProductoController@store');
 Route::get('producto/edit/{producto_id}', 'ProductoController@edit');
@@ -80,4 +81,4 @@ Route::get('search', function(Request $request) {
     else return redirect()->back()->with('mensaje', 'No se encontraron resultados para tu búsqueda. Intenta con otro término.');
 });
 
-Route::get('categoriasguest', 'InvitadoController@categorias');
+Route::get('categorias/guest', 'InvitadoController@categorias');
