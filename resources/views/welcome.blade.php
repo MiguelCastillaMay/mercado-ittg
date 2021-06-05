@@ -18,6 +18,8 @@
         </form></li>
         @if (is_null($usuario))
             <li><a href="/login">Iniciar sesión</a></li>
+        @elseif ($usuario->rol == 'Cliente')
+            <li><a href="/usuario/show/{{ $usuario->usuarioID }}">Mi perfil</a></li>
         @endif
     </ul>
 </div>
@@ -36,9 +38,13 @@
                         <h1>{{ $producto->nombre }}</h1>
                         <p>{{ $producto->descripcion }}</p>
                         <p>Precio</p>
+                        <button id="botonInverso"><a href="/productos/categoria/">Comprar</a></button>
                     </div>
                 </div>
             @endforeach
         </div>
     @endisset
+    @if ($usuario)
+        <button id="botonInverso" class="pafuera"><a href="/salir">Salir pa fuera</a></button>
+    @endif
 @endsection
