@@ -2,17 +2,23 @@
 
 @section('title', 'Mercado ITTG')
 
+@php
+    $usuario = Auth::User();
+@endphp
+
 @section('navBar')
 <div class="menuBar">
     <h1>Mercado ITTG</h1>
     <ul>
-        <li><a href="/categoriasguest">Categorías</a></li>
-        <li><a href="#">Productos</a></li>
+        <li><a href="/categoria">Categorías</a></li>
+        <li><a href="/productos">Productos</a></li>
         <li><form action="/search" method="get" role="search">
             <input type="text" name="find" placeholder="Buscar productos">
             <button type="submit">Buscar</button>
         </form></li>
-        <li><a href="/login">Iniciar sesión</a></li>
+        @if (is_null($usuario))
+            <li><a href="/login">Iniciar sesión</a></li>
+        @endif
     </ul>
 </div>
 @endsection
