@@ -38,7 +38,7 @@
                         <h1>{{ $producto->nombre }}</h1>
                         <p>{{ $producto->descripcion }}</p>
                         <p>Precio</p>
-                        <button id="botonInverso"><a href="/productos/categoria/">Comprar</a></button>
+                        <button id="botonInverso"><a href="/producto/comprar/{{ $producto->productoID }}">Comprar</a></button>
                     </div>
                 </div>
             @endforeach
