@@ -25,6 +25,8 @@ class UsuarioController extends Controller
         } elseif ($usuario->rol == 'Revisor') {
             $usuarios = Usuario::where('rol', '!=', 'Supervisor')->get();
             return view('usuarios.tablero', compact('usuarios'));
+        } elseif ($usuario->rol == 'Cliente') {
+            return view('usuarios.perfil', compact('usuario'));
         }
     }
 
