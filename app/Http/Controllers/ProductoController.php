@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Producto;
+use App\Models\Categoria;
+use Illuminate\Support\Facades\Auth;
 
 class ProductoController extends Controller
 {
@@ -13,8 +15,11 @@ class ProductoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $productos = Producto::all();
-        return view('productos.tablero', compact('productos'));
+        $usuario = Auth::User();
+        if (is_null($usuario) or $usuario->rol == 'Cliente') {
+            $productos = Producto::Activos()->get();
+            return view('welcome', compact('productos'));
+        }
     }
 
     /**
@@ -33,14 +38,21 @@ class ProductoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        $producto = new Producto();
-        $producto->nombre = $request->input('nombre');
-        $producto->descripcion = $request->input('desc');
-        $producto->imagen = "archivo.jpg";
-        $producto->activo = 1;
-        $producto->save();
+        $datos = $request->all();
 
-        return redirect('/productos');
+        if (is_null($datos['nombre']) or is_null($datos['desc']) or is_null($datos['imagen']))
+            return redirect()->back()->with('error', 'Por favor llene todos los campos.');            
+        else {
+            $producto = new Producto();
+            $producto->nombre = $datos['nombre'];
+            $producto->descripcion = $datos['desc'];
+            $path = $request->file('imagen')->store('productos', 'public');
+            $producto->imagen = $path;
+            $producto->activo = 1;
+            $producto->save();
+
+            return redirect('/productos')->with('mensaje', 'Producto registrado correctamente.');
+        }
     }
 
     /**
@@ -74,13 +86,20 @@ class ProductoController extends Controller
      */
     public function update(Request $request, $id) {
         $producto = Producto::find($id);
-        $producto->nombre = $request->input('nombre');
-        $producto->descripcion = $request->input('desc');
-        $producto->imagen = "archivo.jpg";
+        $datos = $request->all();
+        if (is_null($datos['nombre']) or is_null($datos['desc']))
+            return redirect()->back()->with('error', 'Por favor llene todos los campos.');            
+
+        $producto->nombre = $datos['nombre'];
+        $producto->descripcion = $datos['desc'];
+        if ($request->hasFile('imagen')) {
+            $path = $request->file('imagen')->store('productos', 'public');
+            $producto->imagen = $path;
+        }
         $producto->activo = 1;
         $producto->save();
 
-        return redirect('/productos');
+        return redirect('/productos')->with('mensaje', 'Producto actualizado correctamente.');
     }
 
     /**
@@ -92,5 +111,17 @@ class ProductoController extends Controller
     public function destroy($id) {
         Producto::destroy($id);
         return redirect('/productos')->with('alert','Producto eliminado');
+    }
+
+    public function productos_por_categoria($id) {
+        $productos = Categoria::find($id)->productos;
+        return view('welcome', compact('productos'));
+    }
+
+    public function comprar($id) {
+        $usuario = Auth::User();
+        if (is_null($usuario)) {
+            return redirect('login')->with('mensaje', 'Inicie sesión para comprar.');
+        }
     }
 }

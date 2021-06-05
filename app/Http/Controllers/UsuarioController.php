@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usuario;
-use App\Models\Categorias;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Redirect;
@@ -18,12 +17,16 @@ class UsuarioController extends Controller
      */
     public function index() {
         $usuario = Auth::User();
-        if ($usuario->rol == 'Supervisor') {
+        if (is_null($usuario)) {
+            return redirect('/login')->with('mensaje', 'Registro completado correctamente. Ya puedes iniciar sesión :)');
+        } elseif ($usuario->rol == 'Supervisor') {
             $usuarios = Usuario::all();
             return view('usuarios.tablero', compact('usuarios'));
         } elseif ($usuario->rol == 'Revisor') {
             $usuarios = Usuario::where('rol', '!=', 'Supervisor')->get();
             return view('usuarios.tablero', compact('usuarios'));
+        } elseif ($usuario->rol == 'Cliente') {
+            return view('usuarios.perfil', compact('usuario'));
         }
     }
 
@@ -101,8 +104,8 @@ class UsuarioController extends Controller
         if ($valores['password'] != $valores['password2']) {
             return redirect()->back()->with('error', 'La contraseñas no son iguales.');
         }
-        if (is_null($valores['password'])) {
-            return redirect()->back()->with('error', 'Llena todos los campos por favor.');
+        if (is_null($valores['password']) and is_null($valores['password2'])) {
+            $valores['password'] = $usuario->password;
         }
         if ($request->hasFile('imagen')) {
             $path = $request->file('imagen')->store('fotos', 'public');
@@ -111,7 +114,6 @@ class UsuarioController extends Controller
             $path = $usuario->imagen;
             $valores['imagen'] = $path;
         }
-        $valores['password'] = Hash::make($valores['password']);
         $valores['activo'] = 1;
         $usuario->fill($valores);
         $usuario->save();

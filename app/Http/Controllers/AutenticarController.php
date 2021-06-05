@@ -23,7 +23,7 @@ class AutenticarController extends Controller
                 Auth::login($usuario);
                 switch ($usuario->rol) {
                     case 'Cliente':
-                        return redirect('/cliente');
+                        return redirect('/');
                         break;
         
                     case 'Supervisor':

@@ -9,5 +9,14 @@ class Categoria extends Model
 {
     public $timestamps = false;
     public $table = 'categorias';
+    protected $primaryKey = 'categoriaID';
     use HasFactory;
+
+    public function productos() {
+        return $this->hasMany(Producto::class, 'categoriaID', 'categoriaID');
+    }
+
+    public function scopeActivas($query) {
+        return $query->where('activa','=','1');
+    }
 }

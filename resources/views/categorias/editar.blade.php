@@ -4,7 +4,7 @@
 
 @section('contenido')
     <div id="cuadro">
-        <form action="/categoria/edit/{{ $categoria->id }}" method="post">
+        <form action="/categoria/{{ $categoria->categoriaID }}"method="post">
             @csrf
             @method('PUT')
             <div id="form">
