@@ -18,6 +18,8 @@
             </form></li>
             @if (is_null($usuario))
                 <li><a href="/login">Iniciar sesión</a></li>
+            @elseif ($usuario->rol == 'Cliente')
+                <li><a href="/usuario/show/{{ $usuario->usuarioID }}">Mi perfil</a></li>
             @endif
         </ul>
     </div>
@@ -70,6 +72,8 @@
                 @endforelse
             </table>
             <button id="botonInverso" class="pafuera"><a href="/categoria/create">Agregar categoría</a></button>
+        @endif
+        @if ($usuario)
             <button id="botonInverso" class="pafuera"><a href="/salir">Salir pa fuera</a></button>
         @endif
 @endsection
