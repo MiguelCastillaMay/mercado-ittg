@@ -10,16 +10,25 @@
     <div class="menuBar">
         <h1>TiendaFicticia.com</h1>
         <ul>
-            <li><a href="/categoria">Categorías</a></li>
+            @if (is_null($usuario) or $usuario->rol == 'Cliente')
+                <li><a href="/categoria">Categorías</a></li>
+            @else
+                <li><a href="/supervisor">Menú</a></li>
+            @endif
             <li><a href="/productos">Productos</a></li>
-            <li><form action="/search" method="get" role="search">
-                <input type="text" name="find" placeholder="Buscar productos">
-                <button type="submit">Buscar</button>
-            </form></li>
+            @if (is_null($usuario) or $usuario->rol == 'Cliente')
+                <li><form action="/search" method="get" role="search">
+                    <input type="text" name="find" placeholder="Buscar productos">
+                    <button type="submit">Buscar</button>
+                </form></li>
+            @endif
             @if (is_null($usuario))
                 <li><a href="/login">Iniciar sesión</a></li>
             @elseif ($usuario->rol == 'Cliente')
                 <li><a href="/usuario/show/{{ $usuario->usuarioID }}">Mi perfil</a></li>
+            @endif
+            @if (!is_null($usuario) and $usuario->rol == 'Supervisor')
+                <li><a href="/bitacora">Bitácora</a></li>
             @endif
         </ul>
     </div>
@@ -56,6 +65,7 @@
                         <td>{{ $categoria->nombre }}</td>
                         <td>3</td>
                         <td>
+                            <button id=""><a href="/productos/categoria/{{ $categoria->categoriaID }}">Ver productos</a></button>
                             <button id="edit"><a href="/categoria/{{ $categoria->categoriaID }}/edit">Editar categoría</a></button>
                             <button id="show"><a href="/categoria/{{ $categoria->categoriaID }}">Mostrar categoría</a></button>
                             <form action="/categoria/{{ $categoria->categoriaID }}" method="post">

@@ -6,9 +6,9 @@
     <div class="menuBar">
         <h1>TiendaFicticia.com</h1>
         <ul>
-            <li><a href="#">Menú</a></li>
-            <li><a href="#">Categorías</a></li>
-            <li><a href="#">Ofertas</a></li>
+            <li><a href="/supervisor">Menú</a></li>
+            <li><a href="/categoria">Categorías</a></li>
+            <li><a href="/bitacora">Bitácora</a></li>
         </ul>
     </div>
 @endsection
