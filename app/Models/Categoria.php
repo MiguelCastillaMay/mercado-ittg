@@ -13,7 +13,7 @@ class Categoria extends Model
     use HasFactory;
 
     public function productos() {
-        return $this->hasMany(Producto::class, 'categoriaID', 'productoID');
+        return $this->hasMany(Producto::class, 'categoriaID', 'categoriaID');
     }
 
     public function scopeActivas($query) {
