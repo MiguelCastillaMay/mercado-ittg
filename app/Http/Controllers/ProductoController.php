@@ -117,4 +117,11 @@ class ProductoController extends Controller
         $productos = Categoria::find($id)->productos;
         return view('welcome', compact('productos'));
     }
+
+    public function comprar($id) {
+        $usuario = Auth::User();
+        if (is_null($usuario)) {
+            return redirect('login')->with('mensaje', 'Inicie sesión para comprar.');
+        }
+    }
 }
