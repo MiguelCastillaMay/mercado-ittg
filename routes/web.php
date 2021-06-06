@@ -50,17 +50,15 @@ Route::get('bitacora', function() {
     return view('bitacora', compact('registros'));
 });
 
-// rutas transacciones
+// transacciones, propuestas
 Route::get('transacciones', function() {
     return view('transacciones');
 });
-// rutas transacciones
 
-// rutas propuestas
 Route::get('propuestas', function() {
     return view('propuestas');
 });
-// rutas propuestas
+// transacciones, propuestas
 
 Route::get('categorias', 'CategoriaController@index');
 Route::get('categoria/create', 'CategoriaController@create');
@@ -69,7 +67,6 @@ Route::get('categoria/edit/{categoria_id}', 'CategoriaController@edit');
 Route::put('categoria/edit/{categoria_id}', 'CategoriaController@update');
 Route::get('categoria/show/{categoria_id}', 'CategoriaController@show');
 Route::delete('categoria/delete/{categoria_id}', 'CategoriaController@destroy');
-
 
 
 Route::get('productos', 'ProductoController@index');
@@ -89,3 +86,4 @@ Route::put('usuario/edit/{usuario_id}', 'UsuarioController@update');
 Route::get('usuario/show/{usuario_id}', 'UsuarioController@show');
 Route::delete('usuario/delete/{usuario_id}', 'UsuarioController@destroy');
 
+Route::get('infoGeneral','UsuarioController@conteo');
