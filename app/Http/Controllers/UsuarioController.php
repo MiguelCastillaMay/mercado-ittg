@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usuario;
+use App\Models\Venta;
+use App\Models\Producto;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Redirect;
@@ -76,7 +78,11 @@ class UsuarioController extends Controller
      */
     public function show($id) {
         $usuario = Usuario::find($id);
-        return view('usuarios.perfil',compact('usuario'));
+        $ventas = Venta::where('usuarioID', '=', $id)->get();
+        $productos = Producto::where('usuarioID', '=', $id)->get();
+        $ventas = count($ventas);
+        $productos = count($productos);
+        return view('usuarios.perfil',compact('usuario', 'ventas', 'productos'));
     }
 
     /**
