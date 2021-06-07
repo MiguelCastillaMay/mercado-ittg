@@ -53,6 +53,16 @@ Route::get('bitacora', function() {
     return view('bitacora', compact('registros'));
 });
 
+// transacciones, propuestas
+Route::get('transacciones', function() {
+    return view('transacciones');
+});
+
+Route::get('propuestas', function() {
+    return view('propuestas');
+});
+// transacciones, propuestas
+
 Route::resource('categoria', 'CategoriaController');
 
 Route::get('productos', 'ProductoController@index');
@@ -73,6 +83,8 @@ Route::get('usuario/edit/{usuario_id}', 'UsuarioController@edit');
 Route::put('usuario/edit/{usuario_id}', 'UsuarioController@update');
 Route::get('usuario/show/{usuario_id}', 'UsuarioController@show');
 Route::delete('usuario/delete/{usuario_id}', 'UsuarioController@destroy');
+
+Route::get('infoGeneral','UsuarioController@conteo');
 
 Route::get('search', function(Request $request) {
     $find = $request->input('find');

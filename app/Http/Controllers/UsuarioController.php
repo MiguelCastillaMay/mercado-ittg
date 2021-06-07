@@ -8,6 +8,7 @@ use App\Models\Venta;
 use App\Models\Producto;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Redirect;
 
 class UsuarioController extends Controller
@@ -136,5 +137,15 @@ class UsuarioController extends Controller
     public function destroy($id) {
         Usuario::destroy($id);
         return redirect('/usuarios')->with('mensaje', 'Usuario eliminado correctamente');
+    }
+
+    public function conteo(){
+        $users = DB::table('usuarios')->get();
+        $conteoUsuarios = count($users);
+        $acciones = DB::table('bitacora')->get();
+        $conteoAcciones = count($acciones);
+        $products = DB::table('productos')->get();
+        $conteoProductos = count($products);
+        return view('infoGeneral', compact('conteoUsuarios', 'conteoAcciones','conteoProductos'));
     }
 }
