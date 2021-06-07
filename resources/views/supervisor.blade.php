@@ -5,11 +5,6 @@
 @section('navBar')
     <div class="menuBar">
         <h1>TiendaFicticia.com</h1>
-        {{-- <ul>
-            <li><a href="cliente.php">Menú</a></li>
-            <li><a href="#">Categorías</a></li>
-            <li><a href="#">Ofertas</a></li>
-        </ul> --}}
     </div>
 @endsection
 
