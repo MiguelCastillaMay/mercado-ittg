@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Mi perfil')
+@section('title', 'Ver perfil')
 
 @php
     $usuarioAuth = Auth::User()
@@ -10,7 +10,9 @@
     <div class="menuBar">
         <h1>TiendaFicticia.com</h1>
         <ul>
-            <li><a href="/supervisor">Menú</a></li>
+            @if ($usuarioAuth->rol == 'Supervisor' or $usuarioAuth->rol == 'Revisor')
+                <li><a href="/supervisor">Menú</a></li>
+            @endif
             <li><a href="/usuarios">Usuarios</a></li>
             <li><a href="/productos">Productos</a></li>
             @if ($usuarioAuth->rol == 'Cliente')
