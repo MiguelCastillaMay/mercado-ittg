@@ -5,7 +5,7 @@
 @section('contenido')
     <div id="cuadro">
         <h1>Agregar una nueva categoría</h1>
-        <form action="/categoria/store" method="post">
+        <form action="/categoria" method="post">
             @csrf
             <div id="form">
                 <div>

@@ -37,7 +37,7 @@
                         </select>
                     @elseif ($usuarioLog->rol == 'Contador')
                         <select name="rol">
-                            <option selected>Cliente</option>
+                            <option selected>Contador</option>
                         </select>
                     @elseif ($usuarioLog->rol == 'Encargado')
                         <select name="rol">

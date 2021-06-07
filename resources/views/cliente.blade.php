@@ -1,16 +1,18 @@
 @extends('layout')
 
-@section('tittle', 'Cliente')
+@section('title', 'Cliente')
 
 @section('navBar')
     <div class="menuBar">
         <h1>TiendaFicticia.com</h1>
         <ul>
-            <li><a href="#">Menú</a></li>
             <li><a href="#">Categorías</a></li>
-            <li><a href="#">Ofertas</a></li>
+            <li><a href="#">Productos</a></li>
+            <li><form action="/search" method="get" role="search">
+                <input type="text" name="find" placeholder="Buscar productos">
+                <button type="submit">Buscar</button>
+            </form></li>
             <li><a href="/usuario/show/{{ $usuario->usuarioID }}">Mi perfil</a></li>
-            <li><a href="#">Mi carrito</a></li>
         </ul>
     </div>
 @endsection
@@ -30,5 +32,5 @@
             
         @endforelse
     </table>
-    <a href="/login"><button id="botonInverso" class="pafuera">Salir pa fuera</button></a>
+    <a href="/salir"><button id="botonInverso" class="pafuera">Salir pa fuera</button></a>
 @endsection

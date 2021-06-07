@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\Categoria;
+use App\Models\Producto;
 use App\Models\Bitacora;
 use App\Models\Usuario;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +19,8 @@ use App\Models\Usuario;
 */
 
 Route::get('/', function() {
-    return view('login');
+    $productos = Producto::Activos()->get();
+    return view('welcome', compact('productos'));
 });
 
 Route::get('login', function() {
@@ -60,16 +63,11 @@ Route::get('propuestas', function() {
 });
 // transacciones, propuestas
 
-Route::get('categorias', 'CategoriaController@index');
-Route::get('categoria/create', 'CategoriaController@create');
-Route::post('categoria/store', 'CategoriaController@store');
-Route::get('categoria/edit/{categoria_id}', 'CategoriaController@edit');
-Route::put('categoria/edit/{categoria_id}', 'CategoriaController@update');
-Route::get('categoria/show/{categoria_id}', 'CategoriaController@show');
-Route::delete('categoria/delete/{categoria_id}', 'CategoriaController@destroy');
-
+Route::resource('categoria', 'CategoriaController');
 
 Route::get('productos', 'ProductoController@index');
+Route::get('productos/categoria/{categoria_id}', 'ProductoController@productos_por_categoria');
+Route::get('producto/comprar/{producto_id}', 'ProductoController@comprar');
 Route::get('producto/create', 'ProductoController@create');
 Route::post('producto/store', 'ProductoController@store');
 Route::get('producto/edit/{producto_id}', 'ProductoController@edit');
@@ -87,3 +85,13 @@ Route::get('usuario/show/{usuario_id}', 'UsuarioController@show');
 Route::delete('usuario/delete/{usuario_id}', 'UsuarioController@destroy');
 
 Route::get('infoGeneral','UsuarioController@conteo');
+
+Route::get('search', function(Request $request) {
+    $find = $request->input('find');
+    $productos = Producto::Buscar($find)->get();
+    if(count($productos) > 0)
+        return view('welcome', compact('productos'));
+    else return redirect()->back()->with('mensaje', 'No se encontraron resultados para tu búsqueda. Intenta con otro término.');
+});
+
+Route::get('categorias/guest', 'InvitadoController@categorias');
