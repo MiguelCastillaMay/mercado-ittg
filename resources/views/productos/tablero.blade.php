@@ -7,6 +7,7 @@
         <h1>TiendaFicticia.com</h1>
         <ul>
             <li><a href="/supervisor">Menú</a></li>
+            <li><a href="/usuarios">Usuarios</a></li>
             <li><a href="/categoria">Categorías</a></li>
             <li><a href="/bitacora">Bitácora</a></li>
         </ul>
@@ -26,7 +27,7 @@
                 <td>3</td>
                 <td>
                     <button id="edit"><a href="/producto/edit/{{ $producto->productoID }}">Editar producto</a></button>
-                    <button id="show"><a href="/producto/show/{{ $producto->productoID }}">Mostrar producto</a></button>
+                    <button id="show"><a href="/producto/show/{{ $producto->productoID }}">Detalles del producto</a></button>
                     <form action="/producto/delete/{{ $producto->productoID }}" method="post">
                         @csrf
                         @method('DELETE')

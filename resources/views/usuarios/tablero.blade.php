@@ -8,6 +8,8 @@
         <ul>
             <li><a href="/supervisor">Menú</a></li>
             <li><a href="/categoria">Categorías</a></li>
+            <li><a href="/productos">Productos</a></li>
+            <li><a href="/bitacora">Bitácora</a></li>
         </ul>
     </div>
 @endsection

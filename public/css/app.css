@@ -35,12 +35,12 @@ h1 {
 #cuadro {
     background-color: #1e212d;
     text-align: center;
-    padding: 100px 50px 100px 50px;
+    padding: 75px 50px 75px 50px;
     width: fit-content;
     border-radius: 50px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 200px;
+    margin-top: 100px;
 }
 #boton {
     background-color: #f0f8ff;
