@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Categoria;
+use App\Models\DetallesVenta;
+use App\Models\Pregunta;
 use Illuminate\Support\Facades\Auth;
 
 class ProductoController extends Controller
@@ -66,7 +68,10 @@ class ProductoController extends Controller
      */
     public function show($id) {
         $producto = Producto::find($id);
-        return view('productos.mostrar', compact('producto'));
+        $ventas = DetallesVenta::where('productoID', '=', $id)->get();
+        $ventas = count($ventas);
+        $preguntas = Pregunta::where('productoID', '=', $id)->get();
+        return view('productos.mostrar', compact('producto', 'ventas', 'preguntas'));
     }
 
     /**
