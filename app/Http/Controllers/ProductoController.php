@@ -67,11 +67,19 @@ class ProductoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
+        $usuarioAuth = Auth::User();
         $producto = Producto::find($id);
-        $ventas = DetallesVenta::where('productoID', '=', $id)->get();
-        $ventas = count($ventas);
         $preguntas = Pregunta::where('productoID', '=', $id)->get();
-        return view('productos.mostrar', compact('producto', 'ventas', 'preguntas'));
+
+        if (is_null($usuarioAuth) or $usuarioAuth->rol == 'Cliente') {
+            return view('productos.ver-producto', compact('producto', 'preguntas'));
+
+        } elseif ($usuarioAuth->rol == 'Supervisor' or $usuarioAuth->rol == 'Revisor') {
+            $ventas = DetallesVenta::where('productoID', '=', $id)->get();
+            $ventas = count($ventas);
+
+            return view('productos.mostrar', compact('producto', 'ventas', 'preguntas'));
+        }
     }
 
     /**
