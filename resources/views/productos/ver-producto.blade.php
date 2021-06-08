@@ -3,10 +3,10 @@
 @section('title', $producto->nombre)
 
 @php
-    $usuario = Auth::User();
+    $usuarioAuth = Auth::User();
 @endphp
 <style>
-    .preguntas > form > textarea {
+    .preguntar > form > textarea {
         resize: none;
     }
     h2 {
@@ -23,23 +23,26 @@
         <ul>
             <li><a href="/categoria">Categorías</a></li>
             <li><a href="/productos">Productos</a></li>
-            @if (is_null($usuario) or $usuario->rol == 'Cliente')
+            @if (is_null($usuarioAuth) or $usuarioAuth->rol == 'Cliente')
                 <li><form action="/search" method="get" role="search">
                     <input type="text" name="find" placeholder="Buscar productos">
                     <button type="submit">Buscar</button>
                 </form></li>
-            @elseif ($usuario->rol == 'Supervisor' or $usuario->rol == 'Revisor')
+            @elseif ($usuarioAuth->rol == 'Supervisor' or $usuarioAuth->rol == 'Revisor')
                 <li><a href="/productos">Bitácora</a></li>
             @endif
-            @if (is_null($usuario))
+            @if (is_null($usuarioAuth))
                 <li><a href="/login">Iniciar sesión</a></li>
-            @elseif ($usuario->rol == 'Cliente')
-                <li><a href="/usuario/show/{{ $usuario->usuarioID }}">Mi perfil</a></li>
+            @elseif ($usuarioAuth->rol == 'Cliente')
+                <li><a href="/usuario/show/{{ $usuarioAuth->usuarioID }}">Mi perfil</a></li>
             @endif
         </ul>
     </div>
 @endsection
 @section('contenido')
+    @if (session('mensaje'))
+        <h2>{{ session('mensaje') }}</h2>
+    @endif
     <div class="catalogo">
         <div class="producto">
             <img src="{{ url('storage/'.$producto->imagen) }}" alt="{{ $producto->nombre }}">
@@ -47,19 +50,23 @@
                 <h1>{{ $producto->nombre }}</h1>
                 <p>{{ $producto->descripcion }}</p>
                 <p>Precio</p>
-                <form action="producto/comprar/{{ $producto->productoID }}" method="get">
-                    <input type="number" name="cantidad" id="">
-                    <button id="botonInverso" type="submit">Comprar</button>
+                <form action="/producto/agregar-carrito/{{ $producto->productoID }}" method="get">
+                    <input type="number" name="cantidad" value="1" id="">
+                    <button id="botonInverso" type="submit">Agregar al carrito</button>
                 </form>
             </div>
         </div>
         <div class="preguntas">
             <div class="preguntar">
-                <h2>Haz una pregunta</h2>
-                <form action="" method="post">
-                    <textarea name="pregunta" id="" cols="30" rows="10"></textarea>
-                    <button type="submit" id="botonInverso">Preguntar</button>
-                </form>
+                @can('preguntar', $producto)
+                    <h2>Haz una pregunta</h2>
+                    <form action="" method="post">
+                        <textarea name="pregunta" id="" cols="30" rows="10"></textarea>
+                        <button type="submit" id="botonInverso">Preguntar</button>
+                    </form>
+                @else
+                    <h2>Inicia sesión para hacer una pregunta.</h2>
+                @endcan
             </div>
             @forelse ($preguntas as $pregunta)
                 <p>{{ $pregunta->pregunta }}</p>
