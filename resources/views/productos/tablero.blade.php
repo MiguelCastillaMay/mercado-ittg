@@ -27,7 +27,7 @@
                 <td>3</td>
                 <td>
                     <button id="edit"><a href="/producto/edit/{{ $producto->productoID }}">Editar producto</a></button>
-                    <button id="show"><a href="/producto/show/{{ $producto->productoID }}">Detalles del producto</a></button>
+                    <button id="show"><a href="/producto/{{ $producto->productoID }}">Detalles del producto</a></button>
                     <form action="/producto/delete/{{ $producto->productoID }}" method="post">
                         @csrf
                         @method('DELETE')

@@ -72,7 +72,7 @@ Route::get('producto/create', 'ProductoController@create');
 Route::post('producto/store', 'ProductoController@store');
 Route::get('producto/edit/{producto_id}', 'ProductoController@edit');
 Route::put('producto/edit/{producto_id}', 'ProductoController@update');
-Route::get('producto/show/{producto_id}', 'ProductoController@show');
+Route::get('producto/{producto_id}', 'ProductoController@show');
 Route::delete('producto/delete/{producto_id}', 'ProductoController@destroy');
 
 
@@ -95,3 +95,5 @@ Route::get('search', function(Request $request) {
 });
 
 Route::get('categorias/guest', 'InvitadoController@categorias');
+
+Route::post('pregunta/{producto_id}', 'PreguntaController@store');

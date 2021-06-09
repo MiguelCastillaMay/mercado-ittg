@@ -43,7 +43,7 @@
                             <h1>{{ $producto->nombre }}</h1>
                             <p>{{ $producto->descripcion }}</p>
                             <p>Precio</p>
-                            <button id="botonInverso"><a href="/producto/show/{{ $producto->productoID }}">Ver producto</a></button>
+                            <button id="botonInverso"><a href="/producto/{{ $producto->productoID }}">Ver producto</a></button>
                         </div>
                     </div>
                 @endforeach

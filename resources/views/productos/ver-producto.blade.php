@@ -6,14 +6,33 @@
     $usuarioAuth = Auth::User();
 @endphp
 <style>
+    .datosProducto > form {
+        display: flex;
+        flex-direction: column;
+    }
+    .datosProducto > form > input {
+        margin-bottom: 15px;
+    }
+    .preguntar > form {
+        display: flex;
+        flex-direction: column;
+    }
     .preguntar > form > textarea {
+        margin-bottom: 15px;
         resize: none;
     }
-    h2 {
+    h2, h3, p {
         color: #1e212d;
     }
     .preguntar {
         justify-items: center
+    }
+    .pregunta {
+        display: flex;
+    }
+    .pregunta > p {
+        margin-top: 21px;
+        margin-left: 5px;
     }
 </style>
 
@@ -56,20 +75,24 @@
                 </form>
             </div>
         </div>
+        <div class="preguntar">
+            @can('preguntar', $producto)
+                <h2>Haz una pregunta</h2>
+                <form action="/pregunta/{{ $producto->productoID }}" method="post">
+                    @csrf
+                    <textarea name="pregunta" id="" cols="30" rows="10"></textarea>
+                    <input type="submit" id="botonInverso" value="Preguntar">
+                </form>
+            @else
+                <h2>Inicia sesión para hacer una pregunta.</h2>
+            @endcan
+        </div>
         <div class="preguntas">
-            <div class="preguntar">
-                @can('preguntar', $producto)
-                    <h2>Haz una pregunta</h2>
-                    <form action="" method="post">
-                        <textarea name="pregunta" id="" cols="30" rows="10"></textarea>
-                        <button type="submit" id="botonInverso">Preguntar</button>
-                    </form>
-                @else
-                    <h2>Inicia sesión para hacer una pregunta.</h2>
-                @endcan
-            </div>
             @forelse ($preguntas as $pregunta)
-                <p>{{ $pregunta->pregunta }}</p>
+                <div class="pregunta">
+                    <h3>{{ $pregunta->pregunta }}</h3>
+                    <p>- {{ $pregunta->created_at }}</p>
+                </div>
             @empty
                 <h2>No hay preguntas sobre este producto. ¡Sé el primero!</h2>
             @endforelse
