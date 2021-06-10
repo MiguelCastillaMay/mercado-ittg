@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pregunta;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PreguntaController extends Controller
 {
@@ -13,9 +15,20 @@ class PreguntaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($productoID)
     {
-        //
+        $producto = Producto::find($productoID);
+
+        //tabla preguntas: pregunta
+        //tabla respuestas: respuesta
+        $preguntas = DB::select('
+            SELECT preguntas.preguntaID, preguntas.pregunta, respuestas.respuesta, preguntas.created_at as pregunta_fecha, respuestas.created_at as respuesta_fecha
+            FROM preguntas
+            LEFT JOIN productos ON productos.productoID = preguntas.productoID
+            LEFT JOIN respuestas ON preguntas.preguntaID = respuestas.preguntaID
+            WHERE productos.productoID = ?', [$productoID]);
+
+        return view('productos.preguntas', compact('producto', 'preguntas'));
     }
 
     /**
@@ -42,7 +55,7 @@ class PreguntaController extends Controller
         $pregunta->pregunta = request()->input('pregunta');
         $pregunta->save();
 
-        return redirect()->route('producto', [$producto]);
+        return redirect()->back();
 
     }
 

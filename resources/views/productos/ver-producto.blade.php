@@ -58,6 +58,8 @@
         </ul>
     </div>
 @endsection
+
+
 @section('contenido')
     @if (session('mensaje'))
         <h2>{{ session('mensaje') }}</h2>
@@ -91,7 +93,12 @@
             @forelse ($preguntas as $pregunta)
                 <div class="pregunta">
                     <h3>{{ $pregunta->pregunta }}</h3>
-                    <p>- {{ $pregunta->created_at }}</p>
+                    <p>- {{ $pregunta->pregunta_fecha }}</p>
+                </div>
+                <div>
+                    @if ($pregunta->respuesta)
+                        <p>{{ $pregunta->respuesta }}</p>
+                    @endif
                 </div>
             @empty
                 <h2>No hay preguntas sobre este producto. ¡Sé el primero!</h2>

@@ -67,8 +67,6 @@ Route::get('propuestas', function() {
 Route::resource('categoria', 'CategoriaController');
 
 Route::get('productos', 'ProductoController@index');
-Route::get('productos/categoria/{categoria_id}', 'ProductoController@productos_por_categoria');
-Route::get('producto/agregar-carrito/{producto_id}', 'ProductoController@agregarCarrito');
 Route::get('producto/create', 'ProductoController@create');
 Route::post('producto/store', 'ProductoController@store');
 Route::get('producto/edit/{producto_id}', 'ProductoController@edit');
@@ -76,6 +74,10 @@ Route::put('producto/edit/{producto_id}', 'ProductoController@update');
 Route::get('producto/{producto_id}', 'ProductoController@show');
 Route::delete('producto/delete/{producto_id}', 'ProductoController@destroy');
 
+Route::get('productos/categoria/{categoria_id}', 'ProductoController@productos_por_categoria');
+Route::get('producto/agregar-carrito/{producto_id}', 'ProductoController@agregarCarrito');
+Route::get('productos/usuario/{usuario_id}', 'ProductoController@misProductos');
+Route::get('mi-producto/{producto_id}', 'ProductoController@producto');
 
 Route::get('usuarios', 'UsuarioController@index');
 Route::get('usuario/create', 'UsuarioController@create');
@@ -97,4 +99,7 @@ Route::get('search', function(Request $request) {
 
 Route::get('categorias/guest', 'InvitadoController@categorias');
 
+Route::get('preguntas/{producto_id}', 'PreguntaController@index');
 Route::post('pregunta/{producto_id}', 'PreguntaController@store');
+
+Route::post('responder/{pregunta_id}', 'RespuestaController@responder');

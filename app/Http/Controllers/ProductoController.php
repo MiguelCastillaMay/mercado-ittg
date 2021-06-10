@@ -8,9 +8,17 @@ use App\Models\Categoria;
 use App\Models\DetallesVenta;
 use App\Models\Pregunta;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\DB;
 
 class ProductoController extends Controller
 {
+    public function __construct()
+    {
+        // $this->middleware('auth');
+        // $this->middleware('log')->only('index');
+        // $this->middleware('subscribed')->except('store');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -79,7 +87,12 @@ class ProductoController extends Controller
     {
         $usuarioAuth = Auth::User();
         $producto = Producto::find($id);
-        $preguntas = Pregunta::where('productoID', '=', $id)->get();
+        $preguntas = DB::select('
+        SELECT preguntas.pregunta, respuestas.respuesta, preguntas.created_at as pregunta_fecha, respuestas.created_at as respuesta_fecha
+        FROM preguntas
+        LEFT JOIN productos ON productos.productoID = preguntas.productoID
+        LEFT JOIN respuestas ON preguntas.preguntaID = respuestas.preguntaID
+        WHERE productos.productoID = ?', [$id]);
 
         if (is_null($usuarioAuth) or $usuarioAuth->rol == 'Cliente')
         {
@@ -92,6 +105,7 @@ class ProductoController extends Controller
 
             return view('productos.mostrar', compact('producto', 'ventas', 'preguntas'));
         }
+        // dd($preguntas);
     }
 
     /**
@@ -130,7 +144,7 @@ class ProductoController extends Controller
             $producto->imagen = $path;
         }
 
-        $producto->activo = 1;
+        $producto->activo = 0;
         $producto->save();
 
         return redirect('/productos')->with('mensaje', 'Producto actualizado correctamente.');
@@ -174,5 +188,21 @@ class ProductoController extends Controller
         if (is_null($usuario)) {
             return redirect('login')->with('mensaje', 'Inicie sesión para comprar.');
         }
+    }
+
+    public function misProductos($id)
+    {
+        if ($id == Auth::User()->usuarioID) {
+            $productos = Producto::where('usuarioID', '=', $id)->get();
+
+            return view('usuarios.mis-productos', compact('productos'));
+        } else
+            return redirect()->back();
+    }
+
+    public function producto($id)
+    {
+        $producto = Producto::find($id);
+        return view('usuarios.mi-producto', compact('producto'));
     }
 }
