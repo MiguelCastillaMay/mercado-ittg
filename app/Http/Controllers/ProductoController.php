@@ -8,9 +8,17 @@ use App\Models\Categoria;
 use App\Models\DetallesVenta;
 use App\Models\Pregunta;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use DB;
 
 class ProductoController extends Controller
 {
+    public function __construct()
+    {
+        // $this->middleware('auth');
+        // $this->middleware('log')->only('index');
+        // $this->middleware('subscribed')->except('store');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -75,12 +83,19 @@ class ProductoController extends Controller
     public function show($id)
     {
         $usuarioAuth = Auth::User();
-        $producto = Producto::find($id);
-        $preguntas = Pregunta::where('productoID', '=', $id)->get();
+        // $producto = Producto::find($id);
+        // $preguntas = Pregunta::where('productoID', '=', $id)->get();
 
         if (is_null($usuarioAuth) or $usuarioAuth->rol == 'Cliente')
         {
-            return view('productos.ver-producto', compact('producto', 'preguntas'));
+            $info = Producto::select('productos.nombre', 'productos.descripcion', 'productos.imagen', 'preguntas.pregunta', 'preguntas.created_at', 'respuestas.respuesta')
+                    ->leftjoin('preguntas', function ($join) {
+                        $join->on('productos.productoID', '=', 'preguntas.productoID')
+                            ->where('productos.productoID', '=', 3);
+                    })
+                    ->leftjoin('respuestas', 'preguntas.preguntaID', '=', 'respuestas.preguntaID')
+                    ->get();
+            dd($info);
         }
         elseif ($usuarioAuth->rol == 'Supervisor' or $usuarioAuth->rol == 'Revisor')
         {
@@ -127,7 +142,7 @@ class ProductoController extends Controller
             $producto->imagen = $path;
         }
 
-        $producto->activo = 1;
+        $producto->activo = 0;
         $producto->save();
 
         return redirect('/productos')->with('mensaje', 'Producto actualizado correctamente.');
@@ -171,5 +186,21 @@ class ProductoController extends Controller
         if (is_null($usuario)) {
             return redirect('login')->with('mensaje', 'Inicie sesión para comprar.');
         }
+    }
+
+    public function misProductos($id)
+    {
+        if ($id == Auth::User()->usuarioID) {
+            $productos = Producto::where('usuarioID', '=', $id)->get();
+
+            return view('usuarios.mis-productos', compact('productos'));
+        } else
+            return redirect()->back();
+    }
+
+    public function producto($id)
+    {
+        $producto = Producto::find($id);
+        return view('usuarios.mi-producto', compact('producto'));
     }
 }

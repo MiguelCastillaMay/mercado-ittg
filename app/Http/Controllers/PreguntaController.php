@@ -13,9 +13,20 @@ class PreguntaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($productoID)
     {
-        //
+        $preguntas = Pregunta::where('productoID', '=', $productoID)->get();
+
+        //tabla productos: nombre, descripcion, precio, imagen
+        //tabla preguntas: pregunta
+        //tabla respuestas: respuesta
+        $info = DB::table('productos')
+                    ->join('preguntas', 'productos.productoID', '=', 'preguntas.productoID')
+                    ->join('respuestas', 'preguntas.preguntaID', '=', 'respuestas.preguntaID')
+                    ->select('productos.nombre', 'productos.descripcion', 'productos.precio', 'productos.imagen', 'preguntas.pregunta', 'preguntas.created_at', 'respuestas.respuesta')
+                    ->get();
+
+        return view('productos.preguntas', compact('preguntas'));
     }
 
     /**
