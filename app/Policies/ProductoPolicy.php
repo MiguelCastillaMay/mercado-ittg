@@ -2,9 +2,10 @@
 
 namespace App\Policies;
 
-use Illuminate\Auth\Access\HandlesAuthorization;
 use App\Models\Producto;
 use App\Models\Usuario;
+use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class ProductoPolicy
 {
@@ -90,5 +91,20 @@ class ProductoPolicy
     public function forceDelete(Usuario $usuario, Producto $producto)
     {
         //
+    }
+
+    public function carrito(Usuario $usuario) 
+    {
+        return $usuario->rol == 'Cliente';
+    }
+
+    public function preguntar(Usuario $usuario)
+    {
+        return $usuario->rol == 'Cliente';
+    }
+
+    public function misProductos(Usuario $usuario)
+    {
+        return $usuario->usuarioID == '7';
     }
 }
