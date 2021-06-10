@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pregunta;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PreguntaController extends Controller
 {
@@ -15,18 +17,18 @@ class PreguntaController extends Controller
      */
     public function index($productoID)
     {
-        $preguntas = Pregunta::where('productoID', '=', $productoID)->get();
+        $producto = Producto::find($productoID);
 
-        //tabla productos: nombre, descripcion, precio, imagen
         //tabla preguntas: pregunta
         //tabla respuestas: respuesta
-        $info = DB::table('productos')
-                    ->join('preguntas', 'productos.productoID', '=', 'preguntas.productoID')
-                    ->join('respuestas', 'preguntas.preguntaID', '=', 'respuestas.preguntaID')
-                    ->select('productos.nombre', 'productos.descripcion', 'productos.precio', 'productos.imagen', 'preguntas.pregunta', 'preguntas.created_at', 'respuestas.respuesta')
-                    ->get();
+        $preguntas = DB::select('
+            SELECT preguntas.preguntaID, preguntas.pregunta, respuestas.respuesta, preguntas.created_at as pregunta_fecha, respuestas.created_at as respuesta_fecha
+            FROM preguntas
+            LEFT JOIN productos ON productos.productoID = preguntas.productoID
+            LEFT JOIN respuestas ON preguntas.preguntaID = respuestas.preguntaID
+            WHERE productos.productoID = ?', [$productoID]);
 
-        return view('productos.preguntas', compact('preguntas'));
+        return view('productos.preguntas', compact('producto', 'preguntas'));
     }
 
     /**
@@ -53,7 +55,7 @@ class PreguntaController extends Controller
         $pregunta->pregunta = request()->input('pregunta');
         $pregunta->save();
 
-        return redirect()->route('producto', [$producto]);
+        return redirect()->back();
 
     }
 

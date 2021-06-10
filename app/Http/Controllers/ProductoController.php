@@ -9,7 +9,7 @@ use App\Models\DetallesVenta;
 use App\Models\Pregunta;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class ProductoController extends Controller
 {
@@ -83,19 +83,17 @@ class ProductoController extends Controller
     public function show($id)
     {
         $usuarioAuth = Auth::User();
-        // $producto = Producto::find($id);
-        // $preguntas = Pregunta::where('productoID', '=', $id)->get();
+        $producto = Producto::find($id);
+        $preguntas = DB::select('
+        SELECT preguntas.pregunta, respuestas.respuesta, preguntas.created_at as pregunta_fecha, respuestas.created_at as respuesta_fecha
+        FROM preguntas
+        LEFT JOIN productos ON productos.productoID = preguntas.productoID
+        LEFT JOIN respuestas ON preguntas.preguntaID = respuestas.preguntaID
+        WHERE productos.productoID = ?', [$id]);
 
         if (is_null($usuarioAuth) or $usuarioAuth->rol == 'Cliente')
         {
-            $info = Producto::select('productos.nombre', 'productos.descripcion', 'productos.imagen', 'preguntas.pregunta', 'preguntas.created_at', 'respuestas.respuesta')
-                    ->leftjoin('preguntas', function ($join) {
-                        $join->on('productos.productoID', '=', 'preguntas.productoID')
-                            ->where('productos.productoID', '=', 3);
-                    })
-                    ->leftjoin('respuestas', 'preguntas.preguntaID', '=', 'respuestas.preguntaID')
-                    ->get();
-            dd($info);
+            return view('productos.ver-producto', compact('producto', 'preguntas'));
         }
         elseif ($usuarioAuth->rol == 'Supervisor' or $usuarioAuth->rol == 'Revisor')
         {
@@ -104,6 +102,7 @@ class ProductoController extends Controller
 
             return view('productos.mostrar', compact('producto', 'ventas', 'preguntas'));
         }
+        // dd($preguntas);
     }
 
     /**
