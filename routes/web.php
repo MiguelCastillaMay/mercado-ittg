@@ -53,15 +53,11 @@ Route::get('bitacora', function() {
     return view('bitacora', compact('registros'));
 });
 
-// transacciones, propuestas
+//
 Route::get('transacciones', function() {
     return view('transacciones');
 });
-
-Route::get('propuestas', function() {
-    return view('propuestas');
-});
-// transacciones, propuestas
+//
 
 Route::resource('categoria', 'CategoriaController');
 
@@ -74,6 +70,14 @@ Route::get('producto/edit/{producto_id}', 'ProductoController@edit');
 Route::put('producto/edit/{producto_id}', 'ProductoController@update');
 Route::get('producto/show/{producto_id}', 'ProductoController@show');
 Route::delete('producto/delete/{producto_id}', 'ProductoController@destroy');
+
+
+Route::get('propuestas', 'PropuestasController@index');
+Route::get('propuesta/create', 'PropuestasController@create');
+Route::post('propuesta/store', 'PropuestasController@store');
+Route::get('propuesta/aceptar/{producto_id}', 'PropuestasController@aceptar');
+Route::get('propuesta/rechazar/{producto_id}', 'PropuestasController@rechazar');
+Route::put('propuesta/rechazar/{producto_id}', 'PropuestasController@rechazo');
 
 
 Route::get('usuarios', 'UsuarioController@index');
@@ -95,3 +99,5 @@ Route::get('search', function(Request $request) {
 });
 
 Route::get('categorias/guest', 'InvitadoController@categorias');
+
+
