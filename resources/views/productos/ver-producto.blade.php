@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', $info->nombre)
+@section('title', $producto->nombre)
 
 @php
     $usuarioAuth = Auth::User();
@@ -66,21 +66,21 @@
     @endif
     <div class="catalogo">
         <div class="producto">
-            <img src="{{ url('storage/'.$info->imagen) }}" alt="{{ $info->nombre }}">
+            <img src="{{ url('storage/'.$producto->imagen) }}" alt="{{ $producto->nombre }}">
             <div class="datosProducto">
-                <h1>{{ $info->nombre }}</h1>
-                <p>{{ $info->descripcion }}</p>
+                <h1>{{ $producto->nombre }}</h1>
+                <p>{{ $producto->descripcion }}</p>
                 <p>Precio</p>
-                <form action="/producto/agregar-carrito/{{ $info->productoID }}" method="get">
+                <form action="/producto/agregar-carrito/{{ $producto->productoID }}" method="get">
                     <input type="number" name="cantidad" value="1" id="">
                     <button id="botonInverso" type="submit">Agregar al carrito</button>
                 </form>
             </div>
         </div>
         <div class="preguntar">
-            @can('preguntar', $info)
+            @can('preguntar', $producto)
                 <h2>Haz una pregunta</h2>
-                <form action="/pregunta/{{ $info->productoID }}" method="post">
+                <form action="/pregunta/{{ $producto->productoID }}" method="post">
                     @csrf
                     <textarea name="pregunta" id="" cols="30" rows="10"></textarea>
                     <input type="submit" id="botonInverso" value="Preguntar">
@@ -90,14 +90,14 @@
             @endcan
         </div>
         <div class="preguntas">
-            @forelse ($info as $pregunta)
+            @forelse ($preguntas as $pregunta)
                 <div class="pregunta">
                     <h3>{{ $pregunta->pregunta }}</h3>
-                    <p>- {{ $pregunta->created_at }}</p>
+                    <p>- {{ $pregunta->pregunta_fecha }}</p>
                 </div>
                 <div>
                     @if ($pregunta->respuesta)
-                        {{ $pregunta->respuesta }}
+                        <p>{{ $pregunta->respuesta }}</p>
                     @endif
                 </div>
             @empty
