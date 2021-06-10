@@ -98,5 +98,7 @@ Route::get('search', function(Request $request) {
 
 Route::get('categorias/guest', 'InvitadoController@categorias');
 
-Route::post('pregunta/{producto_id}', 'PreguntaController@store');
 Route::get('preguntas/{producto_id}', 'PreguntaController@index');
+Route::post('pregunta/{producto_id}', 'PreguntaController@store');
+
+Route::post('responder/{pregunta_id}', 'RespuestaController@responder');
