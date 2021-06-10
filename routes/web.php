@@ -61,6 +61,7 @@ Route::get('transacciones', function() {
 Route::get('propuestas', function() {
     return view('propuestas');
 });
+
 // transacciones, propuestas
 
 Route::resource('categoria', 'CategoriaController');

@@ -38,6 +38,7 @@
                 <p>{{ $usuario->rol }}</p>
                 <button id="botonInverso"><a href="/usuario/edit/{{ $usuario->usuarioID }}">Editar perfil</a></button>
                 <button id="botonInverso"><a href="/productos/usuario/{{ $usuario->usuarioID }}">Ver mis productos</a></button>
+                <button id="botonInverso"><a href="/producto/create">Agregar un producto</a></button>
             </div>
         </div>
     @elseif ($usuarioAuth->rol == 'Supervisor')
