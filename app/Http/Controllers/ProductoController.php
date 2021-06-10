@@ -59,8 +59,11 @@ class ProductoController extends Controller
             $producto->descripcion = $datos['desc'];
             $path = $request->file('imagen')->store('productos', 'public');
             $producto->imagen = $path;
-            $producto->activo = 1;
+            $producto->activo = 0;
+            $producto->usuarioID = Auth::User()->usuarioID;
+            $producto->categoriaID= 11;
             $producto->save();
+            
 
             return redirect('/productos')->with('mensaje', 'Producto registrado correctamente.');
         }
