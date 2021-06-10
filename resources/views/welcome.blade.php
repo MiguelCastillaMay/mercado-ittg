@@ -24,6 +24,7 @@
                 <li><a href="/login">Iniciar sesión</a></li>
             @elseif ($usuario->rol == 'Cliente')
                 <li><a href="/usuario/show/{{ $usuario->usuarioID }}">Mi perfil</a></li>
+                <li><a href="/propuestas/show"></a></li>
             @endif
         </ul>
     </div>
@@ -65,7 +66,9 @@
             </div>
         @endisset
     @endif
+    
     @if ($usuario)
+        {{-- <button id="botonInverso" class="pafuera"><a href="/propuesta/create">Agregar producto</a></button> --}}
         <button id="botonInverso" class="pafuera"><a href="/salir">Salir pa fuera</a></button>
     @endif
 @endsection

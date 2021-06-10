@@ -143,8 +143,7 @@ class ProductoController extends Controller
             $path = $request->file('imagen')->store('productos', 'public');
             $producto->imagen = $path;
         }
-
-        $producto->activo = 0;
+        
         $producto->save();
 
         return redirect('/productos')->with('mensaje', 'Producto actualizado correctamente.');

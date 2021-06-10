@@ -4,7 +4,7 @@
 
 @section('navBar')
     <div class="menuBar">
-        <h1>TiendaFicticia.com</h1>
+        <h1>Mercado ITTG</h1>
     </div>
 @endsection
 
