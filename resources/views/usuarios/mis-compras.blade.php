@@ -2,6 +2,15 @@
 
 @section('title', 'Mis compras')
 
+<style>
+    h2 {
+        color: #1e212d;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+</style>
+
 @section('navBar')
     <div class="menuBar">
         <h1>TiendaFicticia.com</h1>
@@ -18,22 +27,22 @@
 @endsection
 
 @section('contenido')
-    @isset($compras)
+    @forelse ($compras as $compra)
         <div class="catalogo">
-            @foreach ($compras as $compra)
-                <div class="producto" style="margin-bottom: 0px">
-                    <img src="{{ url('storage/'.$compra->imagen) }}" alt="{{ $compra->nombre }}">
-                    <div class="datosProducto">
-                        <h1>{{ $compra->nombre }}</h1>
-                        <p>{{ $compra->descripcion }}</p>
-                        <p>${{ $compra->precio }}. MXN C/U</p>
-                        <p>Cantidad comprada: {{ $compra->cantidad }}</p>
-                        <p>Total: {{ $compra->total }}</p>
-                        <p>Fecha de compra: {{ $compra->fecha }}</p>
-                    </div>
+            <div class="producto" style="margin-bottom: 0px">
+                <img src="{{ url('storage/'.$compra->imagen) }}" alt="{{ $compra->nombre }}">
+                <div class="datosProducto">
+                    <h1>{{ $compra->nombre }}</h1>
+                    <p>{{ $compra->descripcion }}</p>
+                    <p>${{ $compra->precio }}. MXN C/U</p>
+                    <p>Cantidad comprada: {{ $compra->cantidad }}</p>
+                    <p>Total: {{ $compra->total }}</p>
+                    <p>Fecha de compra: {{ $compra->fecha }}</p>
                 </div>
-            @endforeach
+            </div>
         </div>
-    @endisset
+    @empty
+        <h2>No has comprado nada aún.</h2>
+    @endforelse
     <button id="botonInverso" class="pafuera"><a href="/salir">Salir pa fuera</a></button>
 @endsection
