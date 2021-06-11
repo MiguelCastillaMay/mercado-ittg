@@ -48,13 +48,19 @@ class ProductoController extends Controller
         if (is_null($datos['nombre']) or is_null($datos['desc']) or is_null($datos['imagen']))
             return redirect()->back()->with('error', 'Por favor llene todos los campos.');            
         else {
-            $producto = new Producto();
-            $producto->nombre = $datos['nombre'];
-            $producto->descripcion = $datos['desc'];
             $path = $request->file('imagen')->store('productos', 'public');
-            $producto->imagen = $path;
-            $producto->activo = 0;
-            $producto->save();
+
+            $productoID = DB::table('productos')->insertGetId([
+                'nombre' => $datos['nombre'],
+                'descripcion' => $datos['desc'],
+                'imagen' => $path,
+                'activo' => 0
+            ]);
+
+            DB::table('propuestas')->insert([
+                'rechazado' => 0,
+                'productoID' => $productoID
+            ]);
 
             return redirect('/productos')->with('mensaje', 'Producto registrado correctamente.');
         }
