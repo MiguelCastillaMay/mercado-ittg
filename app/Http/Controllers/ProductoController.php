@@ -223,4 +223,19 @@ class ProductoController extends Controller
         );
         return view('usuarios.mis-compras', compact('compras'));
     }
+
+    public function misVentas($usuarioID)
+    {
+        $ventas = DB::select('
+            SELECT productos.nombre, productos.descripcion, productos.imagen, productos.precio, 
+                detalles_ventas.cantidad, ventas.total, ventas.fecha
+            FROM productos
+            JOIN detalles_ventas
+                ON productos.productoID = detalles_ventas.productoID
+            JOIN ventas
+                ON detalles_ventas.ventaID = ventas.ventaID
+            WHERE productos.usuarioID = ?', [$usuarioID]
+        );
+        return view('usuarios.mis-ventas', compact('ventas'));
+    }
 }

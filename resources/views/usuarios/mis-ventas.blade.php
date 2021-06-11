@@ -27,22 +27,22 @@
 @endsection
 
 @section('contenido')
-    @forelse ($compras as $compra)
+    @forelse ($ventas as $ventas)
         <div class="catalogo">
             <div class="producto" style="margin-bottom: 0px">
-                <img src="{{ url('storage/'.$compra->imagen) }}" alt="{{ $compra->nombre }}">
-                <div class="datosProducto">
-                    <h1>{{ $compra->nombre }}</h1>
-                    <p>{{ $compra->descripcion }}</p>
-                    <p>${{ $compra->precio }}. MXN C/U</p>
-                    <p>Cantidad comprada: {{ $compra->cantidad }}</p>
-                    <p>Total: {{ $compra->total }}</p>
-                    <p>Fecha de compra: {{ $compra->fecha }}</p>
-                </div>
+                    <img src="{{ url('storage/'.$ventas->imagen) }}" alt="{{ $ventas->nombre }}">
+                    <div class="datosProducto">
+                        <h1>{{ $ventas->nombre }}</h1>
+                        <p>{{ $ventas->descripcion }}</p>
+                        <p>${{ $ventas->precio }}. MXN C/U</p>
+                        <p>Cantidad comprada: {{ $ventas->cantidad }}</p>
+                        <p>Total: {{ $ventas->total }}</p>
+                        <p>Fecha de compra: {{ $ventas->fecha }}</p>
+                    </div>
             </div>
         </div>
     @empty
-        <h2>No has comprado nada aún.</h2>
+        <h2>No has vendido nada aún.</h2>
     @endforelse
     <button id="botonInverso" class="pafuera"><a href="/salir">Salir pa fuera</a></button>
 @endsection
