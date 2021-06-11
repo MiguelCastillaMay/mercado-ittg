@@ -88,6 +88,8 @@ Route::put('usuario/edit/{usuario_id}', 'UsuarioController@update');
 Route::get('usuario/show/{usuario_id}', 'UsuarioController@show');
 Route::delete('usuario/delete/{usuario_id}', 'UsuarioController@destroy');
 
+Route::get('usuario/{usuario_id}/compras', 'ProductoController@misCompras');
+
 Route::get('infoGeneral','UsuarioController@conteo');
 
 Route::get('search', function(Request $request) {
