@@ -71,6 +71,7 @@
                 <a class="boton" href="/productos/usuario/{{ $usuario->usuarioID }}">Ver mis productos</a>
                 <a class="boton" href="/producto/create">Agregar un producto</a>
                 <a class="boton" href="/usuario/{{ $usuario->usuarioID }}/compras" class="boton">Mis compras</a>
+                <a class="boton" href="/usuario/{{ $usuario->usuarioID }}/ventas" class="boton">Mis ventas</a>
             </div>
         </div>
     @elseif ($usuarioAuth->rol == 'Supervisor')
