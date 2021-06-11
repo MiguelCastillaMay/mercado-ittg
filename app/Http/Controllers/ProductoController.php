@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Categoria;
+use App\Models\Venta;
 use App\Models\DetallesVenta;
 use App\Models\Pregunta;
 use Illuminate\Support\Facades\Auth;
@@ -174,18 +175,27 @@ class ProductoController extends Controller
         }
     }
 
-    public function agregarCarrito()
-    {
-        if ($this->authorize('carrito', Producto::class)) {
-            return redirect()->back()->with('mensaje', 'Elemento agregado correctamente al carrito.');
-        }
-    }
-
-    public function comprar($id)
+    public function comprar(Request $request, $id)
     {
         $usuario = Auth::User();
         if (is_null($usuario)) {
             return redirect('login')->with('mensaje', 'Inicie sesión para comprar.');
+        } else {
+            $cantidad = $request->input('cantidad');
+            $precio = $request->input('precio');
+            $total = $cantidad * $precio;
+            $ventaID = DB::table('ventas')->insertGetId([
+                'total' => $total, 
+                'usuarioID' => $usuario->usuarioID
+            ]);
+            DB::table('detalles_ventas')->insert([
+                'productoID' => $id,
+                'compradorID' => $usuario->usuarioID,
+                'ventaID' => $ventaID,
+                'cantidad' => $cantidad,
+                'precio' => $precio
+            ]);
+            return redirect()->back()->with('mensaje', 'Compra realizada!');
         }
     }
 
@@ -197,11 +207,5 @@ class ProductoController extends Controller
             return view('usuarios.mis-productos', compact('productos'));
         } else
             return redirect()->back();
-    }
-
-    public function producto($id)
-    {
-        $producto = Producto::find($id);
-        return view('usuarios.mi-producto', compact('producto'));
     }
 }

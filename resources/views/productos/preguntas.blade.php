@@ -30,6 +30,9 @@
     #fecha {
         margin-left: 5px;
     }
+    .producto {
+        margin-bottom: 0px;
+    }
 </style>
 
 @section('navBar')
@@ -56,31 +59,33 @@
                 <h1>{{ $producto->nombre }}</h1>
                 <p>{{ $producto->descripcion }}</p>
                 <p>Precio</p>
-                <button id="botonInverso"><a href="/mi-producto/{{ $producto->productoID }}">Ver producto</a></button>
             </div>
         </div>
-        @forelse ($preguntas as $pregunta)
-            <div class="pregunta">
-                <h3>{{ $pregunta->pregunta }}</h3>
-                <p id="fecha">- {{ $pregunta->pregunta_fecha }}</p>
-            </div>
-            <div>
-                @if ($pregunta->respuesta)
-                    <div class="respuesta">
-                        <p>{{ $pregunta->respuesta }}</p>
-                        {{-- <p id="fecha">- {{ $pregunta->respuesta_fecha }}</p> --}}
-                    </div>
-                @else
-                    <form action="/responder/{{ $pregunta->preguntaID }}" method="post">
-                        @csrf
-                        <textarea name="respuesta" id="" cols="60" rows="5"></textarea>
-                        <button type="submit" id="botonInverso">Responder</button>
-                    </form>
-                @endif
-            </div>
-        @empty
-            <h2>No tienes preguntas sobre este producto</h2>
-        @endforelse
+        <div class="preguntas">
+            <h2>Preguntas</h2>
+            @forelse ($preguntas as $pregunta)
+                <div class="pregunta">
+                    <h3>{{ $pregunta->pregunta }}</h3>
+                    <p id="fecha">- {{ $pregunta->pregunta_fecha }}</p>
+                </div>
+                <div>
+                    @if ($pregunta->respuesta)
+                        <div class="respuesta">
+                            <p>{{ $pregunta->respuesta }}</p>
+                            {{-- <p id="fecha">- {{ $pregunta->respuesta_fecha }}</p> --}}
+                        </div>
+                    @else
+                        <form action="/responder/{{ $pregunta->preguntaID }}" method="post">
+                            @csrf
+                            <textarea name="respuesta" id="" cols="60" rows="5"></textarea>
+                            <button type="submit" id="botonInverso">Responder</button>
+                        </form>
+                    @endif
+                </div>
+            @empty
+                <h2>No tienes preguntas sobre este producto</h2>
+            @endforelse
+        </div>
     </div>
     @endisset
     <button id="botonInverso" class="pafuera"><a href="/salir">Salir pa fuera</a></button>
