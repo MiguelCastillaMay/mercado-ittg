@@ -34,6 +34,11 @@
         margin-top: 21px;
         margin-left: 5px;
     }
+    #mensaje {
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+    }
 </style>
 
 @section('navBar')
@@ -62,7 +67,7 @@
 
 @section('contenido')
     @if (session('mensaje'))
-        <h2>{{ session('mensaje') }}</h2>
+        <h2 id="mensaje">{{ session('mensaje') }}</h2>
     @endif
     <div class="catalogo">
         <div class="producto">
@@ -71,9 +76,11 @@
                 <h1>{{ $producto->nombre }}</h1>
                 <p>{{ $producto->descripcion }}</p>
                 <p>Precio</p>
-                <form action="/producto/agregar-carrito/{{ $producto->productoID }}" method="get">
+                <form action="/producto/comprar/{{ $producto->productoID }}" method="post">
+                    @csrf
                     <input type="number" name="cantidad" value="1" id="">
-                    <button id="botonInverso" type="submit">Agregar al carrito</button>
+                    <button id="botonInverso" type="submit">Comprar</button>
+                    <input type="hidden" name="precio" value="{{ $producto->precio }}">
                 </form>
             </div>
         </div>
