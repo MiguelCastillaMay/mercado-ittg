@@ -11,6 +11,7 @@
     }
 </style>
 
+
 @section('navBar')
     <div class="menuBar">
         <h1>TiendaFicticia.com</h1>
@@ -38,6 +39,22 @@
                     <p>Cantidad comprada: {{ $compra->cantidad }}</p>
                     <p>Total: {{ $compra->total }}</p>
                     <p>Fecha de compra: {{ $compra->fecha }}</p>
+                    <p id=>Calificar producto: </p>
+                  	<div>
+                        <form action="/rating/{{$compra->ventaID}}" enctype="multipart/form-data" method="post">
+                        @csrf
+                        @method('PUT')
+                        
+                            <select name="Calificar">
+                                <option value="1"> 1 </option>
+                                <option value="2"> 2 </option>
+                                <option value="3"> 3 </option>
+                                <option value="4"> 4 </option>
+                                <option value="5"> 5 </option>
+                            </select>
+                            <button id="botonInverso" type="submit">Calificar</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
