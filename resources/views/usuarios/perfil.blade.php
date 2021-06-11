@@ -6,6 +6,37 @@
     $usuarioAuth = Auth::User()
 @endphp
 
+<style>
+    a.boton {
+        -webkit-appearance: button;
+        -moz-appearance: button;
+        appearance: button;
+        background-color: #1e212d;
+        border-style: solid;
+        border-color: #1e212d;
+        font-size: 25px;
+        padding: 10px;
+        border-radius: 15px;
+        color: #f0f8ff;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        font-family: "Montserrat", sans-serif;
+        margin-bottom: 10px;
+    }
+    
+    a.boton:hover {
+        background-color: #f0f8ff;
+        color: #1e212d;
+    }
+    .pafuera {
+        display: block;
+        width: fit-content;
+        margin-top: 15px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+</style>
+
 @section('navBar')
     <div class="menuBar">
         <h1>TiendaFicticia.com</h1>
@@ -36,9 +67,10 @@
                 <p id="nombre">{{ $usuario->nombre }} {{ $usuario->a_paterno }} {{ $usuario->a_materno }}</p>
                 <p>{{ $usuario->correo }}</p>
                 <p>{{ $usuario->rol }}</p>
-                <button id="botonInverso"><a href="/usuario/edit/{{ $usuario->usuarioID }}">Editar perfil</a></button>
-                <button id="botonInverso"><a href="/productos/usuario/{{ $usuario->usuarioID }}">Ver mis productos</a></button>
-                <button id="botonInverso"><a href="/producto/create">Agregar un producto</a></button>
+                <a class="boton" href="/usuario/edit/{{ $usuario->usuarioID }}">Editar perfil</a>
+                <a class="boton" href="/productos/usuario/{{ $usuario->usuarioID }}">Ver mis productos</a>
+                <a class="boton" href="/producto/create">Agregar un producto</a>
+                <a class="boton" href="/usuario/{{ $usuario->usuarioID }}/compras" class="boton">Mis compras</a>
             </div>
         </div>
     @elseif ($usuarioAuth->rol == 'Supervisor')
@@ -51,9 +83,9 @@
             <p>Fecha de registro: {{ $usuario->created_at }}</p>
             <p>Ventas totales: {{ $ventas }}</p>
             <p>Productos en venta: {{ $productos }}</p>
-            <button id="botonInverso"><a href="/usuario/edit/{{ $usuario->usuarioID }}">Editar perfil</a></button>
+            <a href="/usuario/edit/{{ $usuario->usuarioID }}">Editar perfil</a>
         </div>
     </div>
     @endif
-    <a href="/salir"><button id="botonInverso" class="pafuera">Salir pa fuera</button></a>
+    <a href="/salir" class="boton pafuera">Salir pa fuera</a>
 @endsection
