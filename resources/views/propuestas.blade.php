@@ -26,7 +26,17 @@
                         <td>{{ $propuesta->nombre }}</td>
                         <td>
                             <button id="edit"><a href="/propuesta/aceptar/{{ $propuesta->productoID }}">Aceptar</a></button>
-                            <button id="show"><a href="/propuesta/rechazar/{{ $propuesta->productoID }}">Rechazar</a></button>
+                            <form action="/propuesta/rechazar/{{ $propuesta->productoID }}" method="post" enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+                                <input type="submit" value="Rechazar" id="show">
+                                    <div>
+                                        <p>Razón de rechazo:</p>
+                                    </div>
+                                    <div>
+                                        <textarea name="razon" cols="30" rows="10"></textarea>
+                                    </div>
+                            </form>
                         </td>
                     </tr>
                 @empty

@@ -11,11 +11,13 @@
             <div>
                 <p>Nombre del producto:</p>
                 <p>Descripción del producto:</p>
+                <p>Precio: </p>
                 <p>Imagen</p>
             </div>
             <div>
                 <input type="text" name="nombre" value="">
                 <input type="text" name="desc" value="">
+                <input type="number" name="precio" value="">
                 <input type="file" name="imagen">
             </div>
         </div>

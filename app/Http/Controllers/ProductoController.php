@@ -59,20 +59,27 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         $datos = $request->all();
+        $usuarioID = Auth::User()->usuarioID;
 
         if (is_null($datos['nombre']) or is_null($datos['desc']) or is_null($datos['imagen']))
             return redirect()->back()->with('error', 'Por favor llene todos los campos.');            
         else {
-            $producto = new Producto();
-            $producto->nombre = $datos['nombre'];
-            $producto->descripcion = $datos['desc'];
             $path = $request->file('imagen')->store('productos', 'public');
-            $producto->imagen = $path;
-            $producto->activo = 0;
-            $producto->usuarioID = Auth::User()->usuarioID;
-            $producto->categoriaID= 11;
-            $producto->save();
-            
+
+            $productoID = DB::table('productos')->insertGetId([
+                'nombre' => $datos['nombre'],
+                'descripcion' => $datos['desc'],
+                'precio' => $datos['precio'],
+                'imagen' => $path,
+                'activo' => 0,
+                'categoriaID' => 1,
+                'usuarioID' => $usuarioID
+            ]);
+
+            DB::table('propuestas')->insert([
+                'rechazado' => 0,
+                'productoID' => $productoID
+            ]);
 
             return redirect('/productos')->with('mensaje', 'Producto registrado correctamente.');
         }
@@ -131,23 +138,27 @@ class ProductoController extends Controller
     public function update(Request $request, $id)
     {
         $producto = Producto::find($id);
-        $datos = $request->all();
+        if ($producto->activo == 0){
+            $datos = $request->all();
 
-        if (is_null($datos['nombre']) or is_null($datos['desc']))
-            return redirect()->back()->with('error', 'Por favor llene todos los campos.');            
+            if (is_null($datos['nombre']) or is_null($datos['desc']))
+                return redirect()->back()->with('error', 'Por favor llene todos los campos.');            
 
-        $producto->nombre = $datos['nombre'];
-        $producto->descripcion = $datos['desc'];
+            $producto->nombre = $datos['nombre'];
+            $producto->descripcion = $datos['desc'];
 
-        if ($request->hasFile('imagen'))
-        {
-            $path = $request->file('imagen')->store('productos', 'public');
-            $producto->imagen = $path;
-        }
-        
-        $producto->save();
+            if ($request->hasFile('imagen'))
+            {
+                $path = $request->file('imagen')->store('productos', 'public');
+                $producto->imagen = $path;
+            }
+            
+            $usuario_id = Auth::User()->usuarioID;
+            $producto->save();
 
-        return redirect('/productos')->with('mensaje', 'Producto actualizado correctamente.');
+            return redirect('/');
+        } else
+            return redirect()->back();
     }
 
     /**
@@ -158,8 +169,16 @@ class ProductoController extends Controller
      */
     public function destroy($id)
     {
+        $producto = Producto::find($id);
         Producto::destroy($id);
-        return redirect('/productos')->with('alert','Producto eliminado');
+        /*  
+        if ($producto->activo == 0) {
+            Producto::destroy($id);
+            return redirect()->back();
+        } else
+            */return redirect()->back();
+            
+        
     }
 
     public function productos_por_categoria($id)
@@ -202,13 +221,29 @@ class ProductoController extends Controller
     public function misProductos($id)
     {
         if ($id == Auth::User()->usuarioID) {
-            $productos = Producto::where('usuarioID', '=', $id)->get();
+            $productos = Producto::where('usuarioID', '=', $id)->where('activo', '=', 1)->get();
 
             return view('usuarios.mis-productos', compact('productos'));
         } else
             return redirect()->back();
     }
 
+    public function misPropuestas($id) {
+        if ($id == Auth::User()->usuarioID) {
+
+            $propuestas = DB::select('
+            SELECT productos.productoID, productos.nombre, productos.descripcion, productos.imagen, productos.precio, productos.activo, propuestas.rechazado, propuestas.razon
+            FROM productos
+            LEFT JOIN propuestas
+            ON productos.productoID = propuestas.productoID
+            WHERE productos.usuarioID = ?', [$id]);
+            
+            return view('usuarios.mis-propuestas', compact('propuestas'));
+        } else
+            return redirect()->back();
+    }
+
+    
     public function misCompras($usuarioID)
     {
         $compras = DB::select('
