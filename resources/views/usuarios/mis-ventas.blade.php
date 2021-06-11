@@ -1,0 +1,48 @@
+@extends('layout')
+
+@section('title', 'Mis compras')
+
+<style>
+    h2 {
+        color: #1e212d;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+</style>
+
+@section('navBar')
+    <div class="menuBar">
+        <h1>TiendaFicticia.com</h1>
+        <ul>
+            <li><a href="/categoria">Categorias</a></li>
+            <li><a href="/productos">Productos</a></li>
+            <li><form action="/search" method="get" role="search">
+                <input type="text" name="find" placeholder="Buscar productos">
+                <button type="submit">Buscar</button>
+            </form></li>
+            <li><a href="/usuario/show/{{ Auth::User()->usuarioID }}">Mi perfil</a></li>
+        </ul>
+    </div>
+@endsection
+
+@section('contenido')
+    @forelse ($ventas as $ventas)
+        <div class="catalogo">
+            <div class="producto" style="margin-bottom: 0px">
+                    <img src="{{ url('storage/'.$ventas->imagen) }}" alt="{{ $ventas->nombre }}">
+                    <div class="datosProducto">
+                        <h1>{{ $ventas->nombre }}</h1>
+                        <p>{{ $ventas->descripcion }}</p>
+                        <p>${{ $ventas->precio }}. MXN C/U</p>
+                        <p>Cantidad comprada: {{ $ventas->cantidad }}</p>
+                        <p>Total: {{ $ventas->total }}</p>
+                        <p>Fecha de compra: {{ $ventas->fecha }}</p>
+                    </div>
+            </div>
+        </div>
+    @empty
+        <h2>No has vendido nada aún.</h2>
+    @endforelse
+    <button id="botonInverso" class="pafuera"><a href="/salir">Salir pa fuera</a></button>
+@endsection
