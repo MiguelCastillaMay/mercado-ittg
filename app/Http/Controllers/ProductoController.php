@@ -208,12 +208,14 @@ class ProductoController extends Controller
         } else
             return redirect()->back();
     }
+    
+    
 
     public function misCompras($usuarioID)
     {
         $compras = DB::select('
             SELECT productos.nombre, productos.descripcion, productos.imagen, productos.precio, 
-                detalles_ventas.cantidad, ventas.total, ventas.fecha
+                detalles_ventas.cantidad, ventas.total, ventas.fecha, ventas.ventaID
             FROM productos
             LEFT JOIN detalles_ventas
                 ON productos.productoID = detalles_ventas.productoID
@@ -236,6 +238,12 @@ class ProductoController extends Controller
                 ON detalles_ventas.ventaID = ventas.ventaID
             WHERE productos.usuarioID = ?', [$usuarioID]
         );
+        return view('usuarios.mis-ventas', compact('ventas'));
+    }
+
+    public function rating($usuarioID)
+    {
+      
         return view('usuarios.mis-ventas', compact('ventas'));
     }
 }
