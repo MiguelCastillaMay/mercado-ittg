@@ -18,17 +18,25 @@
 @endsection
 
 @section('contenido')
-    @isset($productos)
+    @isset($propuestas)
         <div class="catalogo">
-            @foreach ($productos as $producto)
+            @foreach ($propuestas as $propuesta)
                 <div class="producto">
-                    <img src="{{ url('storage/'.$producto->imagen) }}" alt="{{ $producto->nombre }}">
+                    <img src="{{ url('storage/'.$propuesta->imagen) }}" alt="{{ $propuesta->nombre }}">
                     <div class="datosProducto">
-                        <h1>{{ $producto->nombre }}</h1>
-                        <p>{{ $producto->descripcion }}</p>
-                        <p>{{ $producto->precio }}</p>
-                        <button id="botonInverso"><a href="/producto/edit/{{ $producto->productoID }}">Editar</a></button>
-                        <form action="/producto/delete/{{ $producto->productoID }}" method="post">
+                        <h1>{{ $propuesta->nombre }}</h1>
+                        <p>{{ $propuesta->descripcion }}</p>
+                        <p>${{ $propuesta->precio }}</p>
+                        @if ($propuesta->activo == 1)
+                            <p>Estado: Aceptado</p>
+                        @elseif ($propuesta->activo==0 and $propuesta->rechazado == 0)
+                            <p>Estado: En espera</p>
+                        @elseif ($propuesta->rechazado == 1)
+                            <p>Estado: Rechazado</p>
+                            <p>Razón de rechazo: {{ $propuesta->razon }}</P>
+                        @endif
+                        <button id="botonInverso"><a href="/producto/edit/{{ $propuesta->productoID }}">Editar</a></button>
+                        <form action="/producto/delete/{{ $propuesta->productoID }}" method="post">
                             @csrf
                             @method('DELETE')
                             <input type="submit" value="Eliminar" id="boton">
@@ -38,5 +46,6 @@
             @endforeach
         </div>
     @endisset
+
     <button id="botonInverso" class="pafuera"><a href="/salir">Salir pa fuera</a></button>
 @endsection

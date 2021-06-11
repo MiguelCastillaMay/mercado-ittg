@@ -169,11 +169,13 @@ class ProductoController extends Controller
     public function destroy($id)
     {
         $producto = Producto::find($id);
+        Producto::destroy($id);
+        /*  
         if ($producto->activo == 0) {
             Producto::destroy($id);
             return redirect()->back();
         } else
-            return redirect()->back();
+            */return redirect()->back();
             
         
     }
@@ -216,12 +218,17 @@ class ProductoController extends Controller
             return redirect()->back();
     }
 
-    public function misPropuestas($id)
-    {
+    public function misPropuestas($id) {
         if ($id == Auth::User()->usuarioID) {
-            $productos = Producto::where('usuarioID', '=', $id)->where('activo', '=', 0)->get();
 
-            return view('usuarios.mis-propuestas', compact('productos'));
+            $propuestas = DB::select('
+            SELECT productos.productoID, productos.nombre, productos.descripcion, productos.imagen, productos.precio, productos.activo, propuestas.rechazado, propuestas.razon
+            FROM productos
+            LEFT JOIN propuestas
+            ON productos.productoID = propuestas.productoID
+            WHERE productos.usuarioID = ?', [$id]);
+            
+            return view('usuarios.mis-propuestas', compact('propuestas'));
         } else
             return redirect()->back();
     }

@@ -33,17 +33,14 @@ class PropuestasController extends Controller{
     }
 
     public function rechazo($productoID, Request $request) {
-        $propuesta = Propuesta::find($productoID);
+        
         $datos = $request->all();
         if (is_null($datos['razon']))
-        return redirect()->back()->with('error', 'Por favor llene todos los campos.');
-
-        $propuesta->razon = $datos['razon'];
-        $propuesta->rechazado=1;
-        $propuesta->productoID=$productoID;
-        $propuesta->save();
-
-        return view('propuestas');
+            return redirect()->back()->with('error', 'Por favor llene todos los campos.');
+        
+        Propuesta::where('productoID', $productoID)->update(['rechazado' => 1, 'razon' => $datos['razon']]);
+        
+        return redirect()->back();
     }
     
     /* 
