@@ -13,7 +13,7 @@
             @if ($usuarioAuth->rol == 'Supervisor' or $usuarioAuth->rol == 'Revisor')
                 <li><a href="/supervisor">Menú</a></li>
             @endif
-            <li><a href="/usuarios">Usuarios</a></li>
+            <li><a href="/categoria">Categorias</a></li>
             <li><a href="/productos">Productos</a></li>
             @if ($usuarioAuth->rol == 'Cliente')
                 <li><form action="/search" method="get" role="search">
@@ -37,6 +37,9 @@
                 <p>{{ $usuario->correo }}</p>
                 <p>{{ $usuario->rol }}</p>
                 <button id="botonInverso"><a href="/usuario/edit/{{ $usuario->usuarioID }}">Editar perfil</a></button>
+                <button id="botonInverso"><a href="/productos/usuario/{{ $usuario->usuarioID }}">Ver mis productos</a></button>
+                <button id="botonInverso"><a href="/propuestas/usuario/{{ $usuario->usuarioID }}">Ver mis propuestas</a></button>
+                <button id="botonInverso"><a href="/producto/create">Agregar un producto</a></button>
             </div>
         </div>
     @elseif ($usuarioAuth->rol == 'Supervisor')

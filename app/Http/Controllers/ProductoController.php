@@ -8,20 +8,32 @@ use App\Models\Categoria;
 use App\Models\DetallesVenta;
 use App\Models\Pregunta;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\DB;
 
 class ProductoController extends Controller
 {
+    public function __construct()
+    {
+        // $this->middleware('auth');
+        // $this->middleware('log')->only('index');
+        // $this->middleware('subscribed')->except('store');
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $usuario = Auth::User();
-        if (is_null($usuario) or $usuario->rol == 'Cliente') {
+        if (is_null($usuario) or $usuario->rol == 'Cliente')
+        {
             $productos = Producto::Activos()->get();
             return view('welcome', compact('productos'));
-        } elseif ($usuario->rol == 'Supervisor' or $usuario->rol == 'Revisor') {
+        }
+        elseif ($usuario->rol == 'Supervisor' or $usuario->rol == 'Revisor')
+        {
             $productos = Producto::all();
             return view('productos.tablero', compact('productos'));
         }
@@ -32,7 +44,8 @@ class ProductoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         return view('productos.newProducto');
     }
 
@@ -42,8 +55,10 @@ class ProductoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $datos = $request->all();
+        $usuarioID = Auth::User()->usuarioID;
 
         if (is_null($datos['nombre']) or is_null($datos['desc']) or is_null($datos['imagen']))
             return redirect()->back()->with('error', 'Por favor llene todos los campos.');            
@@ -53,8 +68,11 @@ class ProductoController extends Controller
             $productoID = DB::table('productos')->insertGetId([
                 'nombre' => $datos['nombre'],
                 'descripcion' => $datos['desc'],
+                'precio' => $datos['precio'],
                 'imagen' => $path,
-                'activo' => 0
+                'activo' => 0,
+                'categoriaID' => 1,
+                'usuarioID' => $usuarioID
             ]);
 
             DB::table('propuestas')->insert([
@@ -72,12 +90,29 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
+    public function show($id)
+    {
+        $usuarioAuth = Auth::User();
         $producto = Producto::find($id);
-        $ventas = DetallesVenta::where('productoID', '=', $id)->get();
-        $ventas = count($ventas);
-        $preguntas = Pregunta::where('productoID', '=', $id)->get();
-        return view('productos.mostrar', compact('producto', 'ventas', 'preguntas'));
+        $preguntas = DB::select('
+        SELECT preguntas.pregunta, respuestas.respuesta, preguntas.created_at as pregunta_fecha, respuestas.created_at as respuesta_fecha
+        FROM preguntas
+        LEFT JOIN productos ON productos.productoID = preguntas.productoID
+        LEFT JOIN respuestas ON preguntas.preguntaID = respuestas.preguntaID
+        WHERE productos.productoID = ?', [$id]);
+
+        if (is_null($usuarioAuth) or $usuarioAuth->rol == 'Cliente')
+        {
+            return view('productos.ver-producto', compact('producto', 'preguntas'));
+        }
+        elseif ($usuarioAuth->rol == 'Supervisor' or $usuarioAuth->rol == 'Revisor')
+        {
+            $ventas = DetallesVenta::where('productoID', '=', $id)->get();
+            $ventas = count($ventas);
+
+            return view('productos.mostrar', compact('producto', 'ventas', 'preguntas'));
+        }
+        // dd($preguntas);
     }
 
     /**
@@ -86,7 +121,8 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
+    public function edit($id)
+    {
         $producto = Producto::find($id);
         return view('productos.editar', compact('producto'));
     }
@@ -98,22 +134,30 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $producto = Producto::find($id);
-        $datos = $request->all();
-        if (is_null($datos['nombre']) or is_null($datos['desc']))
-            return redirect()->back()->with('error', 'Por favor llene todos los campos.');            
+        if ($producto->activo == 0){
+            $datos = $request->all();
 
-        $producto->nombre = $datos['nombre'];
-        $producto->descripcion = $datos['desc'];
-        if ($request->hasFile('imagen')) {
-            $path = $request->file('imagen')->store('productos', 'public');
-            $producto->imagen = $path;
-        }
-        
-        $producto->save();
+            if (is_null($datos['nombre']) or is_null($datos['desc']))
+                return redirect()->back()->with('error', 'Por favor llene todos los campos.');            
 
-        return redirect('/productos')->with('mensaje', 'Producto actualizado correctamente.');
+            $producto->nombre = $datos['nombre'];
+            $producto->descripcion = $datos['desc'];
+
+            if ($request->hasFile('imagen'))
+            {
+                $path = $request->file('imagen')->store('productos', 'public');
+                $producto->imagen = $path;
+            }
+            
+            $usuario_id = Auth::User()->usuarioID;
+            $producto->save();
+
+            return redirect('/');
+        } else
+            return redirect()->back();
     }
 
     /**
@@ -122,12 +166,20 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
-        Producto::destroy($id);
-        return redirect('/productos')->with('alert','Producto eliminado');
+    public function destroy($id)
+    {
+        $producto = Producto::find($id);
+        if ($producto->activo == 0) {
+            Producto::destroy($id);
+            return redirect()->back();
+        } else
+            return redirect()->back();
+            
+        
     }
 
-    public function productos_por_categoria($id) {
+    public function productos_por_categoria($id)
+    {
         $usuario = Auth::User();
 
         if (is_null($usuario) or $usuario->rol == 'Cliente') {
@@ -139,10 +191,44 @@ class ProductoController extends Controller
         }
     }
 
-    public function comprar($id) {
+    public function agregarCarrito()
+    {
+        if ($this->authorize('carrito', Producto::class)) {
+            return redirect()->back()->with('mensaje', 'Elemento agregado correctamente al carrito.');
+        }
+    }
+
+    public function comprar($id)
+    {
         $usuario = Auth::User();
         if (is_null($usuario)) {
             return redirect('login')->with('mensaje', 'Inicie sesión para comprar.');
         }
+    }
+
+    public function misProductos($id)
+    {
+        if ($id == Auth::User()->usuarioID) {
+            $productos = Producto::where('usuarioID', '=', $id)->where('activo', '=', 1)->get();
+
+            return view('usuarios.mis-productos', compact('productos'));
+        } else
+            return redirect()->back();
+    }
+
+    public function misPropuestas($id)
+    {
+        if ($id == Auth::User()->usuarioID) {
+            $productos = Producto::where('usuarioID', '=', $id)->where('activo', '=', 0)->get();
+
+            return view('usuarios.mis-propuestas', compact('productos'));
+        } else
+            return redirect()->back();
+    }
+
+    public function producto($id)
+    {
+        $producto = Producto::find($id);
+        return view('usuarios.mi-producto', compact('producto'));
     }
 }
