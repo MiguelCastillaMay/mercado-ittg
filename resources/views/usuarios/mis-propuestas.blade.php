@@ -26,7 +26,7 @@
                     <div class="datosProducto">
                         <h1>{{ $producto->nombre }}</h1>
                         <p>{{ $producto->descripcion }}</p>
-                        <p>Precio</p>
+                        <p>{{ $producto->precio }}</p>
                         <button id="botonInverso"><a href="/producto/edit/{{ $producto->productoID }}">Editar</a></button>
                         <form action="/producto/delete/{{ $producto->productoID }}" method="post">
                             @csrf

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class PropuestasController extends Controller{
     public function index() {
-        $propuestas = DB::select('SELECT rechazado, activo
+        $propuestas = DB::select('SELECT propuestas.*, productos.*
         FROM propuestas 
         INNER JOIN productos 
         ON propuestas.productoID = productos.productoID WHERE productos.activo = 0 AND propuestas.rechazado = 0;');
@@ -33,7 +33,7 @@ class PropuestasController extends Controller{
     }
 
     public function rechazo($productoID, Request $request) {
-        $propuesta = new Propuesta();
+        $propuesta = Propuesta::find($productoID);
         $datos = $request->all();
         if (is_null($datos['razon']))
         return redirect()->back()->with('error', 'Por favor llene todos los campos.');
