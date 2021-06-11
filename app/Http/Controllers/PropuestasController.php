@@ -7,10 +7,14 @@ use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Propuesta;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PropuestasController extends Controller{
     public function index() {
-        $propuestas = Producto::where('activo', '=', 0)->get();
+        $propuestas = DB::select('SELECT rechazado, activo
+        FROM propuestas 
+        INNER JOIN productos 
+        ON propuestas.productoID = productos.productoID WHERE productos.activo = 0 AND propuestas.rechazado = 0;');
         return view('propuestas', compact('propuestas'));
     }
 
@@ -25,7 +29,7 @@ class PropuestasController extends Controller{
     public function rechazar($productoID) {
         $propuesta = Producto::find($productoID);
 
-        return view('propuestas.rechazo', compact('propuesta'));
+        return redirect('/propuestas')->with('mensaje', 'Propuesta aceptada.');
     }
 
     public function rechazo($productoID, Request $request) {

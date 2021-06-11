@@ -80,6 +80,7 @@ Route::get('propuesta/aceptar/{producto_id}', 'PropuestasController@aceptar');
 Route::get('propuesta/rechazar/{producto_id}', 'PropuestasController@rechazar');
 Route::put('propuesta/rechazar/{producto_id}', 'PropuestasController@rechazo');
 
+Route::get('propuestas/usuario/{usuario_id}', 'ProductoController@misPropuestas');
 
 Route::get('usuarios', 'UsuarioController@index');
 Route::get('usuario/create', 'UsuarioController@create');

@@ -130,23 +130,27 @@ class ProductoController extends Controller
     public function update(Request $request, $id)
     {
         $producto = Producto::find($id);
-        $datos = $request->all();
+        if ($producto->activo == 0){
+            $datos = $request->all();
 
-        if (is_null($datos['nombre']) or is_null($datos['desc']))
-            return redirect()->back()->with('error', 'Por favor llene todos los campos.');            
+            if (is_null($datos['nombre']) or is_null($datos['desc']))
+                return redirect()->back()->with('error', 'Por favor llene todos los campos.');            
 
-        $producto->nombre = $datos['nombre'];
-        $producto->descripcion = $datos['desc'];
+            $producto->nombre = $datos['nombre'];
+            $producto->descripcion = $datos['desc'];
 
-        if ($request->hasFile('imagen'))
-        {
-            $path = $request->file('imagen')->store('productos', 'public');
-            $producto->imagen = $path;
-        }
-        
-        $producto->save();
+            if ($request->hasFile('imagen'))
+            {
+                $path = $request->file('imagen')->store('productos', 'public');
+                $producto->imagen = $path;
+            }
+            
+            $usuario_id = Auth::User()->usuarioID;
+            $producto->save();
 
-        return redirect('/productos')->with('mensaje', 'Producto actualizado correctamente.');
+            return redirect('/');
+        } else
+            return redirect()->back();
     }
 
     /**
@@ -157,8 +161,14 @@ class ProductoController extends Controller
      */
     public function destroy($id)
     {
-        Producto::destroy($id);
-        return redirect('/productos')->with('alert','Producto eliminado');
+        $producto = Producto::find($id);
+        if ($producto->activo == 0) {
+            Producto::destroy($id);
+            return redirect()->back();
+        } else
+            return redirect()->back();
+            
+        
     }
 
     public function productos_por_categoria($id)
@@ -192,9 +202,19 @@ class ProductoController extends Controller
     public function misProductos($id)
     {
         if ($id == Auth::User()->usuarioID) {
-            $productos = Producto::where('usuarioID', '=', $id)->get();
+            $productos = Producto::where('usuarioID', '=', $id)->where('activo', '=', 1)->get();
 
             return view('usuarios.mis-productos', compact('productos'));
+        } else
+            return redirect()->back();
+    }
+
+    public function misPropuestas($id)
+    {
+        if ($id == Auth::User()->usuarioID) {
+            $productos = Producto::where('usuarioID', '=', $id)->where('activo', '=', 0)->get();
+
+            return view('usuarios.mis-propuestas', compact('productos'));
         } else
             return redirect()->back();
     }
