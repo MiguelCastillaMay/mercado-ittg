@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Categoria;
+use App\Models\Venta;
 use App\Models\DetallesVenta;
 use App\Models\Pregunta;
 use Illuminate\Support\Facades\Auth;
@@ -193,18 +194,27 @@ class ProductoController extends Controller
         }
     }
 
-    public function agregarCarrito()
-    {
-        if ($this->authorize('carrito', Producto::class)) {
-            return redirect()->back()->with('mensaje', 'Elemento agregado correctamente al carrito.');
-        }
-    }
-
-    public function comprar($id)
+    public function comprar(Request $request, $id)
     {
         $usuario = Auth::User();
         if (is_null($usuario)) {
             return redirect('login')->with('mensaje', 'Inicie sesión para comprar.');
+        } else {
+            $cantidad = $request->input('cantidad');
+            $precio = $request->input('precio');
+            $total = $cantidad * $precio;
+            $ventaID = DB::table('ventas')->insertGetId([
+                'total' => $total, 
+                'usuarioID' => $usuario->usuarioID
+            ]);
+            DB::table('detalles_ventas')->insert([
+                'productoID' => $id,
+                'compradorID' => $usuario->usuarioID,
+                'ventaID' => $ventaID,
+                'cantidad' => $cantidad,
+                'precio' => $precio
+            ]);
+            return redirect()->back()->with('mensaje', 'Compra realizada!');
         }
     }
 
@@ -233,9 +243,34 @@ class ProductoController extends Controller
             return redirect()->back();
     }
 
-    public function producto($id)
+    
+    public function misCompras($usuarioID)
     {
-        $producto = Producto::find($id);
-        return view('usuarios.mi-producto', compact('producto'));
+        $compras = DB::select('
+            SELECT productos.nombre, productos.descripcion, productos.imagen, productos.precio, 
+                detalles_ventas.cantidad, ventas.total, ventas.fecha
+            FROM productos
+            LEFT JOIN detalles_ventas
+                ON productos.productoID = detalles_ventas.productoID
+            LEFT JOIN ventas
+                ON detalles_ventas.ventaID = ventas.ventaID
+            WHERE detalles_ventas.compradorID = ?', [$usuarioID]
+        );
+        return view('usuarios.mis-compras', compact('compras'));
+    }
+
+    public function misVentas($usuarioID)
+    {
+        $ventas = DB::select('
+            SELECT productos.nombre, productos.descripcion, productos.imagen, productos.precio, 
+                detalles_ventas.cantidad, ventas.total, ventas.fecha
+            FROM productos
+            JOIN detalles_ventas
+                ON productos.productoID = detalles_ventas.productoID
+            JOIN ventas
+                ON detalles_ventas.ventaID = ventas.ventaID
+            WHERE productos.usuarioID = ?', [$usuarioID]
+        );
+        return view('usuarios.mis-ventas', compact('ventas'));
     }
 }

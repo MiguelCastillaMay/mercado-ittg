@@ -69,9 +69,8 @@ Route::get('producto/{producto_id}', 'ProductoController@show');
 Route::delete('producto/delete/{producto_id}', 'ProductoController@destroy');
 
 Route::get('productos/categoria/{categoria_id}', 'ProductoController@productos_por_categoria');
-Route::get('producto/agregar-carrito/{producto_id}', 'ProductoController@agregarCarrito');
+Route::post('producto/comprar/{producto_id}', 'ProductoController@comprar');
 Route::get('productos/usuario/{usuario_id}', 'ProductoController@misProductos');
-Route::get('mi-producto/{producto_id}', 'ProductoController@producto');
 
 Route::get('propuestas', 'PropuestasController@index');
 Route::get('propuesta/create', 'PropuestasController@create');
@@ -89,6 +88,9 @@ Route::get('usuario/edit/{usuario_id}', 'UsuarioController@edit');
 Route::put('usuario/edit/{usuario_id}', 'UsuarioController@update');
 Route::get('usuario/show/{usuario_id}', 'UsuarioController@show');
 Route::delete('usuario/delete/{usuario_id}', 'UsuarioController@destroy');
+
+Route::get('usuario/{usuario_id}/compras', 'ProductoController@misCompras');
+Route::get('usuario/{usuario_id}/ventas', 'ProductoController@misVentas');
 
 Route::get('infoGeneral','UsuarioController@conteo');
 
