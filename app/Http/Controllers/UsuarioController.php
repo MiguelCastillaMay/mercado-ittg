@@ -83,7 +83,13 @@ class UsuarioController extends Controller
         $productos = Producto::where('usuarioID', '=', $id)->get();
         $ventas = count($ventas);
         $productos = count($productos);
-        return view('usuarios.perfil',compact('usuario', 'ventas', 'productos'));
+        $preguntas = DB::select('
+            SELECT productos.nombre as producto, preguntas.pregunta, preguntas.created_at as pregunta_fecha, respuestas.respuesta, respuestas.created_at as respuesta_fecha
+            FROM preguntas
+            LEFT JOIN productos ON productos.productoID = preguntas.productoID
+            LEFT JOIN respuestas ON preguntas.preguntaID = respuestas.preguntaID
+            WHERE preguntas.compradorID = ?', [$id]);
+        return view('usuarios.perfil',compact('usuario', 'ventas', 'productos', 'preguntas'));
     }
 
     /**

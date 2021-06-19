@@ -40,6 +40,21 @@
         text-align: center;
         justify-content: space-evenly;
     }
+    h2 {
+        width: fit-content;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    h2, h3, p {
+        color: #1e212d;
+    }
+    .pregunta {
+        display: flex;
+    }
+    .pregunta > p {
+        margin-top: 21px;
+        margin-left: 5px;
+    }
 </style>
 
 @section('navBar')
@@ -57,7 +72,7 @@
                     <button type="submit">Buscar</button>
                 </form></li>
             @elseif ($usuarioAuth->rol == 'Supervisor' or $usuarioAuth->rol == 'Revisor')
-                <li><a href="/categoria">Categorías</a></li>
+                <li><a href="/usuarios">Usuarios</a></li>
                 <li><a href="/bitacora">Bitácora</a></li>
             @endif
         </ul>
@@ -92,7 +107,22 @@
             <p>Fecha de registro: {{ $usuario->created_at }}</p>
             <p>Ventas totales: {{ $ventas }}</p>
             <p>Productos en venta: {{ $productos }}</p>
-            <a href="/usuario/edit/{{ $usuario->usuarioID }}">Editar perfil</a>
+            <a class="boton" href="/usuario/edit/{{ $usuario->usuarioID }}">Editar perfil</a>
+            <div class="preguntas">
+                @forelse ($preguntas as $pregunta)
+                    <div class="pregunta">
+                        <h3>{{ $pregunta->producto }}: {{ $pregunta->pregunta }}</h3>
+                        <p>- {{ $pregunta->pregunta_fecha }}</p>
+                    </div>
+                    <div>
+                        @if ($pregunta->respuesta)
+                            <p>{{ $pregunta->respuesta }} - {{ $pregunta->respuesta_fecha }}</p>
+                        @endif
+                    </div>
+                @empty
+                    <h2>Este usuario no ha realizado ninguna pregunta.</h2>
+                @endforelse
+            </div>
         </div>
     </div>
     @endif
