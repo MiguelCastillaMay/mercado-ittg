@@ -79,22 +79,26 @@
                 <h1>{{ $producto->nombre }}</h1>
                 <p>{{ $producto->descripcion }}</p>
                 <p>Precio</p>
-                <form action="/producto/comprar/{{ $producto->productoID }}" method="post">
-                    @csrf
-                    <input type="number" name="cantidad" value="1" id="">
-                    <button id="botonInverso" type="submit">Comprar</button>
-                    <input type="hidden" name="precio" value="{{ $producto->precio }}">
-                </form>
+                @if ($producto->usuarioID != Auth::User()->usuarioID)
+                    <form action="/producto/comprar/{{ $producto->productoID }}" method="post">
+                        @csrf
+                        <input type="number" name="cantidad" value="1" id="">
+                        <button id="botonInverso" type="submit">Comprar</button>
+                        <input type="hidden" name="precio" value="{{ $producto->precio }}">
+                    </form>
+                @endif
             </div>
         </div>
         <div class="preguntar">
             @can('preguntar', $producto)
-                <h2>Haz una pregunta</h2>
-                <form action="/pregunta/{{ $producto->productoID }}" method="post">
-                    @csrf
-                    <textarea name="pregunta" id="" cols="30" rows="10"></textarea>
-                    <input type="submit" id="botonInverso" value="Preguntar">
-                </form>
+                @if ($producto->usuarioID != Auth::User()->usuarioID)
+                    <h2>Haz una pregunta</h2>
+                    <form action="/pregunta/{{ $producto->productoID }}" method="post">
+                        @csrf
+                        <textarea name="pregunta" id="" cols="30" rows="10"></textarea>
+                        <input type="submit" id="botonInverso" value="Preguntar">
+                    </form>
+                @endif
             @else
                 <h2>Inicia sesión para hacer una pregunta.</h2>
             @endcan
