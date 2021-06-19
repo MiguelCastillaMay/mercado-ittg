@@ -3,7 +3,7 @@
 @section('title', 'Propuestas')
 
 <style>
-    a.boton {
+    a.boton, input.boton {
         -webkit-appearance: button;
         -moz-appearance: button;
         appearance: button;
@@ -20,7 +20,7 @@
         margin-bottom: 10px;
     }
     
-    a.boton:hover {
+    a.boton:hover, input.boton {
         background-color: #f0f8ff;
         color: #1e212d;
     }
@@ -30,6 +30,18 @@
         margin-top: 15px;
         margin-right: auto;
         margin-left: auto;
+    }
+    textarea {
+        resize: none;
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    h2 {
+        width: fit-content;
+        margin-right: auto;
+        margin-left: auto;
+        color: #1e212d;
     }
 </style>
 
@@ -46,6 +58,7 @@
 @endsection
     
 @section('contenido')
+<h2>{{session('error')}}</h2>
         <table>
             <tr>
                 <th>Productos</th>
@@ -60,13 +73,9 @@
                             <form action="/propuesta/rechazar/{{ $propuesta->productoID }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
-                                <input type="submit" value="Rechazar" id="show">
-                                    <div>
-                                        <p>Razón de rechazo:</p>
-                                    </div>
-                                    <div>
-                                        <textarea name="razon" cols="30" rows="10"></textarea>
-                                    </div>
+                                <p>Razón de rechazo:</p>
+                                <textarea name="razon" cols="50" rows="10"></textarea>
+                                <input class="boton" type="submit" value="Rechazar">
                             </form>
                         </td>
                     </tr>

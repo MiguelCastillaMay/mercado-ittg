@@ -3,7 +3,7 @@
 @section('title', 'Categorías')
 
 <style>
-    a.boton {
+    a.boton, input.boton {
         -webkit-appearance: button;
         -moz-appearance: button;
         appearance: button;
@@ -20,7 +20,7 @@
         margin-bottom: 10px;
     }
     
-    a.boton:hover {
+    a.boton:hover, input.boton:hover {
         background-color: #f0f8ff;
         color: #1e212d;
     }
@@ -30,6 +30,21 @@
         margin-top: 15px;
         margin-right: auto;
         margin-left: auto;
+    }
+    a.opciones, input.opciones {
+        font-weight: 100;
+        font-size: 15px;
+        display: inline;
+        width: fit-content;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    form {
+        display: inline;
+        margin: 0px;
+    }
+    #botones {
+        padding-top: 10px;
     }
 </style>
 
@@ -59,6 +74,7 @@
                 <li><a href="/usuario/show/{{ $usuario->usuarioID }}">Mi perfil</a></li>
             @endif
             @if (!is_null($usuario) and $usuario->rol == 'Supervisor')
+                <li><a href="/usuarios">Usuarios</a></li>
                 <li><a href="/bitacora">Bitácora</a></li>
             @endif
         </ul>
@@ -95,14 +111,14 @@
                     <tr>
                         <td>{{ $categoria->nombre }}</td>
                         <td>3</td>
-                        <td>
-                            <a class="boton" href="/productos/categoria/{{ $categoria->categoriaID }}">Ver productos</a>
-                            <a class="boton" href="/categoria/{{ $categoria->categoriaID }}/edit">Editar categoría</a>
-                            <a class="boton" href="/categoria/{{ $categoria->categoriaID }}">Mostrar categoría</a>
+                        <td id="botones">
+                            <a class="boton opciones" href="/productos/categoria/{{ $categoria->categoriaID }}">Ver productos</a>
+                            <a class="boton opciones" href="/categoria/{{ $categoria->categoriaID }}/edit">Editar categoría</a>
+                            <a class="boton opciones" href="/categoria/{{ $categoria->categoriaID }}">Mostrar categoría</a>
                             <form action="/categoria/{{ $categoria->categoriaID }}" method="post">
                                 @csrf
                                 @method('DELETE')
-                                <input type="submit" value="Eliminar categoría" id="eliminar">
+                                <input class="boton opciones" type="submit" value="Eliminar categoría" id="eliminar">
                             </form>
                         </td>
                     </tr>

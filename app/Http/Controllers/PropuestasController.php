@@ -36,7 +36,7 @@ class PropuestasController extends Controller{
         
         $datos = $request->all();
         if (is_null($datos['razon']))
-            return redirect()->back()->with('error', 'Por favor llene todos los campos.');
+            return redirect()->back()->with('error', 'Por favor escriba una razón.');
         
         Propuesta::where('productoID', $productoID)->update(['rechazado' => 1, 'razon' => $datos['razon']]);
         
