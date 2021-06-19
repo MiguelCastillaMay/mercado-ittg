@@ -77,7 +77,7 @@ class ProductoController extends Controller
                 'cantidad' => $datos['cantidad'],
                 'imagen' => $path,
                 'activo' => 0,
-                'categoriaID' => 1,
+                'categoriaID' => $datos['categoria'],
                 'usuarioID' => $usuarioID
             ]);
 
