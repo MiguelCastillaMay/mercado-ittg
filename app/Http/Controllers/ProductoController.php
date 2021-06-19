@@ -47,7 +47,8 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        return view('productos.newProducto');
+        $categorias = Categoria::all();
+        return view('productos.newProducto', compact('categorias'));
     }
 
     /**
@@ -61,15 +62,19 @@ class ProductoController extends Controller
         $datos = $request->all();
         $usuarioID = Auth::User()->usuarioID;
 
-        if (is_null($datos['nombre']) or is_null($datos['desc']) or is_null($datos['imagen']))
-            return redirect()->back()->with('error', 'Por favor llene todos los campos.');            
-        else {
+        if (is_null($datos['nombre']) or is_null($datos['desc']) or is_null($datos['imagen']) or is_null($datos['cantidad']) or is_null($datos['precio'])) {
+            if ($datos['cantidad'] == 0) {
+                return redirect()->back()->with('error', 'Por favor agregue una cantidad válida.');
+            }
+            return redirect()->back()->with('error', 'Por favor llene todos los campos.');
+        } else {
             $path = $request->file('imagen')->store('productos', 'public');
 
             $productoID = DB::table('productos')->insertGetId([
                 'nombre' => $datos['nombre'],
                 'descripcion' => $datos['desc'],
                 'precio' => $datos['precio'],
+                'cantidad' => $datos['cantidad'],
                 'imagen' => $path,
                 'activo' => 0,
                 'categoriaID' => 1,

@@ -11,13 +11,21 @@
             <div>
                 <p>Nombre del producto:</p>
                 <p>Descripción del producto:</p>
+                <p>Categoría: </p>
                 <p>Precio: </p>
-                <p>Imagen</p>
+                <p>Cantidad: </p>
+                <p>Imagen: </p>
             </div>
             <div>
                 <input type="text" name="nombre" value="">
                 <input type="text" name="desc" value="">
-                <input type="number" name="precio" value="">
+                <select name="categoria">
+                    @foreach ($categorias as $categoria)
+                        <option value="{{ $categoria->categoriaID }}">{{ $categoria->nombre }}</option>
+                    @endforeach
+                </select>
+                <input type="number" name="precio" value="0">
+                <input type="number" name="cantidad" value="1">
                 <input type="file" name="imagen">
             </div>
         </div>
