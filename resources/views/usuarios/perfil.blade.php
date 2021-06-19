@@ -55,6 +55,12 @@
         margin-top: 21px;
         margin-left: 5px;
     }
+    img {
+        height: max-content;
+        display: block;
+        margin-bottom: 10px;
+        border-radius: 10px;
+    }
 </style>
 
 @section('navBar')
@@ -99,7 +105,10 @@
         </div>
     @elseif ($usuarioAuth->rol == 'Supervisor')
     <div id="datosPersonales">
-        <img src="{{ url('storage/'.$usuario->imagen) }}">
+        <div>
+            <img src="{{ url('storage/'.$usuario->imagen) }}">
+            <a class="boton" href="/usuario/edit/{{ $usuario->usuarioID }}">Editar perfil</a>
+        </div>
         <div>
             <p id="nombre">{{ $usuario->nombre }} {{ $usuario->a_paterno }} {{ $usuario->a_materno }}</p>
             <p>{{ $usuario->rol }}</p>
@@ -107,7 +116,6 @@
             <p>Fecha de registro: {{ $usuario->created_at }}</p>
             <p>Ventas totales: {{ $ventas }}</p>
             <p>Productos en venta: {{ $productos }}</p>
-            <a class="boton" href="/usuario/edit/{{ $usuario->usuarioID }}">Editar perfil</a>
             <div class="preguntas">
                 @forelse ($preguntas as $pregunta)
                     <div class="pregunta">
