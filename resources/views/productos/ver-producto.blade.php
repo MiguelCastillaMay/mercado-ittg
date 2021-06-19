@@ -82,7 +82,7 @@
                 @if ($producto->usuarioID != Auth::User()->usuarioID)
                     <form action="/producto/comprar/{{ $producto->productoID }}" method="post">
                         @csrf
-                        <input type="number" name="cantidad" value="1" id="">
+                        <input class="cantidad" type="number" id="cantidad" name="cantidad" value="1" min="1" max="{{ $producto->cantidad }}">
                         <button id="botonInverso" type="submit">Comprar</button>
                         <input type="hidden" name="precio" value="{{ $producto->precio }}">
                     </form>
@@ -119,4 +119,10 @@
             @endforelse
         </div>
     </div>
+    <script>
+        var input = document.getElementById('cantidad');
+        input.onkeypress=function(evt){
+            evt.preventDefault();
+        };
+    </script>
 @endsection
