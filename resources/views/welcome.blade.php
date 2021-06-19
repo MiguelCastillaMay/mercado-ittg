@@ -74,7 +74,7 @@
                         <div class="datosProducto">
                             <h1>{{ $producto->nombre }}</h1>
                             <p>{{ $producto->descripcion }}</p>
-                            <p>Precio</p>
+                            <p>${{ $producto->precio }} MXN C/U</p>
                             <a class="boton" href="/producto/{{ $producto->productoID }}">Ver producto</a>
                         </div>
                     </div>

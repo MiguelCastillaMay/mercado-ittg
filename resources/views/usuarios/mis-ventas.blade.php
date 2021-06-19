@@ -34,9 +34,9 @@
                 <div class="datosProducto">
                     <h1>{{ $ventas->nombre }}</h1>
                     <p>{{ $ventas->descripcion }}</p>
-                    <p>${{ $ventas->precio }}. MXN C/U</p>
+                    <p>${{ $ventas->precio }} MXN C/U</p>
                     <p>Cantidad comprada: {{ $ventas->cantidad }}</p>
-                    <p>Total: {{ $ventas->total }}</p>
+                    <p>Total: ${{ $ventas->total }} MXN</p>
                     <p>Fecha de compra: {{ $ventas->fecha }}</p>
                 </div>
             </div>

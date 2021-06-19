@@ -78,7 +78,7 @@
             <div class="datosProducto">
                 <h1>{{ $producto->nombre }}</h1>
                 <p>{{ $producto->descripcion }}</p>
-                <p>Precio</p>
+                <p>${{ $producto->precio }} MXN C/U</p>
                 @if ($producto->usuarioID != Auth::User()->usuarioID)
                     <form action="/producto/comprar/{{ $producto->productoID }}" method="post">
                         @csrf
