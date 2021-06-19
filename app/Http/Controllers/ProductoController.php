@@ -205,13 +205,16 @@ class ProductoController extends Controller
         if (is_null($usuario)) {
             return redirect('login')->with('mensaje', 'Inicie sesión para comprar.');
         } else {
+
             $cantidad = $request->input('cantidad');
             $precio = $request->input('precio');
             $total = $cantidad * $precio;
+
             $ventaID = DB::table('ventas')->insertGetId([
                 'total' => $total, 
                 'usuarioID' => $usuario->usuarioID
             ]);
+
             DB::table('detalles_ventas')->insert([
                 'productoID' => $id,
                 'compradorID' => $usuario->usuarioID,
@@ -219,6 +222,11 @@ class ProductoController extends Controller
                 'cantidad' => $cantidad,
                 'precio' => $precio
             ]);
+
+            $producto = Producto::find($id);
+            $producto->cantidad -= $request->input('cantidad');
+            $producto->save();
+
             return redirect()->back()->with('mensaje', 'Compra realizada!');
         }
     }
