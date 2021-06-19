@@ -2,6 +2,40 @@
 
 @section('title', 'Mis propuestas')
 
+<style>
+    a.boton {
+        -webkit-appearance: button;
+        -moz-appearance: button;
+        appearance: button;
+        background-color: #1e212d;
+        border-style: solid;
+        border-color: #1e212d;
+        font-size: 25px;
+        padding: 10px;
+        border-radius: 15px;
+        color: #f0f8ff;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        font-family: "Montserrat", sans-serif;
+        margin-bottom: 10px;
+    }
+    
+    a.boton:hover {
+        background-color: #f0f8ff;
+        color: #1e212d;
+    }
+    .pafuera {
+        display: block;
+        width: fit-content;
+        margin-top: 15px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    #botonInverso {
+        font-weight: 100;
+    }
+</style>
+
 @section('navBar')
     <div class="menuBar">
         <h1>TiendaFicticia.com</h1>
@@ -35,11 +69,11 @@
                             <p>Estado: Rechazado</p>
                             <p>Razón de rechazo: {{ $propuesta->razon }}</P>
                         @endif
-                        <button id="botonInverso"><a href="/producto/edit/{{ $propuesta->productoID }}">Editar</a></button>
+                        <a class="boton" href="/producto/edit/{{ $propuesta->productoID }}">Editar</a>
                         <form action="/producto/delete/{{ $propuesta->productoID }}" method="post">
                             @csrf
                             @method('DELETE')
-                            <input type="submit" value="Eliminar" id="boton">
+                            <button type="submit" id="botonInverso">Eliminar</button>
                         </form>
                     </div>
                 </div>
@@ -47,5 +81,5 @@
         </div>
     @endisset
 
-    <button id="botonInverso" class="pafuera"><a href="/salir">Salir pa fuera</a></button>
+    <a class="boton pafuera" href="/salir">Salir pa fuera</a>
 @endsection

@@ -76,7 +76,6 @@ Route::get('propuestas', 'PropuestasController@index');
 Route::get('propuesta/create', 'PropuestasController@create');
 Route::post('propuesta/store', 'PropuestasController@store');
 Route::get('propuesta/aceptar/{producto_id}', 'PropuestasController@aceptar');
-//Route::get('propuesta/rechazar/{producto_id}', 'PropuestasController@rechazar');
 Route::put('propuesta/rechazar/{producto_id}', 'PropuestasController@rechazo');
 
 Route::get('propuestas/usuario/{usuario_id}', 'ProductoController@misPropuestas');

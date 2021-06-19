@@ -39,6 +39,9 @@
         margin-left: auto;
         margin-right: auto;
     }
+    #botonInverso {
+        font-weight: 100;
+    }
 </style>
 
 @section('navBar')

@@ -2,6 +2,12 @@
 
 @section('title', 'Editar usuario')
 
+<style>
+    #boton {
+        font-weight: 100;
+    }
+</style>
+
 @php
     $usuarioLog = Auth::User();
 @endphp

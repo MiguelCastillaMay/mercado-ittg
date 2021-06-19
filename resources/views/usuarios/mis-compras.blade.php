@@ -9,6 +9,9 @@
         justify-content: center;
         margin-bottom: 40px;
     }
+    #botonInverso {
+        font-weight: 100;
+    }
 </style>
 
 
@@ -28,9 +31,9 @@
 @endsection
 
 @section('contenido')
-    @forelse ($compras as $compra)
-        <div class="catalogo">
-            <div class="producto" style="margin-bottom: 0px">
+    <div class="catalogo">
+        @forelse ($compras as $compra)
+            <div class="producto">
                 <img src="{{ url('storage/'.$compra->imagen) }}" alt="{{ $compra->nombre }}">
                 <div class="datosProducto">
                     <h1>{{ $compra->nombre }}</h1>
@@ -40,11 +43,10 @@
                     <p>Total: {{ $compra->total }}</p>
                     <p>Fecha de compra: {{ $compra->fecha }}</p>
                     <p id=>Calificar producto: </p>
-                  	<div>
+                    <div>
                         <form action="/rating/{{$compra->ventaID}}" enctype="multipart/form-data" method="post">
-                        @csrf
-                        @method('PUT')
-                        
+                            @csrf
+                            @method('PUT')                
                             <select name="Calificar">
                                 <option value="1"> 1 </option>
                                 <option value="2"> 2 </option>
@@ -57,9 +59,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-    @empty
-        <h2>No has comprado nada aún.</h2>
-    @endforelse
+        @empty
+            <h2>No has comprado nada aún.</h2>
+        @endforelse
+    </div>
     <button id="botonInverso" class="pafuera"><a href="/salir">Salir pa fuera</a></button>
 @endsection

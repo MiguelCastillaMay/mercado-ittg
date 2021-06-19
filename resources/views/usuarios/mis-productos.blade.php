@@ -2,6 +2,37 @@
 
 @section('title', 'Mis productos')
 
+<style>
+    a.boton {
+        -webkit-appearance: button;
+        -moz-appearance: button;
+        appearance: button;
+        background-color: #1e212d;
+        border-style: solid;
+        border-color: #1e212d;
+        font-size: 25px;
+        padding: 10px;
+        border-radius: 15px;
+        color: #f0f8ff;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        font-family: "Montserrat", sans-serif;
+        margin-bottom: 10px;
+    }
+    
+    a.boton:hover {
+        background-color: #f0f8ff;
+        color: #1e212d;
+    }
+    .pafuera {
+        display: block;
+        width: fit-content;
+        margin-top: 15px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+</style>
+
 @section('navBar')
     <div class="menuBar">
         <h1>TiendaFicticia.com</h1>
@@ -27,11 +58,11 @@
                         <h1>{{ $producto->nombre }}</h1>
                         <p>{{ $producto->descripcion }}</p>
                         <p>Precio</p>
-                        <button id="botonInverso"><a href="/preguntas/{{ $producto->productoID }}">Ver preguntas</a></button>
+                        <a class="boton" href="/preguntas/{{ $producto->productoID }}">Ver preguntas</a>
                     </div>
                 </div>
             @endforeach
         </div>
     @endisset
-    <button id="botonInverso" class="pafuera"><a href="/salir">Salir pa fuera</a></button>
+    <a class="boton pafuera" href="/salir">Salir pa fuera</a>
 @endsection

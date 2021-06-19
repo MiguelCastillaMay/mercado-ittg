@@ -35,6 +35,11 @@
         margin-right: auto;
         margin-left: auto;
     }
+    #botones {
+        flex-wrap: wrap;
+        text-align: center;
+        justify-content: space-evenly;
+    }
 </style>
 
 @section('navBar')
@@ -67,12 +72,14 @@
                 <p id="nombre">{{ $usuario->nombre }} {{ $usuario->a_paterno }} {{ $usuario->a_materno }}</p>
                 <p>{{ $usuario->correo }}</p>
                 <p>{{ $usuario->rol }}</p>
-                <a class="boton" href="/usuario/edit/{{ $usuario->usuarioID }}">Editar perfil</a>
-                <a class="boton" href="/productos/usuario/{{ $usuario->usuarioID }}">Ver mis productos</a>
-                <a class="boton" href="/propuestas/usuario/{{ $usuario->usuarioID }}">Ver mis propuestas</a>
-                <a class="boton" href="/producto/create">Agregar un producto</a>
-                <a class="boton" href="/usuario/{{ $usuario->usuarioID }}/compras" class="boton">Mis compras</a>
-                <a class="boton" href="/usuario/{{ $usuario->usuarioID }}/ventas" class="boton">Mis ventas</a>
+                <div id="botones">
+                    <a class="boton caja" href="/usuario/edit/{{ $usuario->usuarioID }}">Editar perfil</a>
+                    <a class="boton caja" href="/productos/usuario/{{ $usuario->usuarioID }}">Ver mis productos</a>
+                    <a class="boton caja" href="/propuestas/usuario/{{ $usuario->usuarioID }}">Ver mis propuestas</a>
+                    <a class="boton caja" href="/producto/create">Agregar un producto</a>
+                    <a class="boton caja" href="/usuario/{{ $usuario->usuarioID }}/compras" class="boton">Mis compras</a>
+                    <a class="boton caja" href="/usuario/{{ $usuario->usuarioID }}/ventas" class="boton">Mis ventas</a>
+                </div>
             </div>
         </div>
     @elseif ($usuarioAuth->rol == 'Supervisor')
