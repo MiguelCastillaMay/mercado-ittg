@@ -29,7 +29,7 @@ class UsuarioObserver
         $registro = Bitacora::create([
             'quien' => $this->usuario,
             'accion' => 'Creó cuenta',
-            'que' => request()->ip()
+            'que' => $usuario->toJson()
         ]);
     }
 
@@ -44,7 +44,7 @@ class UsuarioObserver
         $registro = Bitacora::create([
             'quien' => $this->usuario,
             'accion' => 'Modificó datos',
-            'que' => request()->ip()
+            'que' => $usuario->toJson()
         ]);
     }
 
@@ -59,7 +59,7 @@ class UsuarioObserver
         $registro = Bitacora::create([
             'quien' => $this->usuario,
             'accion' => 'Eliminó usuario',
-            'que' => request()->ip()
+            'que' => $usuario->toJson()
         ]);
     }
 

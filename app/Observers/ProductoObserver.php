@@ -29,7 +29,7 @@ class ProductoObserver
         $registro = Bitacora::create([
             'quien' => $this->usuario,
             'accion' => 'Creó producto',
-            'que' => request()->ip()
+            'que' => $producto->toJson()
         ]);
     }
 
