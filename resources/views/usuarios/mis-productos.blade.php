@@ -31,6 +31,10 @@
         margin-right: auto;
         margin-left: auto;
     }
+    img {
+        height: max-content;
+        width: 35%;
+    }
 </style>
 
 @section('navBar')

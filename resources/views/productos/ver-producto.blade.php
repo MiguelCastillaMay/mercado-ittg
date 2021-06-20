@@ -47,7 +47,7 @@
         font-weight: 100;
     }
     img {
-        width: 40%;
+        width: 35%;
         height: max-content;
     }
     .respuesta > p {

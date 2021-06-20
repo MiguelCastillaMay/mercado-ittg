@@ -9,6 +9,10 @@
         justify-content: center;
         margin-bottom: 40px;
     }
+    img {
+        height: max-content;
+        width: 35%;
+    }
 </style>
 
 @section('navBar')

@@ -34,6 +34,13 @@
     #botonInverso {
         font-weight: 100;
     }
+    img {
+        height: max-content;
+        width: 35%;
+    }
+    form {
+        display: inline;
+    }
 </style>
 
 @section('navBar')
@@ -65,16 +72,16 @@
                             <p>Estado: Aceptado</p>
                         @elseif ($propuesta->activo==0 and $propuesta->rechazado == 0)
                             <p>Estado: En espera</p>
+                            <a class="boton" href="/producto/edit/{{ $propuesta->productoID }}">Editar</a>
+                            <form action="/producto/delete/{{ $propuesta->productoID }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" id="botonInverso">Eliminar</button>
+                            </form>
                         @elseif ($propuesta->rechazado == 1)
                             <p>Estado: Rechazado</p>
                             <p>Razón de rechazo: {{ $propuesta->razon }}</P>
                         @endif
-                        <a class="boton" href="/producto/edit/{{ $propuesta->productoID }}">Editar</a>
-                        <form action="/producto/delete/{{ $propuesta->productoID }}" method="post">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" id="botonInverso">Eliminar</button>
-                        </form>
                     </div>
                 </div>
             @endforeach

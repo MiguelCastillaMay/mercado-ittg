@@ -32,7 +32,7 @@
         margin-left: auto;
     }
     img {
-        width: 30%;
+        width: 35%;
         height: max-content;
     }
 </style>
