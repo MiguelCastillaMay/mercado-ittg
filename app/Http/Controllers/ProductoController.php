@@ -6,11 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Categoria;
 use App\Models\Venta;
+use App\Models\Usuario;
 use App\Models\DetallesVenta;
 use App\Models\Pregunta;
+use App\Mail\Compra;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ProductoController extends Controller
 {
@@ -226,6 +229,9 @@ class ProductoController extends Controller
             $producto = Producto::find($id);
             $producto->cantidad -= $request->input('cantidad');
             $producto->save();
+
+            $vendedor = Usuario::find($producto->usuarioID);
+            Mail::to($vendedor->correo)->send(new Compra($producto, $usuario, $cantidad, $total));
 
             return redirect()->back()->with('mensaje', 'Compra realizada!');
         }
