@@ -33,6 +33,10 @@
     .pregunta > p {
         margin-top: 21px;
         margin-left: 5px;
+        margin-bottom: 8px;
+    }
+    .pregunta > h3 {
+        margin-bottom: 10.72px;
     }
     #mensaje {
         width: fit-content;
@@ -41,6 +45,13 @@
     }
     #botonInverso {
         font-weight: 100;
+    }
+    img {
+        width: 40%;
+        height: max-content;
+    }
+    .respuesta > p {
+        margin-top: 0px;
     }
 </style>
 
@@ -79,7 +90,9 @@
                 <h1>{{ $producto->nombre }}</h1>
                 <p>{{ $producto->descripcion }}</p>
                 <p>${{ $producto->precio }} MXN C/U</p>
-                @if ($producto->usuarioID != Auth::User()->usuarioID)
+                @if (is_null($usuarioAuth))
+                    <h3>Inicie sesión para poder comprar.</h3>
+                @elseif($producto->usuarioID != Auth::User()->usuarioID)
                     <form action="/producto/comprar/{{ $producto->productoID }}" method="post">
                         @csrf
                         <input class="cantidad" type="number" id="cantidad" name="cantidad" value="1" min="1" max="{{ $producto->cantidad }}">
@@ -109,7 +122,7 @@
                     <h3>{{ $pregunta->pregunta }}</h3>
                     <p>- {{ $pregunta->pregunta_fecha }}</p>
                 </div>
-                <div>
+                <div class="respuesta">
                     @if ($pregunta->respuesta)
                         <p>{{ $pregunta->respuesta }}</p>
                     @endif

@@ -31,6 +31,10 @@
         margin-right: auto;
         margin-left: auto;
     }
+    img {
+        width: 30%;
+        height: max-content;
+    }
 </style>
 
 @php

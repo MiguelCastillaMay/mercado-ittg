@@ -9,6 +9,13 @@
         margin-right: auto;
         margin-left: auto;
     }
+    .correo {
+        border-style: solid;
+        border-color: #1e212d;
+        border-radius: 10px;
+        margin: 15px;
+        padding: 15px;
+    }
 </style>
 
 @section('contenido')
