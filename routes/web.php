@@ -109,3 +109,5 @@ Route::post('pregunta/{producto_id}', 'PreguntaController@store');
 Route::post('responder/{pregunta_id}', 'RespuestaController@responder');
 
 Route::put('rating/{venta_id}', 'VentaController@rating');
+
+Route::post('evidencia/{venta_id}', 'VentaController@evidencia');
