@@ -269,12 +269,14 @@ class ProductoController extends Controller
     {
         $compras = DB::select('
             SELECT productos.nombre, productos.descripcion, productos.imagen, productos.precio, 
-                detalles_ventas.cantidad, ventas.total, ventas.fecha, ventas.ventaID
+                detalles_ventas.cantidad, ventas.total, ventas.fecha, ventas.ventaID, pagos.evidencia
             FROM productos
             LEFT JOIN detalles_ventas
                 ON productos.productoID = detalles_ventas.productoID
             LEFT JOIN ventas
                 ON detalles_ventas.ventaID = ventas.ventaID
+            LEFT JOIN pagos
+                ON ventas.ventaID = pagos.ventaID
             WHERE detalles_ventas.compradorID = ?', [$usuarioID]
         );
         return view('usuarios.mis-compras', compact('compras'));
