@@ -5,18 +5,30 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Venta;
+use App\Models\Pagos;
 use Redirect;
 
 class VentaController extends Controller
 {
-    public function rating($id, Request $request)
+    public function rating($ventaID, Request $request)
     {
        $rating = $request->input('Calificar');
-       Venta::where('ventaID', $id)->update(['calificacion' => $rating]);
+       Venta::where('ventaID', $ventaID)->update(['calificacion' => $rating]);
        return redirect()->back();
-
     }
 
+    public function evidencia(Request $request, $ventaID)
+    {
+        if(is_null($request->file('evidencia'))) {
+            return redirect()->back()->with('mensaje', 'Por favor, agregue una evidencia de pago.');
+        } else {
+            $path = $request->file('evidencia')->store('evidencia', 'public');
+            $pago = new Pagos();
+            $pago->ventaID = $ventaID;
+            $pago->evidencia = $path;
+            $pago->save();
 
-
+            return redirect()->back()->with('mensaje', '¡Se ha enviado exitosamente la evidencia!');
+        }
+    }
 }
