@@ -18,6 +18,8 @@ class Pagos extends Migration
             $table->unsignedBigInteger('ventaID');
             $table->foreign('ventaID')->references('ventaID')->on('ventas');
             $table->longText('evidencia');
+            $table->boolean('aprobado');
+            $table->boolean('entregado');
         });
     }
 

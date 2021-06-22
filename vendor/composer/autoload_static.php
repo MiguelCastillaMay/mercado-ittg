@@ -529,6 +529,7 @@ class ComposerStaticInit330ee304d94659055bcac30fb4db232f
         'App\\Models\\Bitacora' => __DIR__ . '/../..' . '/app/Models/Bitacora.php',
         'App\\Models\\Categoria' => __DIR__ . '/../..' . '/app/Models/Categoria.php',
         'App\\Models\\DetallesVenta' => __DIR__ . '/../..' . '/app/Models/DetallesVenta.php',
+        'App\\Models\\Pagos' => __DIR__ . '/../..' . '/app/Models/Pagos.php',
         'App\\Models\\Pregunta' => __DIR__ . '/../..' . '/app/Models/Pregunta.php',
         'App\\Models\\Producto' => __DIR__ . '/../..' . '/app/Models/Producto.php',
         'App\\Models\\Propuesta' => __DIR__ . '/../..' . '/app/Models/Propuesta.php',

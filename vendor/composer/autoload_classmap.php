@@ -35,6 +35,7 @@ return array(
     'App\\Models\\Bitacora' => $baseDir . '/app/Models/Bitacora.php',
     'App\\Models\\Categoria' => $baseDir . '/app/Models/Categoria.php',
     'App\\Models\\DetallesVenta' => $baseDir . '/app/Models/DetallesVenta.php',
+    'App\\Models\\Pagos' => $baseDir . '/app/Models/Pagos.php',
     'App\\Models\\Pregunta' => $baseDir . '/app/Models/Pregunta.php',
     'App\\Models\\Producto' => $baseDir . '/app/Models/Producto.php',
     'App\\Models\\Propuesta' => $baseDir . '/app/Models/Propuesta.php',
