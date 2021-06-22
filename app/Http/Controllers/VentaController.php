@@ -26,6 +26,8 @@ class VentaController extends Controller
             $pago = new Pagos();
             $pago->ventaID = $ventaID;
             $pago->evidencia = $path;
+            $pago->aprobado = 0;
+            $pago->entregado = 0;
             $pago->save();
 
             return redirect()->back()->with('mensaje', '¡Se ha enviado exitosamente la evidencia!');
