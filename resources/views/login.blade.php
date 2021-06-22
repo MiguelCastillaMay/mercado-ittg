@@ -2,6 +2,30 @@
 
 @section('title', 'Inicio de sesión')
 
+<style>
+    a.boton {
+        -webkit-appearance: button;
+        -moz-appearance: button;
+        appearance: button;
+        background-color: #1e212d;
+        border-style: solid;
+        border-color: #1e212d;
+        font-size: 25px;
+        padding: 10px;
+        border-radius: 15px;
+        color: #f0f8ff;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        font-family: "Montserrat", sans-serif;
+        margin-bottom: 10px;
+    }
+    
+    a.boton:hover {
+        background-color: #f0f8ff;
+        color: #1e212d;
+    }
+</style>
+
 @section('contenido')
     <div id="cuadro">
         <h1>Bienvenido</h1>
@@ -22,8 +46,8 @@
                 </div>
             </div>
             <input type="submit" value="Ingresar" id="botonInverso">
-            <button id="botonInverso"><a href="/registro">Registrarte</a></button>
+            <a class="boton" href="/registro">Registrarte</a>
         </form>
-        <button id="botonInverso"><a href="/">Olvidé mi contraseña</a></button>
+        <a class="boton" href="/">Olvidé mi contraseña</a>
     </div>
 @endsection
