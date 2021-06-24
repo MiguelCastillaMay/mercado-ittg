@@ -51,6 +51,7 @@
         margin-right: auto;
         margin-left: auto;
         color: #1e212d;
+        margin-top: -10.080px;
     }
     img {
         height: max-content;
@@ -66,8 +67,8 @@
         <h1>Mercado ITTG</h1>
         <ul>
             <li><a href="/contador">Menú</a></li>
-            <li><a href="/validar-pagos">Validar pagos</a></li>
-            <li><a href="/entregar-pagos">Entregar pagos</a></li>
+            <li><a href="/validar-pagos/0">Validar pagos</a></li>
+            <li><a href="/entregar-pagos/1">Entregar pagos</a></li>
         </ul>
     </div>
 @endsection
