@@ -46,34 +46,53 @@
     #botones {
         padding-top: 10px;
     }
+    h2 {
+        width: fit-content;
+        margin-right: auto;
+        margin-left: auto;
+        color: #1e212d;
+    }
+    img {
+        height: max-content;
+    }
+    .datosProducto > p {
+        margin-bottom: 10px;
+        margin-top: 0px;
+    }
 </style>
 
 @section('navBar')
     <div class="menuBar">
         <h1>Mercado ITTG</h1>
+        <ul>
+            <li><a href="/contador">Menú</a></li>
+            <li><a href="/validar-pagos">Validar pagos</a></li>
+            <li><a href="/entregar-pagos">Entregar pagos</a></li>
+        </ul>
     </div>
 @endsection
     
 @section('contenido')
     @if (session('mensaje'))
-        {{ session('mensaje') }}
+        <h2>{{ session('mensaje') }}</h2>
     @endif
-    @isset($pagos)
         <div class="catalogo">
-            @foreach ($pagos as $pago)
-                @if ($pago->aprobado == 0)
+            @forelse ($pagos as $pago)
                     <div class="producto">
-                        {{-- <img src="{{ url('storage/'.$pago->evidencia) }}"> --}}
+                        <img src="{{ url('storage/'.$pago->evidencia) }}">
                         <div class="datosProducto">
-                            <h1>Nombre del producto{{-- {{ $producto->nombre }}--}}</h1> 
-                            <p>Descripción{{-- {{ $producto->descripcion }} --}}</p>
-                            <p>$0.00{{-- {{ $producto->precio }} --}}MXN C/U</p> 
-                            <a class="boton" href="/validarPago/{{ $pago->pagoID }}">Validar pago</a>
+                            <h2>Detalles de la venta</h2>
+                            <p>{{ $pago->nombre }}</p>
+                            <p>Vendido por: {{ $pago->vendedor }}</p>
+                            <p>Cantidad: {{ $pago->cantidad }}</p>
+                            <p>Precio: ${{ $pago->precio }} MXN C/U</p>
+                            <p>Total: {{ $pago->total }}</p>
+                            <a class="boton" href="/pago/validar/{{ $pago->pagoID }}">Validar pago</a>
                         </div>
                     </div>
-                @endif
-            @endforeach
+            @empty
+            <h2>No hay pagos pendientes por validar.</h2>
+            @endforelse
         </div>
-    @endisset
     <a class="boton pafuera" href="/salir">Salir pa fuera</a>
 @endsection

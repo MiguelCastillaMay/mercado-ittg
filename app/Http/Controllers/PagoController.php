@@ -13,29 +13,24 @@ use Illuminate\Support\Facades\DB;
 class PagoController extends Controller
 {
     public function index() {
-        $pagos = Pagos::all();
+
+        $pagos = DB::select('SELECT pagos.evidencia, pagos.pagoID, productos.nombre, productos.descripcion, productos.precio, detalles_ventas.cantidad, ventas.total, usuarios.nombre as vendedor 
+        FROM productos
+        JOIN detalles_ventas ON detalles_ventas.productoID = productos.productoID
+        JOIN ventas ON ventas.ventaID = detalles_ventas.ventaID 
+        JOIN pagos ON pagos.ventaID = ventas.ventaID 
+        JOIN usuarios ON usuarios.usuarioID = productos.usuarioID 
+        WHERE pagos.aprobado = ?', [0]);
         
         return view('pagos.ver', compact('pagos'));
     }
 
     public function validar($id) {
         $pago = Pagos::find($id);
-        return view('pagos.validar-pago', compact('pago'));
-    }
 
-    public function validacion($id) {
-        $pago = Pagos::find($id);
-        //es broma pero si quieres no es broma
-        //hice esta basura porque pues, no jodas, es solo un dato el que se cambia y no conozco mejores maneras
-        //perdóname dios por ser tan horny
-        $pago->pagoID = $pago->pagoID;
-        $pago->ventaID = $pago->ventaID;
-        $pago->evidencia = $pago->evidencia;
         $pago->aprobado = "1";
-        $pago->entregado = $pago->entregado;
-
         $pago->save();        
 
-        return view('contador');
+        return redirect()->back()->with('mensaje', 'Pago validado correctamente! :)');
     }
 }
