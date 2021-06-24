@@ -119,5 +119,8 @@ Route::post('evidencia/{venta_id}', 'VentaController@evidencia');
 Route::post('/correo/check', 'EmailAvailable@check');
 
 // Basura de erick
-Route::get('validar-pagos','PagoController@index');
+Route::get('validar-pagos/{opc}','PagoController@index');
 Route::get('pago/validar/{pago_id}','PagoController@validar');
+
+Route::get('entregar-pagos/{opc}', 'PagoController@index');
+Route::put('entregar-pagos/{usuarioID}', 'PagoController@entregar');
