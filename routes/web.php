@@ -38,6 +38,10 @@ Route::get('revisor' ,function() {
     return view('revisor');
 });
 
+Route::get('contador' ,function() {
+    return view('contador');
+});
+
 Route::get('cliente', function() {
     $categorias = Categoria::all();
     $usuario = Auth::User();
@@ -113,3 +117,7 @@ Route::put('rating/{venta_id}', 'VentaController@rating');
 Route::post('evidencia/{venta_id}', 'VentaController@evidencia');
 
 Route::post('/correo/check', 'EmailAvailable@check');
+
+// Basura de erick
+Route::get('validar-pagos','PagoController@index');
+Route::get('pago/validar/{pago_id}','PagoController@validar');
