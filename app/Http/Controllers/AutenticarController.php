@@ -34,6 +34,10 @@ class AutenticarController extends Controller
                         return redirect('/revisor');
                         break;
 
+                    case 'Contador':
+                        return redirect('/contador');
+                        break;
+
                     default:
                         return view('errorLogin');
                         break;
