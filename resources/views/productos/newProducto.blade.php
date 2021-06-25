@@ -28,9 +28,21 @@
         </ul>
     </div>
 @endsection
+
+<style>
+    h2 {
+        color: #1e212d;
+        width: fit-content;
+        margin-right: auto;
+        margin-left: auto;
+    }
+</style>
     
 @section('contenido')
-<div id="cuadro">
+@if (session('error'))
+    <h2>{{ session('error') }}</h2>
+@endif
+<div id="cuadro" style="margin-top: 40px">
     <h1>Agregar un producto nuevo</h1>
     <form action="/producto/store" method="post" enctype="multipart/form-data">
         @csrf

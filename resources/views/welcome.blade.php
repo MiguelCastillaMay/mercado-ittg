@@ -35,6 +35,12 @@
         width: 35%;
         height: max-content;
     }
+    h2 {
+        color: #1e212d;
+        width: fit-content;
+        margin-right: auto;
+        margin-left: auto;
+    }
 </style>
 
 @php
@@ -67,7 +73,7 @@
     
 @section('contenido')
     @if (session('mensaje'))
-        <p class="info">{{ session('mensaje') }}</p>
+        <h2>{{ session('mensaje') }}</h2>
     @endif
     @if (is_null($usuario) or $usuario->rol == 'Cliente')
         @isset($productos)

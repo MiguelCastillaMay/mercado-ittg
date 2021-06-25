@@ -46,6 +46,10 @@
     form > div > #evidencia {
         color: #1e212d;
     }
+    #mensaje {
+        margin-top: 19.920px;
+        margin-bottom: 40px;
+    }
 </style>
 
 
@@ -66,7 +70,7 @@
 
 @section('contenido')
     @if (session('mensaje'))
-        <h2>{{ session('mensaje') }}</h2>
+        <h2 id="mensaje">{{ session('mensaje') }}</h2>
     @endif
     <div class="catalogo">
         @forelse ($compras as $compra)
