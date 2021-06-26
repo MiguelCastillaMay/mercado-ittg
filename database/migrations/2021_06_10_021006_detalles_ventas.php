@@ -15,9 +15,12 @@ class DetallesVentas extends Migration
     {
         Schema::create('detalles_ventas', function (Blueprint $table) {
             $table->id('id');
-            $table->foreignId('productoID');
-            $table->foreignId('compradorID');
-            $table->foreignId('ventaID');
+            $table->unsignedBigInteger('productoID');
+            $table->foreign('productoID')->references('productoID')->on('productos');
+            $table->unsignedBigInteger('compradorID');
+            $table->foreign('compradorID')->references('usuarioID')->on('usuarios');
+            $table->unsignedBigInteger('ventaID');
+            $table->foreign('ventaID')->references('ventaID')->on('ventas');
             $table->integer('cantidad');
             $table->integer('precio');
         });

@@ -15,9 +15,11 @@ class Ventas extends Migration
     {
         Schema::create('ventas', function (Blueprint $table) {
             $table->id('ventaID');
-            $table->foreignId('usuarioID');
+            $table->unsignedBigInteger('usuarioID');
+            $table->foreign('usuarioID')->references('usuarioID')->on('usuarios');
             $table->timestamp('fecha', $precision = 0);
             $table->integer('total');
+            $table->integer('calificación');
         });
     }
 

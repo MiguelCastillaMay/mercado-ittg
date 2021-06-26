@@ -15,8 +15,10 @@ class Respuestas extends Migration
     {
         Schema::create('respuestas', function (Blueprint $table) {
             $table->id('respuestaID');
-            $table->foreignId('preguntaID');
+            $table->unsignedBigInteger('preguntaID');
+            $table->foreign('preguntaID')->references('preguntaID')->on('preguntas');
             $table->string('respuesta', 300);
+            $table->timestamps($precision = 0);
         });
     }
 

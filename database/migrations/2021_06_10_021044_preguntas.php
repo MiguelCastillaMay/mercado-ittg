@@ -15,9 +15,12 @@ class Preguntas extends Migration
     {
         Schema::create('preguntas', function (Blueprint $table) {
             $table->id('preguntaID');
-            $table->foreignId('productoID');
-            $table->foreignId('compradorID');
+            $table->unsignedBigInteger('productoID');
+            $table->foreign('productoID')->references('productoID')->on('productos');
+            $table->unsignedBigInteger('compradorID');
+            $table->foreign('compradorID')->references('usuarioID')->on('usuarios');
             $table->string('pregunta', 300);
+            $table->timestamps($precision = 0);
         });
     }
 
