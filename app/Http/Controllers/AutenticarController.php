@@ -11,8 +11,8 @@ use App\Models\Usuario;
 class AutenticarController extends Controller
 {
     public function validar(Request $request) {
-        $nombre = $request->input('usuario');
-        $usuario = Usuario::where('nombre', $nombre)->first();
+        $correo = $request->input('correo');
+        $usuario = Usuario::where('correo', $correo)->first();
         if(is_null($usuario))
             return redirect('/login')->with('error', 'Datos incorrectos');
         else {

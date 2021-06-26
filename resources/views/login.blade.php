@@ -40,11 +40,11 @@
         <form action="/validar" method="get">
             <div id="form">
                 <div>
-                    <p>Usuario: </p>
+                    <p>Correo: </p>
                     <p>Contraseña: </p>
                 </div>
                 <div>
-                    <input type="text" name="usuario">
+                    <input type="text" name="correo">
                     <input type="password" name="contra">
                 </div>
             </div>
