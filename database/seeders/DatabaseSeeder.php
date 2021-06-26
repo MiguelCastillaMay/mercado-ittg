@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,7 +23,7 @@ class DatabaseSeeder extends Seeder
             'imagen' => 'archivo.jpg',
             'rol' => 'Supervisor',
             'activo' => 1,
-            'password'=> '1234',
+            'password'=> Hash::make('1234'),
         ]);
     }
 }
