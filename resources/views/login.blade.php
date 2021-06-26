@@ -51,6 +51,5 @@
             <input type="submit" value="Ingresar" id="botonInverso">
             <a class="boton" href="/registro">Registrarte</a>
         </form>
-        <a class="boton" href="/">Olvidé mi contraseña</a>
     </div>
 @endsection

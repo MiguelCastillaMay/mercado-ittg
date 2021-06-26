@@ -88,7 +88,7 @@
         @if(is_null($usuario) or $usuario->rol == 'Cliente')
             @isset($categorias)
                 <div class="catalogo">
-                    @foreach ($categorias as $categoria)
+                    @forelse ($categorias as $categoria)
                         <div class="producto">
                             <img src="{{ url('storage/'.$categoria->imagen) }}" alt="{{ $categoria->nombre }}">
                             <div class="datosProducto">
@@ -97,7 +97,9 @@
                                 <a class="boton" href="/productos/categoria/{{ $categoria->categoriaID }}">Ver productos</a>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <h2>Oh oh, no hay categorías :(</h2>
+                    @endforelse
                 </div>
             @endisset
         @elseif ($usuario->rol == 'Supervisor' or $usuario->rol == 'Revisor')

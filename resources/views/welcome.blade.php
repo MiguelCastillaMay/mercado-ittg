@@ -94,7 +94,7 @@
     @elseif ($usuario->rol == 'Supervisor' or $usuario->rol == 'Revisor')
         @isset($productos)
             <div class="catalogo">
-                @foreach ($productos as $producto)
+                @forelse ($productos as $producto)
                     <div class="producto">
                         <img src="{{ url('storage/'.$producto->imagen) }}" alt="{{ $producto->nombre }}">
                         <div class="datosProducto">
@@ -103,7 +103,9 @@
                             <p>Precio</p>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <h2>Oh oh, no hay productos :(</h2>
+                @endforelse
             </div>
         @endisset
     @endif
