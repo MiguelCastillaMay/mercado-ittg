@@ -82,7 +82,7 @@ Route::post('propuesta/store', 'PropuestasController@store');
 Route::get('propuesta/aceptar/{producto_id}', 'PropuestasController@aceptar');
 Route::put('propuesta/rechazar/{producto_id}', 'PropuestasController@rechazo');
 
-Route::get('propuestas/usuario/{usuario_id}', 'ProductoController@misPropuestas');
+Route::get('propuestas/usuario/{usuario_id}', 'ProductoController@misPropuestas')->name('propuestas');
 
 Route::get('usuarios', 'UsuarioController@index');
 Route::get('usuario/create', 'UsuarioController@create');

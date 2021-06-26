@@ -133,7 +133,8 @@ class ProductoController extends Controller
     public function edit($id)
     {
         $producto = Producto::find($id);
-        return view('productos.editar', compact('producto'));
+        $categorias = Categoria::all();
+        return view('productos.editar', compact('producto', 'categorias'));
     }
 
     /**
@@ -149,11 +150,14 @@ class ProductoController extends Controller
         if ($producto->activo == 0){
             $datos = $request->all();
 
-            if (is_null($datos['nombre']) or is_null($datos['desc']))
+            if (is_null($datos['nombre']) or is_null($datos['desc']) or ($datos['categoria'] == 0) or is_null($datos['precio']) or is_null($datos['cantidad']))
                 return redirect()->back()->with('error', 'Por favor llene todos los campos.');            
 
             $producto->nombre = $datos['nombre'];
             $producto->descripcion = $datos['desc'];
+            $producto->categoriaID = $datos['categoria'];
+            $producto->precio = $datos['precio'];
+            $producto->cantidad = $datos['cantidad'];
 
             if ($request->hasFile('imagen'))
             {
@@ -161,10 +165,10 @@ class ProductoController extends Controller
                 $producto->imagen = $path;
             }
             
-            $usuario_id = Auth::User()->usuarioID;
             $producto->save();
+            $usuarioID = Auth::User()->usuarioID;
 
-            return redirect('/');
+            return redirect()->route('propuestas', ['usuario_id' => $usuarioID]);
         } else
             return redirect()->back();
     }
