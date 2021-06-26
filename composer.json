@@ -44,7 +44,8 @@
             "@php artisan key:generate --ansi"
         ],
         "post-install-cmd": [
-            "ln -sr storage/app/public public/storage"
+            "php artisan clear-compiled",
+            "chmod -R 777 public/"
         ]
     },
     "extra": {
