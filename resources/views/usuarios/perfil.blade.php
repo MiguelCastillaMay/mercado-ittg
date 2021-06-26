@@ -75,7 +75,7 @@
             @if ($usuarioAuth->rol == 'Cliente')
                 <li><form action="/search" method="get" role="search">
                     <input type="text" name="find" placeholder="Buscar productos">
-                    <button type="submit">Buscar</button>
+                    <input  type="submit" value="Buscar" id="botonInverso">
                 </form></li>
             @elseif ($usuarioAuth->rol == 'Supervisor' or $usuarioAuth->rol == 'Revisor')
                 <li><a href="/usuarios">Usuarios</a></li>

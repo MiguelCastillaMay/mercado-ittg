@@ -10,7 +10,7 @@
             <li><a href="#">Productos</a></li>
             <li><form action="/search" method="get" role="search">
                 <input type="text" name="find" placeholder="Buscar productos">
-                <button type="submit">Buscar</button>
+                <input  type="submit" value="Buscar" id="botonInverso">
             </form></li>
             <li><a href="/usuario/show/{{ $usuario->usuarioID }}">Mi perfil</a></li>
         </ul>

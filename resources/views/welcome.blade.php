@@ -56,7 +56,7 @@
             @if (is_null($usuario) or $usuario->rol == 'Cliente')
                 <li><form action="/search" method="get" role="search">
                     <input type="text" name="find" placeholder="Buscar productos">
-                    <button type="submit">Buscar</button>
+                    <input  type="submit" value="Buscar" id="botonInverso">
                 </form></li>
             @elseif ($usuario->rol == 'Supervisor' or $usuario->rol == 'Revisor')
                 <li><a href="/productos">Bitácora</a></li>

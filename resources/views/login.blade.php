@@ -24,6 +24,9 @@
         background-color: #f0f8ff;
         color: #1e212d;
     }
+    input[type=text], input[type=password] {
+        font-size: 20px;
+    }
 </style>
 
 @section('contenido')

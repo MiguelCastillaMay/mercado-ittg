@@ -45,7 +45,7 @@
             <li><a href="/productos">Productos</a></li>
             <li><form action="/search" method="get" role="search">
                 <input type="text" name="find" placeholder="Buscar productos">
-                <button type="submit">Buscar</button>
+                <input  type="submit" value="Buscar" id="botonInverso">
             </form></li>
             <li><a href="/usuario/show/{{ Auth::User()->usuarioID }}">Mi perfil</a></li>
         </ul>

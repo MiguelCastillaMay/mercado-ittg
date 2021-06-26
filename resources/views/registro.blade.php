@@ -10,7 +10,7 @@
             <li><a href="/productos">Productos</a></li>
             <li><form action="/search" method="get" role="search">
                 <input type="text" name="find" placeholder="Buscar productos">
-                <button type="submit">Buscar</button>
+                <input  type="submit" value="Buscar" id="botonInverso">
             </form></li>
             <li><a href="/login">Iniciar sesión</a></li>
         </ul>
@@ -23,25 +23,30 @@
         font-size: 1.7em;
         margin-bottom: 15px;
     }
-    .cuadro {
-        padding-left: 19.920px;
-        padding-right: 19.920px;
-        background-color: aliceblue;
-        border-color: #1e212d;
-        border-style: solid;
-        border-radius: 30px;
-        border-width: 5px;
-        width: fit-content;
-        margin-right: auto;
-        margin-left: auto;
-    }
-    .nombre, .passwords{
+    .passwords{
         display: flex;
         justify-content: space-around;
     }
-    #apellidoP{
-        margin-right: 30px;
+    .nombre {
+        display: flex;
+    }
+    #apellidoP {
         margin-left: 30px;
+        margin-right: 30px;
+    }
+    #nombre, #apellidoP, #apellidoM {
+        width: 33%;
+    }
+    input[type=text], input[type=number], input[type=file], input[type=password] {
+        border-radius: 5px;
+        font-size: 17px;
+        border-width: 1px;
+        color: #1e212d;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 400;
+    }
+    input[type=file] {
+        border-radius: 0px;
     }
     #nombre > input, #apellidoP > input,
     #apellidoM > input {
@@ -86,12 +91,20 @@
         border-radius: 5px;
         border: 2px solid #1cc25c;
     }
-    #mensaje {
-        width: fit-content;
-        margin-right: auto;
-        margin-left: auto;
-        margin-top: -17.424px;
-        margin-bottom: 22.576px;
+    input[type=text], input[type=password] {
+        border-radius: 5px;
+        font-size: 17px;
+    }
+    h2.titulo {
+        display: flex;
+        justify-content: center;
+        font-size: 2em;
+        font-weight: 300;
+        margin: 0px;
+    }
+    h2#mensaje {
+        display: flex;
+        justify-content: center;
     }
 </style>
 
@@ -99,7 +112,8 @@
 @if (session('error'))
     <h2 id="mensaje">{{ session('error') }}</h2>
 @endif
-    <div class="cuadro">
+    <div class="catalogo">
+        <h2 class="titulo">Registro</h2>
         <form action="/usuario/store" method="post" enctype="multipart/form-data">
             @csrf
             <div class="nombre">
