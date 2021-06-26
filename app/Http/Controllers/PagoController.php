@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Pagos;
 use App\Models\Venta;
 use App\Models\Producto;
+use App\Models\Usuario;
 use Redirect;
 use Illuminate\Support\Facades\DB;
 
@@ -25,21 +26,16 @@ class PagoController extends Controller
 
             return view('pagos.ver', compact('pagos'));
         } elseif ($opc == 1) {
-            $pagos = DB::select('SELECT pagos.evidencia, pagos.entregado, pagos.pagoID, 
-            productos.nombre, productos.descripcion, productos.precio, 
-            detalles_ventas.cantidad, ventas.total, usuarios.usuarioID, usuarios.nombre as vendedor 
-            FROM productos
-            JOIN detalles_ventas ON detalles_ventas.productoID = productos.productoID
-            JOIN ventas ON ventas.ventaID = detalles_ventas.ventaID 
-            JOIN pagos ON pagos.ventaID = ventas.ventaID 
-            JOIN usuarios ON usuarios.usuarioID = productos.usuarioID 
-            WHERE pagos.aprobado = ?', [1]);
+            $vendedores = DB::select('SELECT DISTINCT usuarios.nombre, usuarios.a_paterno, usuarios.a_materno, usuarios.usuarioID   
+                                    FROM usuarios
+                                    JOIN productos ON productos.usuarioID = usuarios.usuarioID
+                                    JOIN detalles_ventas ON detalles_ventas.productoID = productos.productoID
+                                    JOIN ventas ON ventas.ventaID = detalles_ventas.ventaID
+                                    JOIN pagos ON pagos.ventaID = ventas.ventaID
+                                    WHERE pagos.aprobado = 1');
 
-            return view('pagos.entregar', compact('pagos'));
-        }
-        
-        
-        
+            return view('pagos.entregar', compact('vendedores'));
+        }        
     }
 
     public function validar($id) 
@@ -62,6 +58,24 @@ class PagoController extends Controller
                     SET pagos.entregado = 1 
                     WHERE usuarios.usuarioID = ?', [$usuarioID]);
         
-        return redirect()->back()->with('mensaje', 'Pago entregado correctamente :)');
+        return redirect()->back()->with('mensaje', 'Pagos entregados correctamente :)');
+    }
+
+    public function verPagos($usuarioID) 
+    {
+        $vendedor = Usuario::find($usuarioID);
+
+        $pagos = DB::select('SELECT pagos.evidencia, pagos.entregado, pagos.pagoID, 
+            productos.nombre, productos.descripcion, productos.precio, 
+            detalles_ventas.cantidad, ventas.total, ventas.fecha, usuarios.usuarioID, usuarios.nombre as vendedor 
+            FROM productos 
+            JOIN detalles_ventas ON detalles_ventas.productoID = productos.productoID
+            JOIN ventas ON ventas.ventaID = detalles_ventas.ventaID 
+            JOIN pagos ON pagos.ventaID = ventas.ventaID 
+            JOIN usuarios ON usuarios.usuarioID = productos.usuarioID 
+            WHERE pagos.aprobado = 1 AND usuarios.usuarioID = ? 
+            ORDER BY pagos.entregado ASC', [$usuarioID]);
+
+            return view('pagos.ver-pagos', compact('pagos', 'vendedor'));
     }
 }

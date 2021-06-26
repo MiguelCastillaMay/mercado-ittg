@@ -31,7 +31,7 @@
         margin-right: auto;
         margin-left: auto;
     }
-    h2 {
+    h2, p {
         color: #1e212d;
         
     }
@@ -47,6 +47,17 @@
         font-size: 25px;
         font-weight: 500;
     }
+    .nombre {
+        display: flex;
+    }
+    .nombre > h2 {
+        margin-bottom: 10.72px;
+    }
+    .nombre > p {
+        margin-top: 21px;
+        margin-left: 5px;
+        font-size: 20px;
+    }
 </style>
 
 @section('navBar')
@@ -61,26 +72,31 @@
 @endsection
 
 @section('contenido')
-    <div class="catalogo">
-        @forelse ($pagos as $pago)
-            <form action="/entregar-pagos/{{ $pago->usuarioID }}" method="POST">
-                @method('PUT')
-                @csrf
-                <div class="head">
-                    <h2>{{ $pago->vendedor }}</h2>
-                    <input class="boton" type="submit" value="Entregar pagos">
-                </div>
-                <div class="pagos">
-                    @if ($pago->entregado == 0)
-                        <p>{{ $pago->nombre }} - Pendiente</p>
-                    @elseif ($pago->entregado == 1)
-                    <p>{{ $pago->nombre }} - Entregado</p>
+    <div class="catalogo" style="padding-top: 20px;">
+        @foreach ($vendedores as $vendedor)
+        @php
+            $pendientes = count(DB::select('SELECT DISTINCT usuarios.nombre, usuarios.a_paterno, usuarios.a_materno, usuarios.usuarioID, pagos.pagoID, pagos.entregado   
+                                    FROM usuarios
+                                    JOIN productos ON productos.usuarioID = usuarios.usuarioID
+                                    JOIN detalles_ventas ON detalles_ventas.productoID = productos.productoID
+                                    JOIN ventas ON ventas.ventaID = detalles_ventas.ventaID
+                                    JOIN pagos ON pagos.ventaID = ventas.ventaID
+                                    WHERE pagos.aprobado = 1 AND pagos.entregado = 0 AND usuarios.usuarioID = ?', [$vendedor->usuarioID]));
+        @endphp
+            <div class="head">
+                <div class="nombre">
+                    <h2>{{ $vendedor->nombre }} {{ $vendedor->a_paterno }} {{ $vendedor->a_materno }}</h2>
+                    @if ($pendientes > 0)
+                            <p>- Pagos pendintes por entregar</p>
+                        </div>
+                        <a class="boton" href="/ver-pagos/{{ $vendedor->usuarioID }}">Entregar pagos</a>
+                    @else
+                            <p>- No hay pagos pendientes por entregar</p>
+                        </div>
+                        <a class="boton" href="/ver-pagos/{{ $vendedor->usuarioID }}">Ver pagos</a>
                     @endif
-                </div>
-            </form>
-        @empty
-            <h2>Oh oh, no hay pagos.</h2>
-        @endforelse
+            </div>
+        @endforeach
     </div>
     <a class="boton pafuera" href="/salir">Salir pa fuera</a>
 @endsection

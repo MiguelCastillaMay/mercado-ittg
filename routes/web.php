@@ -123,4 +123,5 @@ Route::get('validar-pagos/{opc}','PagoController@index');
 Route::get('pago/validar/{pago_id}','PagoController@validar');
 
 Route::get('entregar-pagos/{opc}', 'PagoController@index');
+Route::get('ver-pagos/{usuarioID}', 'PagoController@verPagos');
 Route::put('entregar-pagos/{usuarioID}', 'PagoController@entregar');
