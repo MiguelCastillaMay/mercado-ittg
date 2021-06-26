@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Venta;
 use App\Models\Pagos;
 use Redirect;
+use Storage;
 
 class VentaController extends Controller
 {
