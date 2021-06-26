@@ -80,7 +80,7 @@
             <div class="catalogo">
                 @foreach ($productos as $producto)
                     <div class="producto">
-                        <img src="{{ url('storage/'.$producto->imagen) }}" alt="{{ $producto->nombre }}">
+                        <img src="{{ $producto->imagen }}" alt="{{ $producto->nombre }}">
                         <div class="datosProducto">
                             <h1>{{ $producto->nombre }}</h1>
                             <p>{{ $producto->descripcion }}</p>
@@ -96,7 +96,7 @@
             <div class="catalogo">
                 @forelse ($productos as $producto)
                     <div class="producto">
-                        <img src="{{ url('storage/'.$producto->imagen) }}" alt="{{ $producto->nombre }}">
+                        <img src="{{ $producto->imagen }}" alt="{{ $producto->nombre }}">
                         <div class="datosProducto">
                             <h1>{{ $producto->nombre }}</h1>
                             <p>{{ $producto->descripcion }}</p>

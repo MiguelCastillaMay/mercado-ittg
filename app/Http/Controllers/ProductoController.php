@@ -71,14 +71,15 @@ class ProductoController extends Controller
             }
             return redirect()->back()->with('error', 'Por favor llene todos los campos.');
         } else {
-            $path = $request->file('imagen')->store('productos', 'public');
+            $path = $request->file('imagen')->store('productos', 's3');
+            $url = Storage::disk('s3')->url($path);
 
             $productoID = DB::table('productos')->insertGetId([
                 'nombre' => $datos['nombre'],
                 'descripcion' => $datos['desc'],
                 'precio' => $datos['precio'],
                 'cantidad' => $datos['cantidad'],
-                'imagen' => $path,
+                'imagen' => $url,
                 'activo' => 0,
                 'categoriaID' => $datos['categoria'],
                 'usuarioID' => $usuarioID
@@ -161,8 +162,9 @@ class ProductoController extends Controller
 
             if ($request->hasFile('imagen'))
             {
-                $path = $request->file('imagen')->store('productos', 'public');
-                $producto->imagen = $path;
+                $path = $request->file('imagen')->store('productos', 's3');
+                $url = Storage::disk('s3')->url($path);
+                $producto->imagen = $url;
             }
             
             $producto->save();

@@ -14,7 +14,7 @@
 
 @section('contenido')
     <div id="cuadro">
-        <img src="{{ url('storage/'.$pago->evidencia) }}">
+        <img src="{{ $pago->evidencia }}">
         <h1>Nombre del producto{{--{{ $pago->nombre }}--}}</h1> 
         <p>Concepto</p>
         <p>No. del pago: {{$pago->pagoID}}</p>

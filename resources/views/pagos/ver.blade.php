@@ -80,7 +80,7 @@
         <div class="catalogo">
             @forelse ($pagos as $pago)
                     <div class="producto">
-                        <img src="{{ url('storage/'.$pago->evidencia) }}">
+                        <img src="{{ $pago->evidencia }}">
                         <div class="datosProducto">
                             <h2>Detalles de la venta</h2>
                             <p>{{ $pago->nombre }}</p>

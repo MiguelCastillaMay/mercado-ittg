@@ -59,8 +59,9 @@ class UsuarioController extends Controller
             if (!isset($datos['rol'])) {
                 $datos['rol'] = 'Cliente';
             }
-            $path = $request->file('imagen')->store('fotos', 'public');
-            $datos['imagen'] = $path;
+            $path = $request->file('imagen')->store('fotos', 's3');
+            $url = Storage::disk('s3')->url($path);
+            $datos['imagen'] = $url;
             $datos['password'] = Hash::make($datos['password']);
             $datos['activo'] = 1;
             $newUser = new Usuario();
@@ -121,11 +122,12 @@ class UsuarioController extends Controller
             $valores['password'] = $usuario->password;
         }
         if ($request->hasFile('imagen')) {
-            $path = $request->file('imagen')->store('fotos', 'public');
-            $valores['imagen'] = $path;
+            $path = $request->file('imagen')->store('fotos', 's3');
+            $url = Storage::disk('s3')->url($path);
+            $valores['imagen'] = $url;
         } else {
-            $path = $usuario->imagen;
-            $valores['imagen'] = $path;
+            $url = $usuario->imagen;
+            $valores['imagen'] = $url;
         }
         $valores['activo'] = 1;
         $usuario->fill($valores);

@@ -22,10 +22,12 @@ class VentaController extends Controller
         if(is_null($request->file('evidencia'))) {
             return redirect()->back()->with('mensaje', 'Por favor, agregue una evidencia de pago.');
         } else {
-            $path = $request->file('evidencia')->store('evidencia', 'public');
+            $path = $request->file('evidencia')->store('evidencia', 's3');
+            $url = Storage::disk('s3')->url($path);
+
             $pago = new Pagos();
             $pago->ventaID = $ventaID;
-            $pago->evidencia = $path;
+            $pago->evidencia = $url;
             $pago->aprobado = 0;
             $pago->entregado = 0;
             $pago->save();

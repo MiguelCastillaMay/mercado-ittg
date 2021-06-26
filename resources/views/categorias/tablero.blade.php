@@ -90,7 +90,7 @@
                 <div class="catalogo">
                     @forelse ($categorias as $categoria)
                         <div class="producto">
-                            <img src="{{ url('storage/'.$categoria->imagen) }}" alt="{{ $categoria->nombre }}">
+                            <img src="{{ $categoria->imagen }}" alt="{{ $categoria->nombre }}">
                             <div class="datosProducto">
                                 <h1>{{ $categoria->nombre }}</h1>
                                 <p>{{ $categoria->descripcion }}</p>

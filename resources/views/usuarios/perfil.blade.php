@@ -88,7 +88,7 @@
 @section('contenido')
     @if ($usuarioAuth->rol == 'Cliente')
         <div id="datosPersonales">
-            <img src="{{ url('storage/'.$usuario->imagen) }}">
+            <img src="{{ $usuario->imagen }}">
             <div>
                 <p id="nombre">{{ $usuario->nombre }} {{ $usuario->a_paterno }} {{ $usuario->a_materno }}</p>
                 <p>{{ $usuario->correo }}</p>
@@ -106,7 +106,7 @@
     @elseif ($usuarioAuth->rol == 'Supervisor')
     <div id="datosPersonales">
         <div>
-            <img src="{{ url('storage/'.$usuario->imagen) }}">
+            <img src="{{ $usuario->imagen }}">
             <a class="boton" href="/usuario/edit/{{ $usuario->usuarioID }}">Editar perfil</a>
         </div>
         <div>

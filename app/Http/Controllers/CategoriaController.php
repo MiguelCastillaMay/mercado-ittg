@@ -36,7 +36,9 @@ class CategoriaController extends Controller
         $categoria = new Categoria();
         $categoria->nombre = $request->input('nombre');
         $categoria->descripcion = $request->input('desc');
-        $categoria->imagen = "archivo.jpg";
+        $path = $request->file('imagen')->store('categorias', 's3');
+        $url = Storage::disk('s3')->url($path);
+        $categoria->imagen = $url;
         $categoria->activa = 1;
         $categoria->save();
 
