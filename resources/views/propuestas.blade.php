@@ -78,7 +78,6 @@
     }
     .producto {
         display: flex;
-        margin-bottom: 10px;
     }
     form {
         margin-bottom: 40px;
@@ -122,7 +121,7 @@
         <div class="catalogo" style="padding-bottom: 40px;">
             <h1 class="titulo">Propuestas</h1>
             @forelse ($propuestas as $propuesta)
-                <div class="producto">
+                <div class="producto" style="margin-bottom: 10px;">
                     <img src="{{ $propuesta->imagen }}">
                     <div class="datosProducto">
                         <h2>{{ $propuesta->nombre }}</h2>
