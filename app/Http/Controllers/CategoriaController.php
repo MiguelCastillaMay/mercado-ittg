@@ -33,18 +33,22 @@ class CategoriaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(Request $request) 
+    {
+        $datos = $request->all();
+        if (is_null($datos['nombre']) or is_null($datos['desc']) or !$request->hasFile('imagen')) {
+            return redirect()->back()->with('error', 'Por favor llene todos los campos.');
+        }
         $categoria = new Categoria();
-        $categoria->nombre = $request->input('nombre');
-        $categoria->descripcion = $request->input('desc');
+        $categoria->nombre = $datos['nombre'];
+        $categoria->descripcion = $datos['desc'];
         $path = $request->file('imagen')->store('categorias', 's3');
+        Storage::disk('s3')->setVisibility($path, 'public');
         $url = Storage::disk('s3')->url($path);
         $categoria->imagen = $url;
         $categoria->activa = 1;
         $categoria->save();
 
-        /*$categoria = $request->input('nombre');
-        CategoriasModel::agregar($categoria);*/
         return redirect('/categoria')->with('mensaje', 'Categoría agregada');
     }
 
@@ -79,10 +83,22 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, $id) {
         $categoria = Categoria::find($id);
-        $categoria->nombre = $request->input('nombre');
-        $categoria->descripcion = $request->input('desc');
-        $categoria->imagen = 'archivo.jpg';
-        $categoria->activa = 1;
+
+        $datos = $request->all();
+
+        if (is_null($datos['nombre']) or is_null($datos['desc'])) {
+            return redirect()->back()->with('error', 'Por favor llene todos los campos.');
+        }
+
+        $categoria->nombre = $datos['nombre'];
+        $categoria->descripcion = $datos['desc'];
+
+        if ($request->hasFile('imagen')) {
+            $path = $request->file('imagen')->store('fotos', 's3');
+            Storage::disk('s3')->setVisibility($path, 'public');
+            $url = Storage::disk('s3')->url($path);
+            $categoria->imagen = $url;
+        }
         $categoria->save();
 
         /*$newCategoria = $request->input('nombre');

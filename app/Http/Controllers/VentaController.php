@@ -24,6 +24,7 @@ class VentaController extends Controller
             return redirect()->back()->with('mensaje', 'Por favor, agregue una evidencia de pago.');
         } else {
             $path = $request->file('evidencia')->store('evidencia', 's3');
+            Storage::disk('s3')->setVisibility($path, 'public');
             $url = Storage::disk('s3')->url($path);
 
             $pago = new Pagos();

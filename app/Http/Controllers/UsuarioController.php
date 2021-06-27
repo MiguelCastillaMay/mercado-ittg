@@ -61,6 +61,7 @@ class UsuarioController extends Controller
                 $datos['rol'] = 'Cliente';
             }
             $path = $request->file('imagen')->store('fotos', 's3');
+            Storage::disk('s3')->setVisibility($path, 'public');
             $url = Storage::disk('s3')->url($path);
             $datos['imagen'] = $url;
             $datos['password'] = Hash::make($datos['password']);
@@ -90,7 +91,9 @@ class UsuarioController extends Controller
             FROM preguntas
             LEFT JOIN productos ON productos.productoID = preguntas.productoID
             LEFT JOIN respuestas ON preguntas.preguntaID = respuestas.preguntaID
+           
             WHERE preguntas.compradorID = ?', [$id]);
+
         return view('usuarios.perfil',compact('usuario', 'ventas', 'productos', 'preguntas'));
     }
 
@@ -124,6 +127,7 @@ class UsuarioController extends Controller
         }
         if ($request->hasFile('imagen')) {
             $path = $request->file('imagen')->store('fotos', 's3');
+            Storage::disk('s3')->setVisibility($path, 'public');
             $url = Storage::disk('s3')->url($path);
             $valores['imagen'] = $url;
         } else {

@@ -73,6 +73,7 @@ class ProductoController extends Controller
             return redirect()->back()->with('error', 'Por favor llene todos los campos.');
         } else {
             $path = $request->file('imagen')->store('productos', 's3');
+            Storage::disk('s3')->setVisibility($path, 'public');
             $url = Storage::disk('s3')->url($path);
 
             $productoID = DB::table('productos')->insertGetId([
@@ -164,6 +165,7 @@ class ProductoController extends Controller
             if ($request->hasFile('imagen'))
             {
                 $path = $request->file('imagen')->store('productos', 's3');
+                Storage::disk('s3')->setVisibility($path, 'public');
                 $url = Storage::disk('s3')->url($path);
                 $producto->imagen = $url;
             }
