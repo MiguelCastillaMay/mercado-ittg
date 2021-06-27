@@ -130,16 +130,16 @@
                             <h2>Cantidad: <span>{{ $propuesta->cantidad }}</span></h2>
                         </div>
                     </div>
+                    <form action="/propuesta/rechazar/{{ $propuesta->productoID }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <textarea name="razon" cols="80" rows="10" placeholder="Agregar una razón del rechazo (Obligatorio)"></textarea>
+                        <div class="botones">
+                            <a class="boton" href="/propuesta/aceptar/{{ $propuesta->productoID }}">Aceptar</a>
+                            <input id="botonInverso" type="submit" value="Rechazar">
+                        </div>
+                    </form>
                 </div>
-                <form action="/propuesta/rechazar/{{ $propuesta->productoID }}" method="post" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
-                    <textarea name="razon" cols="80" rows="10" placeholder="Agregar una razón del rechazo (Obligatorio)"></textarea>
-                    <div class="botones">
-                        <a class="boton" href="/propuesta/aceptar/{{ $propuesta->productoID }}">Aceptar</a>
-                        <input id="botonInverso" type="submit" value="Rechazar">
-                    </div>
-                </form>
             @empty
                 <h2>No hay propuestas</h2>
             @endforelse
