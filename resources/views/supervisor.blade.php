@@ -46,7 +46,6 @@
         <a href="/categoria"><button id="botonInverso">Categorías</button></a>
         <a href="/productos"><button id="botonInverso">Productos</button></a>
         <a href="/bitacora"><button id="botonInverso">Bitácora</button></a>
-        <a href="/transacciones"><button id="botonInverso">Compras y ventas</button></a>
         <a href="/propuestas"><button id="botonInverso">Propuestas</button></a>
         <a href="/infoGeneral"><button id="botonInverso">Información General</button></a>
     </div>

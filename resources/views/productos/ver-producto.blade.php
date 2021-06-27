@@ -3,7 +3,7 @@
 @section('title', $producto->nombre)
 
 @php
-    $usuarioAuth = Auth::User();
+    $usuario = Auth::User();
 @endphp
 <style>
     .datosProducto > form {
@@ -59,20 +59,25 @@
     <div class="menuBar">
         <h1>Mercado ITTG</h1>
         <ul>
-            <li><a href="/categoria">Categorías</a></li>
-            <li><a href="/productos">Productos</a></li>
-            @if (is_null($usuarioAuth) or $usuarioAuth->rol == 'Cliente')
+            @if (is_null($usuario) or $usuario->rol == 'Cliente')
+                <li><a href="/categoria">Categorías</a></li>
+                <li><a href="/productos">Productos</a></li>
                 <li><form action="/search" method="get" role="search">
                     <input type="text" name="find" placeholder="Buscar productos">
                     <input  type="submit" value="Buscar" id="botonInverso">
                 </form></li>
-            @elseif ($usuarioAuth->rol == 'Supervisor' or $usuarioAuth->rol == 'Revisor')
+                @if (is_null($usuario))
+                    <li><a href="/login">Iniciar sesión</a></li>
+                @elseif ($usuario->rol == 'Cliente')
+                    <li><a href="/usuario/show/{{ $usuario->usuarioID }}">Mi perfil</a></li>
+                @endif
+            @elseif($usuario->rol == 'Supervisor' or $usuario->rol == 'Revisor')
+                <li><a href="/supervisor">Menú</a></li>
+                <li><a href="/categoria">Categorías</a></li>
+                <li><a href="/productos">Productos</a></li>
+                <li><a href="/propuestas">Propuestas</a></li>
+                <li><a href="/usuarios">Usuarios</a></li>
                 <li><a href="/productos">Bitácora</a></li>
-            @endif
-            @if (is_null($usuarioAuth))
-                <li><a href="/login">Iniciar sesión</a></li>
-            @elseif ($usuarioAuth->rol == 'Cliente')
-                <li><a href="/usuario/show/{{ $usuarioAuth->usuarioID }}">Mi perfil</a></li>
             @endif
         </ul>
     </div>
@@ -85,12 +90,12 @@
     @endif
     <div class="catalogo">
         <div class="producto">
-            <img src="{{ url('storage/'.$producto->imagen) }}" alt="{{ $producto->nombre }}">
+            <img src="{{ $producto->imagen }}" alt="{{ $producto->nombre }}">
             <div class="datosProducto">
                 <h1>{{ $producto->nombre }}</h1>
                 <p>{{ $producto->descripcion }}</p>
                 <p>${{ $producto->precio }} MXN C/U</p>
-                @if (is_null($usuarioAuth))
+                @if (is_null($usuario))
                     <h3>Inicie sesión para poder comprar.</h3>
                 @elseif($producto->usuarioID != Auth::User()->usuarioID)
                     <form action="/producto/comprar/{{ $producto->productoID }}" method="post">

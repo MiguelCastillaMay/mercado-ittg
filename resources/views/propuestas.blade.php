@@ -24,6 +24,21 @@
         background-color: #f0f8ff;
         color: #1e212d;
     }
+    h1.titulo {
+        color: #1e212d;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    h2, p {
+        color: #1e212d;
+    }
+    h2 {
+        font-weight: 500;
+    }
+    span {
+        font-weight: 300;
+    }
     .pafuera {
         display: block;
         width: fit-content;
@@ -33,59 +48,102 @@
     }
     textarea {
         resize: none;
-        display: block;
-        margin-right: auto;
-        margin-left: auto;
+        margin-right: 20px;
+        font-family: "Montserrat", sans-serif;
+        border-radius: 15px;
+        font-size: 17px;
     }
-    h2 {
-        width: fit-content;
-        margin-right: auto;
-        margin-left: auto;
-        color: #1e212d;
+    .datos {
+        display: flex;
+    }
+    .datos > h2 {
+        margin-top: 0px;
+    }
+    form {
+        display: flex;
+    }
+    .botones {
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+        text-align: center;
+    }
+    img {
+        height: 250px;
+        width: 250px;
+        object-fit: cover;
+        display: block;
+        margin-bottom: 10px;
+        border-radius: 10px;
+    }
+    .producto {
+        display: flex;
     }
 </style>
+
+@php
+    $usuario = Auth::User();
+@endphp
 
 @section('navBar')
     <div class="menuBar">
         <h1>TiendaFicticia.com</h1>
         <ul>
-            <li><a href="/supervisor">Menú</a></li>
-            <li><a href="/categoria">Categorías</a></li>
-            <li><a href="/productos">Productos</a></li>
-            <li><a href="/bitacora">Bitácora</a></li>
+            @if (is_null($usuario) or $usuario->rol == 'Cliente')
+                <li><a href="/categoria">Categorías</a></li>
+                <li><a href="/productos">Productos</a></li>
+                <li><form action="/search" method="get" role="search">
+                    <input type="text" name="find" placeholder="Buscar productos">
+                    <input  type="submit" value="Buscar" id="botonInverso">
+                </form></li>
+                @if (is_null($usuario))
+                    <li><a href="/login">Iniciar sesión</a></li>
+                @elseif ($usuario->rol == 'Cliente')
+                    <li><a href="/usuario/show/{{ $usuario->usuarioID }}">Mi perfil</a></li>
+                @endif
+            @elseif($usuario->rol == 'Supervisor' or $usuario->rol == 'Revisor')
+                <li><a href="/supervisor">Menú</a></li>
+                <li><a href="/categoria">Categorías</a></li>
+                <li><a href="/productos">Productos</a></li>
+                <li><a href="/propuestas">Propuestas</a></li>
+                <li><a href="/usuarios">Usuarios</a></li>
+                <li><a href="/bitacora">Bitácora</a></li>
+            @endif
         </ul>
     </div>
 @endsection
     
 @section('contenido')
 <h2>{{session('error')}}</h2>
-        <table>
-            <tr>
-                <th>Productos</th>
-                <th>Acciones</th>
-            </tr>
-            @isset($propuestas)
-                @forelse ($propuestas as $propuesta)
-                    <tr>
-                        <td>{{ $propuesta->nombre }}</td>
-                        <td>
-                            <a class="boton" href="/propuesta/aceptar/{{ $propuesta->productoID }}">Aceptar</a></button>
-                            <form action="/propuesta/rechazar/{{ $propuesta->productoID }}" method="post" enctype="multipart/form-data">
-                                @csrf
-                                @method('PUT')
-                                <p>Razón de rechazo:</p>
-                                <textarea name="razon" cols="50" rows="10"></textarea>
-                                <input class="boton" type="submit" value="Rechazar">
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan = "3">Sin registros</tr>
-                    </tr>
-                @endforelse
-            @endisset
-        </table>
+        <div class="catalogo" style="padding-bottom: 40px;">
+            <h1 class="titulo">Propuestas</h1>
+            @forelse ($propuestas as $propuesta)
+                <div class="producto">
+                    <img src="{{ $propuesta->imagen }}">
+                    <div class="datosProducto">
+                        <h2>{{ $propuesta->nombre }}</h2>
+                        <div class="desc">
+                            <h2>Descripción: <span>{{ $propuesta->descripcion }}</span></h2>
+                        </div>
+                        <div class="datos">
+                            <h2 style="margin-right: 25px;">Precio: <span>{{ $propuesta->precio }}</span></h2>
+                            <h2>Cantidad: <span>{{ $propuesta->cantidad }}</span></h2>
+                        </div>
+                    </div>
+                </div>
+                <form action="/propuesta/rechazar/{{ $propuesta->productoID }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <textarea name="razon" cols="80" rows="10" placeholder="Agregar una razón del rechazo (Obligatorio)"></textarea>
+                    <div class="botones">
+                        <a class="boton" href="/propuesta/aceptar/{{ $propuesta->productoID }}">Aceptar</a>
+                        <input id="botonInverso" type="submit" value="Rechazar">
+                    </div>
+                </form>
+            @empty
+                <h2>No hay propuestas</h2>
+            @endforelse
+        </div>
         
         <button id="botonInverso" class="pafuera"><a href="/salir">Salir pa fuera</a></button>
 @endsection

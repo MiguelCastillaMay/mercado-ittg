@@ -33,6 +33,14 @@
     .producto {
         margin-bottom: 0px;
     }
+    img {
+        height: 250px;
+        width: 250px;
+        object-fit: cover;
+        display: block;
+        margin-bottom: 10px;
+        border-radius: 10px;
+    }
 </style>
 
 @section('navBar')
@@ -54,7 +62,7 @@
     @isset($preguntas)
     <div class="catalogo">
         <div class="producto">
-            <img src="{{ url('storage/'.$producto->imagen) }}" alt="{{ $producto->nombre }}">
+            <img src="{{ $producto->imagen }}" alt="{{ $producto->nombre }}">
             <div class="datosProducto">
                 <h1>{{ $producto->nombre }}</h1>
                 <p>{{ $producto->descripcion }}</p>

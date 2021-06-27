@@ -12,24 +12,23 @@
         <ul>
             @if (is_null($usuario) or $usuario->rol == 'Cliente')
                 <li><a href="/categoria">Categorías</a></li>
-            @else
-                <li><a href="/supervisor">Menú</a></li>
-            @endif
-            <li><a href="/productos">Productos</a></li>
-            @if (is_null($usuario) or $usuario->rol == 'Cliente')
+                <li><a href="/productos">Productos</a></li>
                 <li><form action="/search" method="get" role="search">
                     <input type="text" name="find" placeholder="Buscar productos">
                     <input  type="submit" value="Buscar" id="botonInverso">
                 </form></li>
-            @endif
-            @if (is_null($usuario))
-                <li><a href="/login">Iniciar sesión</a></li>
-            @elseif ($usuario->rol == 'Cliente')
-                <li><a href="/usuario/show/{{ $usuario->usuarioID }}">Mi perfil</a></li>
-            @endif
-            @if (!is_null($usuario) and $usuario->rol == 'Supervisor')
+                @if (is_null($usuario))
+                    <li><a href="/login">Iniciar sesión</a></li>
+                @elseif ($usuario->rol == 'Cliente')
+                    <li><a href="/usuario/show/{{ $usuario->usuarioID }}">Mi perfil</a></li>
+                @endif
+            @elseif($usuario->rol == 'Supervisor' or $usuario->rol == 'Revisor')
+                <li><a href="/supervisor">Menú</a></li>
+                <li><a href="/categoria">Categorías</a></li>
+                <li><a href="/productos">Productos</a></li>
+                <li><a href="/propuestas">Propuestas</a></li>
                 <li><a href="/usuarios">Usuarios</a></li>
-                <li><a href="/bitacora">Bitácora</a></li>
+                <li><a href="/productos">Bitácora</a></li>
             @endif
         </ul>
     </div>

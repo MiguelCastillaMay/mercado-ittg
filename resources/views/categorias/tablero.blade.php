@@ -46,6 +46,25 @@
     #botones {
         padding-top: 10px;
     }
+    img {
+        height: 250px;
+        width: 250px;
+        object-fit: cover;
+        display: block;
+        margin-bottom: 10px;
+        border-radius: 10px;
+    }
+    h2 {
+        color: #1e212d;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-size: 30px;margin-bottom: 10px;
+        font-weight: 500;
+    }
+    p {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
 </style>
 
 @php
@@ -58,22 +77,21 @@
         <ul>
             @if (is_null($usuario) or $usuario->rol == 'Cliente')
                 <li><a href="/categoria">Categorías</a></li>
-            @else
-                <li><a href="/supervisor">Menú</a></li>
-            @endif
-            <li><a href="/productos">Productos</a></li>
-            @if (is_null($usuario) or $usuario->rol == 'Cliente')
+                <li><a href="/productos">Productos</a></li>
                 <li><form action="/search" method="get" role="search">
                     <input type="text" name="find" placeholder="Buscar productos">
                     <input  type="submit" value="Buscar" id="botonInverso">
                 </form></li>
-            @endif
-            @if (is_null($usuario))
-                <li><a href="/login">Iniciar sesión</a></li>
-            @elseif ($usuario->rol == 'Cliente')
-                <li><a href="/usuario/show/{{ $usuario->usuarioID }}">Mi perfil</a></li>
-            @endif
-            @if (!is_null($usuario) and $usuario->rol == 'Supervisor')
+                @if (is_null($usuario))
+                    <li><a href="/login">Iniciar sesión</a></li>
+                @elseif ($usuario->rol == 'Cliente')
+                    <li><a href="/usuario/show/{{ $usuario->usuarioID }}">Mi perfil</a></li>
+                @endif
+            @elseif($usuario->rol == 'Supervisor' or $usuario->rol == 'Revisor')
+                <li><a href="/supervisor">Menú</a></li>
+                <li><a href="/categoria">Categorías</a></li>
+                <li><a href="/productos">Productos</a></li>
+                <li><a href="/propuestas">Propuestas</a></li>
                 <li><a href="/usuarios">Usuarios</a></li>
                 <li><a href="/bitacora">Bitácora</a></li>
             @endif
@@ -85,54 +103,50 @@
     @if (session('mensaje'))
         <p>{{ session('mensaje') }}</p>
     @endif
-        @if(is_null($usuario) or $usuario->rol == 'Cliente')
-            @isset($categorias)
-                <div class="catalogo">
-                    @forelse ($categorias as $categoria)
-                        <div class="producto">
-                            <img src="{{ $categoria->imagen }}" alt="{{ $categoria->nombre }}">
-                            <div class="datosProducto">
-                                <h1>{{ $categoria->nombre }}</h1>
-                                <p>{{ $categoria->descripcion }}</p>
-                                <a class="boton" href="/productos/categoria/{{ $categoria->categoriaID }}">Ver productos</a>
-                            </div>
-                        </div>
-                    @empty
-                        <h2>Oh oh, no hay categorías :(</h2>
-                    @endforelse
-                </div>
-            @endisset
-        @elseif ($usuario->rol == 'Supervisor' or $usuario->rol == 'Revisor')
-            <table>
-                <tr>
-                    <th>Categoría</th>
-                    <th>Cantidad de productos</th>
-                    <th>Acciones</th>
-                </tr>
+    @if(is_null($usuario) or $usuario->rol == 'Cliente')
+            <div class="catalogo">
                 @forelse ($categorias as $categoria)
-                    <tr>
-                        <td>{{ $categoria->nombre }}</td>
-                        <td>3</td>
-                        <td id="botones">
-                            <a class="boton opciones" href="/productos/categoria/{{ $categoria->categoriaID }}">Ver productos</a>
-                            <a class="boton opciones" href="/categoria/{{ $categoria->categoriaID }}/edit">Editar categoría</a>
-                            <a class="boton opciones" href="/categoria/{{ $categoria->categoriaID }}">Mostrar categoría</a>
-                            <form action="/categoria/{{ $categoria->categoriaID }}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <input class="boton opciones" type="submit" value="Eliminar categoría" id="eliminar">
-                            </form>
-                        </td>
-                    </tr>
+                    <div class="producto">
+                        <img src="{{ $categoria->imagen }}" alt="{{ $categoria->nombre }}">
+                        <div class="datosProducto">
+                            <h2>{{ $categoria->nombre }}</h2>
+                            <p>{{ $categoria->descripcion }}</p>
+                            <a class="boton" href="/productos/categoria/{{ $categoria->categoriaID }}">Ver productos</a>
+                        </div>
+                    </div>
                 @empty
-                    <tr>
-                        <td colspan = "3">Sin registros</tr>
-                    </tr>
+                    <h2>Oh oh, no hay categorías :(</h2>
                 @endforelse
-            </table>
-            <a class="boton pafuera" href="/categoria/create">Agregar categoría</a>
-        @endif
-        @if ($usuario)
-            <a class="boton pafuera" href="/salir">Salir pa fuera</a>
-        @endif
+            </div>
+    @elseif ($usuario->rol == 'Supervisor' or $usuario->rol == 'Revisor')
+        <table>
+            <tr>
+                <th>Categoría</th>
+                <th>Cantidad de productos</th>
+                <th>Acciones</th>
+            </tr>
+            @forelse ($categorias as $categoria)
+                @php
+                    $cantidad = DB::select('SELECT nombre FROM productos WHERE categoriaID = ?', [$categoria->categoriaID]);
+                    $cantidad = count($cantidad);
+                @endphp
+                <tr>
+                    <td>{{ $categoria->nombre }}</td>
+                    <td>{{ $cantidad }}</td>
+                    <td id="botones">
+                        <a class="boton opciones" href="/productos/categoria/{{ $categoria->categoriaID }}">Ver productos</a>
+                        <a class="boton opciones" href="/categoria/{{ $categoria->categoriaID }}/edit">Editar categoría</a>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan = "3">Sin registros</tr>
+                </tr>
+            @endforelse
+        </table>
+        <a class="boton pafuera" href="/categoria/create">Agregar categoría</a>
+    @endif
+    @if ($usuario)
+        <a class="boton pafuera" href="/salir">Salir pa fuera</a>
+    @endif
 @endsection

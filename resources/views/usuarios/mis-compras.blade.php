@@ -13,8 +13,12 @@
         font-weight: 100;
     }
     img {
-        height: max-content;
-        width: 35%;
+        height: 250px;
+        width: 250px;
+        object-fit: cover;
+        display: block;
+        margin-bottom: 10px;
+        border-radius: 10px;
     }
     a.boton {
         -webkit-appearance: button;
@@ -50,6 +54,31 @@
         margin-top: 19.920px;
         margin-bottom: 40px;
     }
+    .datosProducto > h2 {
+        display: block;
+        color: #1e212d;
+        font-weight: 500;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        font-size: 30px;
+    }
+    h2.mensaje {
+        width: fit-content;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    p {
+        margin-top: 12px;
+        margin-bottom: 12px;
+    }
+    h2.titulo {
+        display: flex;
+        justify-content: center;
+        font-size: 2em;
+        font-weight: 300;
+        margin: 0px;
+        margin-bottom: 40px;
+    }
 </style>
 
 
@@ -73,11 +102,12 @@
         <h2 id="mensaje">{{ session('mensaje') }}</h2>
     @endif
     <div class="catalogo">
+        <h2 class="titulo">Mis compras</h2>
         @forelse ($compras as $compra)
             <div class="producto">
-                <img src="{{ url('storage/'.$compra->imagen) }}" alt="{{ $compra->nombre }}">
+                <img src="{{ $compra->imagen }}" alt="{{ $compra->nombre }}">
                 <div class="datosProducto">
-                    <h1>{{ $compra->nombre }}</h1>
+                    <h2>{{ $compra->nombre }}</h2>
                     <p>{{ $compra->descripcion }}</p>
                     <p>${{ $compra->precio }}. MXN C/U</p>
                     <p>Cantidad comprada: {{ $compra->cantidad }}</p>
@@ -111,7 +141,7 @@
                 </div>
             </div>
         @empty
-            <h2>No has comprado nada aún.</h2>
+            <h2 class="mensaje">No has comprado nada aún</h2>
         @endforelse
     </div>
     <button id="botonInverso" class="pafuera"><a href="/salir">Salir pa fuera</a></button>

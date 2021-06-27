@@ -35,11 +35,39 @@
         font-weight: 100;
     }
     img {
-        height: max-content;
-        width: 35%;
+        height: 250px;
+        width: 250px;
+        object-fit: cover;
+        display: block;
+        margin-bottom: 10px;
+        border-radius: 10px;
     }
     form {
         display: inline;
+    }
+    h2 {
+        color: #1e212d;
+        font-weight: 500;
+        margin-top: 0px;
+        margin-bottom: 10px;
+        font-size: 30px;
+    }
+    h2.mensaje {
+        width: fit-content;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    p {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    h2.titulo {
+        display: flex;
+        justify-content: center;
+        font-size: 2em;
+        font-weight: 300;
+        margin: 0px;
+        margin-bottom: 40px;
     }
 </style>
 
@@ -61,11 +89,12 @@
 @section('contenido')
     @isset($propuestas)
         <div class="catalogo">
-            @foreach ($propuestas as $propuesta)
+            <h2 class="titulo">Mis propuestas</h2>
+            @forelse ($propuestas as $propuesta)
                 <div class="producto">
-                    <img src="{{ url('storage/'.$propuesta->imagen) }}" alt="{{ $propuesta->nombre }}">
+                    <img src="{{ $propuesta->imagen }}" alt="{{ $propuesta->nombre }}">
                     <div class="datosProducto">
-                        <h1>{{ $propuesta->nombre }}</h1>
+                        <h2>{{ $propuesta->nombre }}</h2>
                         <p>{{ $propuesta->descripcion }}</p>
                         <p>${{ $propuesta->precio }}</p>
                         @if ($propuesta->activo == 1)
@@ -84,7 +113,9 @@
                         @endif
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <h2 class="mensaje">No has agregado ninguna propuesta</h2>
+            @endforelse
         </div>
     @endisset
 

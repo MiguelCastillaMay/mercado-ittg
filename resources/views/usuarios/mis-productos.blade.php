@@ -32,8 +32,36 @@
         margin-left: auto;
     }
     img {
-        height: max-content;
-        width: 35%;
+        height: 250px;
+        width: 250px;
+        object-fit: cover;
+        display: block;
+        margin-bottom: 10px;
+        border-radius: 10px;
+    }
+    h2 {
+        color: #1e212d;
+        font-weight: 500;
+        margin-top: 0px;
+        margin-bottom: 10px;
+        font-size: 30px;
+    }
+    h2.mensaje {
+        width: fit-content;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    p {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    h2.titulo {
+        display: flex;
+        justify-content: center;
+        font-size: 2em;
+        font-weight: 300;
+        margin: 0px;
+        margin-bottom: 40px;
     }
 </style>
 
@@ -55,17 +83,20 @@
 @section('contenido')
     @isset($productos)
         <div class="catalogo">
-            @foreach ($productos as $producto)
+            <h2 class="titulo">Mis productos</h2>
+            @forelse ($productos as $producto)
                 <div class="producto">
-                    <img src="{{ url('storage/'.$producto->imagen) }}" alt="{{ $producto->nombre }}">
+                    <img src="{{ $producto->imagen }}" alt="{{ $producto->nombre }}">
                     <div class="datosProducto">
-                        <h1>{{ $producto->nombre }}</h1>
+                        <h2>{{ $producto->nombre }}</h2>
                         <p>{{ $producto->descripcion }}</p>
-                        <p>Precio</p>
+                        <p>${{ $producto->precio }} MXN C/U</p>
                         <a class="boton" href="/preguntas/{{ $producto->productoID }}">Ver preguntas</a>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <h2 class="mensaje">No has agregado ningún producto</h2>
+            @endforelse
         </div>
     @endisset
     <a class="boton pafuera" href="/salir">Salir pa fuera</a>

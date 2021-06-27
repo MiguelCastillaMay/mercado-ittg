@@ -48,14 +48,34 @@
     }
 </style>
 
+@php
+    $usuario = Auth::User();
+@endphp
+
 @section('navBar')
     <div class="menuBar">
         <h1>TiendaFicticia.com</h1>
         <ul>
-            <li><a href="/supervisor">Menú</a></li>
-            <li><a href="/usuarios">Usuarios</a></li>
-            <li><a href="/categoria">Categorías</a></li>
-            <li><a href="/bitacora">Bitácora</a></li>
+            @if (is_null($usuario) or $usuario->rol == 'Cliente')
+                <li><a href="/categoria">Categorías</a></li>
+                <li><a href="/productos">Productos</a></li>
+                <li><form action="/search" method="get" role="search">
+                    <input type="text" name="find" placeholder="Buscar productos">
+                    <input  type="submit" value="Buscar" id="botonInverso">
+                </form></li>
+                @if (is_null($usuario))
+                    <li><a href="/login">Iniciar sesión</a></li>
+                @elseif ($usuario->rol == 'Cliente')
+                    <li><a href="/usuario/show/{{ $usuario->usuarioID }}">Mi perfil</a></li>
+                @endif
+            @elseif($usuario->rol == 'Supervisor' or $usuario->rol == 'Revisor')
+                <li><a href="/supervisor">Menú</a></li>
+                <li><a href="/categoria">Categorías</a></li>
+                <li><a href="/productos">Productos</a></li>
+                <li><a href="/propuestas">Propuestas</a></li>
+                <li><a href="/usuarios">Usuarios</a></li>
+                <li><a href="/bitacora">Bitácora</a></li>
+            @endif
         </ul>
     </div>
 @endsection
@@ -72,7 +92,6 @@
                 <td>{{ $producto->nombre }}</td>
                 <td>{{ $producto->cantidad }}</td>
                 <td id="botones">
-                    <a class="boton opciones" href="/producto/edit/{{ $producto->productoID }}">Editar producto</a>
                     <a class="boton opciones" href="/producto/{{ $producto->productoID }}">Detalles del producto</a>
                     <form action="/producto/delete/{{ $producto->productoID }}" method="post">
                         @csrf

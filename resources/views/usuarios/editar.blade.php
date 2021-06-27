@@ -10,20 +10,25 @@
     <div class="menuBar">
         <h1>Mercado ITTG</h1>
         <ul>
-            <li><a href="/categoria">Categorías</a></li>
-            <li><a href="/productos">Productos</a></li>
             @if (is_null($usuarioLog) or $usuarioLog->rol == 'Cliente')
+                <li><a href="/categoria">Categorías</a></li>
+                <li><a href="/productos">Productos</a></li>
                 <li><form action="/search" method="get" role="search">
                     <input type="text" name="find" placeholder="Buscar productos">
                     <input  type="submit" value="Buscar" id="botonInverso">
                 </form></li>
-            @elseif ($usuarioLog->rol == 'Supervisor' or $usuarioLog->rol == 'Revisor')
-                <li><a href="/productos">Bitácora</a></li>
-            @endif
-            @if (is_null($usuarioLog))
-                <li><a href="/login">Iniciar sesión</a></li>
-            @elseif ($usuarioLog->rol == 'Cliente')
-                <li><a href="/usuario/show/{{ $usuarioLog->usuarioID }}">Mi perfil</a></li>
+                @if (is_null($usuarioLog))
+                    <li><a href="/login">Iniciar sesión</a></li>
+                @elseif ($usuarioLog->rol == 'Cliente')
+                    <li><a href="/usuario/show/{{ $usuarioLog->usuarioID }}">Mi perfil</a></li>
+                @endif
+            @elseif($usuarioLog->rol == 'Supervisor' or $usuarioLog->rol == 'Revisor')
+                <li><a href="/supervisor">Menú</a></li>
+                <li><a href="/categoria">Categorías</a></li>
+                <li><a href="/productos">Productos</a></li>
+                <li><a href="/propuestas">Propuestas</a></li>
+                <li><a href="/usuarios">Usuarios</a></li>
+                <li><a href="/bitacora">Bitácora</a></li>
             @endif
         </ul>
     </div>
@@ -143,7 +148,7 @@
                     <input type="password" name="password2" id="password2">
                 </div>
             </div>
-            <input class="registro" type="submit" value="Registrarse" id="botonInverso">
+            <input class="registro" type="submit" value="Guardar cambios" id="botonInverso">
         </form>
     </div>
 @endsection
