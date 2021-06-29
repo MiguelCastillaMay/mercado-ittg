@@ -125,6 +125,9 @@ class UsuarioController extends Controller
         if (is_null($valores['password']) and is_null($valores['password2'])) {
             $valores['password'] = $usuario->password;
         }
+        else {
+            $valores['password'] = Hash::make($valores['password']);
+        }
         if ($request->hasFile('imagen')) {
             $path = $request->file('imagen')->store('fotos', 's3');
             Storage::disk('s3')->setVisibility($path, 'public');
